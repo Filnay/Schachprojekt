@@ -3,7 +3,6 @@ package chess.chesspiece;
 import chess.Field;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Knight extends ChessPiece {
 
@@ -15,7 +14,7 @@ public class Knight extends ChessPiece {
 
     public ArrayList<Field> getMove(int row, int column) {
         //Board
-        ArrayList<Field> possibleFields = new ArrayList<Field>();
+        ArrayList<Field> possibleFields = new ArrayList<>();
         int left = 0;
         int right = 0;
         int up = 0;

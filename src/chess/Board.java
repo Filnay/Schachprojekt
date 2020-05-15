@@ -3,20 +3,19 @@ package chess;
 import chess.chesspiece.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static chess.chesspiece.ChessPiece.Color.BLACK;
 import static chess.chesspiece.ChessPiece.Color.WHITE;
 
 public class Board {
-    private ChessPiece[] a = new ChessPiece[8];
-    private ChessPiece[] b = new ChessPiece[8];
-    private ChessPiece[] c = new ChessPiece[8];
-    private ChessPiece[] d = new ChessPiece[8];
-    private ChessPiece[] e = new ChessPiece[8];
-    private ChessPiece[] f = new ChessPiece[8];
-    private ChessPiece[] g = new ChessPiece[8];
-    private ChessPiece[] h = new ChessPiece[8];
+    private final ChessPiece[] a = new ChessPiece[8];
+    private final ChessPiece[] b = new ChessPiece[8];
+    private final ChessPiece[] c = new ChessPiece[8];
+    private final ChessPiece[] d = new ChessPiece[8];
+    private final ChessPiece[] e = new ChessPiece[8];
+    private final ChessPiece[] f = new ChessPiece[8];
+    private final ChessPiece[] g = new ChessPiece[8];
+    private final ChessPiece[] h = new ChessPiece[8];
     public final ChessPiece[][] board = new ChessPiece[][]{a,b,c,d,e,f,g,h};
 
     public Board(){
