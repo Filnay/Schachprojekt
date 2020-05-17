@@ -12,6 +12,13 @@ public class Bishop extends ChessPiece {
 
     @Override
     public ArrayList<Field> getMove(int row, int column) {
-        return null;
+        ArrayList<Field> moves = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            moves.add(new Field(row - i, column - i));
+            moves.add(new Field(row + i, column - i));
+            moves.add(new Field(row - i, column + i));
+            moves.add(new Field(row + i, column + i));
+        }
+        return moves;
     }
 }

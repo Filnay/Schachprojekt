@@ -54,7 +54,7 @@ public class Board {
         putChessPieceOn(6, 4, new Pawn(BLACK));
         putChessPieceOn(6, 5, new Pawn(BLACK));
         putChessPieceOn(6, 6, new Pawn(BLACK));
-        putChessPieceOn(2, 2, new Pawn(BLACK));
+        putChessPieceOn(6, 7, new Pawn(BLACK));
     }
 
     private void putChessPieceOn(int row, int column, ChessPiece chessPiece){
@@ -69,7 +69,7 @@ public class Board {
         ArrayList<Field> moves = new ArrayList<>();
         if(chesspiece != null){
             ArrayList<Field> possibleMoves = chesspiece.getMove(row,column);
-
+            removeOutOfBounds(possibleMoves);
             for (Field move: possibleMoves) {
                 if(board[move.row][move.column] == null){
                     moves.add(move);
@@ -82,6 +82,10 @@ public class Board {
             }
         }
         return moves;
+    }
+
+    private void removeOutOfBounds(ArrayList<Field> possibleMoves) {
+        possibleMoves.removeIf(move -> move.row > 7 || move.row < 0 || move.column > 7 || move.column < 0);
     }
 
     @Override
