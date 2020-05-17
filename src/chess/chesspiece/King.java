@@ -3,6 +3,7 @@ package chess.chesspiece;
 import chess.Field;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class King extends ChessPiece {
     public King(Color color) {
@@ -10,7 +11,7 @@ public class King extends ChessPiece {
     }
 
     @Override
-    public ArrayList<Field> getMove(int row, int column) {
+    public List<ArrayList<Field>> getMove(int row, int column) {
         return null;
     }
 }

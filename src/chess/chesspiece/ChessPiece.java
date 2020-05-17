@@ -3,8 +3,11 @@ package chess.chesspiece;
 import chess.Field;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class ChessPiece {
+
 
     public enum Color{
         BLACK("B"), WHITE("W");
@@ -28,6 +31,11 @@ public abstract class ChessPiece {
         this.color = color;
         this.name = name;
     }
-    public abstract ArrayList<Field> getMove(int row, int column);
+    public abstract List<ArrayList<Field>> getMove(int row, int column);
+
+    protected void addFields(List<ArrayList<Field>> possibleFields, Field... f) {
+        possibleFields.add(new ArrayList(Arrays.asList(f)));
+    }
+
 
 }

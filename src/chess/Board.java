@@ -3,6 +3,7 @@ package chess;
 import chess.chesspiece.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static chess.chesspiece.ChessPiece.Color.BLACK;
 import static chess.chesspiece.ChessPiece.Color.WHITE;
@@ -61,31 +62,36 @@ public class Board {
         board[row][column] = chessPiece;
     }
 
-    public ArrayList<Field> getMove(int row, int column){
+    public List<Field> getMove(int row, int column){
         if(row < 0  || row > 7 || column < 0 || column > 7){
             throw new IllegalArgumentException("column or row out of bounce");
         }
         ChessPiece chesspiece = board[row][column];
         ArrayList<Field> moves = new ArrayList<>();
         if(chesspiece != null){
-            ArrayList<Field> possibleMoves = chesspiece.getMove(row,column);
-            removeOutOfBounds(possibleMoves);
-            for (Field move: possibleMoves) {
-                if(board[move.row][move.column] == null){
-                    moves.add(move);
-                    System.out.printf("Field %d %d%n", move.row, move.column);
-                }
-                else if(board[move.row][move.column].getColor() != board[row][column].getColor()){
-                    moves.add(move);
-                    System.out.printf("Attack on Field %d %d%n", move.row, move.column);
+            List<ArrayList<Field>> possibleMoves = chesspiece.getMove(row,column);
+            for (List<Field> pMoves: possibleMoves) {
+                removeOutOfBounds(pMoves);
+                for (Field move : pMoves) {
+                    if (board[move.row][move.column] == null) {
+                        moves.add(move);
+                        System.out.printf("Field %d %d%n", move.row, move.column);
+                    } else if (board[move.row][move.column].getColor() != board[row][column].getColor()) {
+                        moves.add(move);
+                        System.out.printf("Attack on Field %d %d%n", move.row, move.column);
+                        break;
+                    } else if (board[move.row][move.column].getColor() == board[row][column].getColor()){
+                        System.out.println("break");
+                        break;
+                    }
                 }
             }
         }
         return moves;
     }
 
-    private void removeOutOfBounds(ArrayList<Field> possibleMoves) {
-        possibleMoves.removeIf(move -> move.row > 7 || move.row < 0 || move.column > 7 || move.column < 0);
+    private void removeOutOfBounds(List<Field> possibleMoves) {
+            possibleMoves.removeIf(move -> move.row > 7 || move.row < 0 || move.column > 7 || move.column < 0);
     }
 
     @Override
@@ -110,6 +116,6 @@ public class Board {
     public static void main(String[] args) {
         Board test = new Board();
         System.out.print(test.toString());
-        test.getMove(0, 1);
+        test.getMove(1, 3);
     }
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +20,7 @@ class TestBoard {
 
     @Test
     void testGetMoveKnightBottomLeft() {
-        ArrayList<Field> moves = board.getMove(0, 1);
+        List<Field> moves = board.getMove(0, 1);
 
         assertEquals(2, moves.size());
         assertTrue(moves.contains(new Field(2,2)));
@@ -28,10 +29,16 @@ class TestBoard {
 
     @Test
     void testGetMoveKnightBottomRight() {
-        ArrayList<Field> moves = board.getMove(0, 6);
+        List<Field> moves = board.getMove(0, 6);
 
         assertEquals(2, moves.size());
         assertTrue(moves.contains(new Field(2,5)));
         assertTrue(moves.contains(new Field(2,7)));
+    }
+
+    @Test
+    void testGetMoveKBishopBottomLeft() {
+        List<Field> moves = board.getMove(0, 2);
+        assertEquals(0, moves.size());
     }
 }
