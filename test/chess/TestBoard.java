@@ -164,9 +164,6 @@ class TestBoard {
         boolean correctPawnAttackKnight = board.isAttacked(new Field(5,3));
         boolean notRight = board.isAttacked(new Field(0,0));
 
-        ChessPiece pawn = board.getChessPiece(new Field(6,2));
-        System.out.println(board.toString());
-        board.getMoves(6, 2);
         assertTrue(correct);
         assertTrue(correctPawn);
         assertTrue(correctPawnAttackKnight);
