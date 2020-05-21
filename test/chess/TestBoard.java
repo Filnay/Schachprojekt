@@ -2,6 +2,7 @@ package chess;
 
 import chess.chesspiece.Bishop;
 import chess.chesspiece.ChessPiece;
+import chess.chesspiece.Queen;
 import chess.chesspiece.Rook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -85,6 +86,37 @@ class TestBoard {
         assertTrue(moves.contains(new Field(2,6)));
         assertTrue(moves.contains(new Field(2,7)));
 
+    }
+
+    @Test
+    void testGetMovesQueenWhite(){
+        List<Field> moves = board.getMoves(0, 3);
+
+        assertEquals(0, moves.size());
+    }
+
+    @Test
+    void testGetMovesQueen(){
+        board.putChessPieceOn(2, 0, new Queen(WHITE));
+
+        List<Field> moves = board.getMoves(2, 0);
+
+        assertEquals(15, moves.size());
+        assertTrue(moves.contains(new Field(3,0)));
+        assertTrue(moves.contains(new Field(4,0)));
+        assertTrue(moves.contains(new Field(5,0)));
+        assertTrue(moves.contains(new Field(6,0)));
+        assertTrue(moves.contains(new Field(2,1)));
+        assertTrue(moves.contains(new Field(2,2)));
+        assertTrue(moves.contains(new Field(2,3)));
+        assertTrue(moves.contains(new Field(2,4)));
+        assertTrue(moves.contains(new Field(2,5)));
+        assertTrue(moves.contains(new Field(2,6)));
+        assertTrue(moves.contains(new Field(2,7)));
+        assertTrue(moves.contains(new Field(3,1)));
+        assertTrue(moves.contains(new Field(4,2)));
+        assertTrue(moves.contains(new Field(5,3)));
+        assertTrue(moves.contains(new Field(6,4)));
     }
 
     @Test

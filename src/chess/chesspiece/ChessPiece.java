@@ -19,6 +19,11 @@ public abstract class ChessPiece {
     private final Color color;
     private final String name;
 
+    public ChessPiece(Color color, String name) {
+        this.color = color;
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
@@ -27,10 +32,6 @@ public abstract class ChessPiece {
         return color;
     }
 
-    public ChessPiece(Color color, String name) {
-        this.color = color;
-        this.name = name;
-    }
     public abstract List<ArrayList<Field>> getMoves(int row, int column);
 
     protected void addMove(List<ArrayList<Field>> move, Field... f) {
