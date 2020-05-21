@@ -12,7 +12,7 @@ public class Bishop extends ChessPiece {
     }
 
     @Override
-    public List<ArrayList<Field>> getMove(int row, int column) {
+    public List<ArrayList<Field>> getMoves(int row, int column) {
         ArrayList<ArrayList<Field>> moves = new ArrayList<>();
         Field[] fieldsRightUp = new Field[7];
         Field[] fieldsLeftUp = new Field[7];

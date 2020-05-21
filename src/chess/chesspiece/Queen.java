@@ -12,7 +12,7 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    public List<ArrayList<Field>> getMove(int row, int column) {
+    public List<ArrayList<Field>> getMoves(int row, int column) {
         return null;
     }
 }

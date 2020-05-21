@@ -3,6 +3,7 @@ package chess;
 import chess.chesspiece.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static chess.chesspiece.ChessPiece.Color.BLACK;
@@ -62,14 +63,14 @@ public class Board {
         board[row][column] = chessPiece;
     }
 
-    public List<Field> getMove(int row, int column){
+    public List<Field> getMoves(int row, int column){
         if(row < 0  || row > 7 || column < 0 || column > 7){
             throw new IllegalArgumentException("column or row out of bounce");
         }
         ChessPiece chesspiece = board[row][column];
         ArrayList<Field> moves = new ArrayList<>();
         if(chesspiece != null){
-            List<ArrayList<Field>> possibleMoves = chesspiece.getMove(row,column);
+            List<ArrayList<Field>> possibleMoves = chesspiece.getMoves(row,column);
             for (List<Field> pMoves: possibleMoves) {
                 removeOutOfBounds(pMoves);
                 for (Field move : pMoves) {
@@ -94,6 +95,22 @@ public class Board {
             possibleMoves.removeIf(move -> move.row > 7 || move.row < 0 || move.column > 7 || move.column < 0);
     }
 
+    public boolean isAttacked(Field figure){
+        for (int row = 0; row < 8; row++) {
+            for (int column = 0; column < 8; column++) {
+               if (getMoves(row, column).contains(figure)) {
+                    return true;
+               }
+            }
+        }
+        return false;
+    }
+
+    public void move(Field from, Field to){
+        ChessPiece currentChessPiece = board[from.row][from.column];
+        board[from.row][from.column] = null;
+        board[to.row][to.column] = currentChessPiece;
+    }
     @Override
     public String toString(){
         StringBuilder builder = new StringBuilder();
@@ -116,6 +133,10 @@ public class Board {
     public static void main(String[] args) {
         Board test = new Board();
         System.out.print(test.toString());
-        test.getMove(1, 3);
+        test.getMoves(1, 3);
+    }
+
+    public ChessPiece getChessPiece(Field field) {
+        return board[field.row][field.column];
     }
 }

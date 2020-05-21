@@ -31,7 +31,7 @@ public abstract class ChessPiece {
         this.color = color;
         this.name = name;
     }
-    public abstract List<ArrayList<Field>> getMove(int row, int column);
+    public abstract List<ArrayList<Field>> getMoves(int row, int column);
 
     protected void addFields(List<ArrayList<Field>> possibleFields, Field... f) {
         possibleFields.add(new ArrayList(Arrays.asList(f)));
