@@ -1,6 +1,7 @@
 package chess;
 
 import chess.chesspiece.*;
+import chess.chesspiece.ChessPiece.Color;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -33,14 +34,14 @@ public class Board {
         putChessPieceOn(0, 5, new Bishop(WHITE));
         putChessPieceOn(0, 6, new Knight(WHITE));
         putChessPieceOn(0, 7, new Rook(WHITE));
-        putChessPieceOn(1, 0, new Pawn(WHITE));
-        putChessPieceOn(1, 1, new Pawn(WHITE));
-        putChessPieceOn(1, 2, new Pawn(WHITE));
-        putChessPieceOn(1, 3, new Pawn(WHITE));
-        putChessPieceOn(1, 4, new Pawn(WHITE));
-        putChessPieceOn(1, 5, new Pawn(WHITE));
-        putChessPieceOn(1, 6, new Pawn(WHITE));
-        putChessPieceOn(1, 7, new Pawn(WHITE));
+        putPawnOn(1, 0, WHITE);
+        putPawnOn(1, 1, WHITE);
+        putPawnOn(1, 2, WHITE);
+        putPawnOn(1, 3, WHITE);
+        putPawnOn(1, 4, WHITE);
+        putPawnOn(1, 5, WHITE);
+        putPawnOn(1, 6, WHITE);
+        putPawnOn(1, 7, WHITE);
         putChessPieceOn(7, 0, new Rook(BLACK));
         putChessPieceOn(7, 1, new Knight(BLACK));
         putChessPieceOn(7, 2, new Bishop(BLACK));
@@ -49,14 +50,18 @@ public class Board {
         putChessPieceOn(7, 5, new Bishop(BLACK));
         putChessPieceOn(7, 6, new Knight(BLACK));
         putChessPieceOn(7, 7, new Rook(BLACK));
-        putChessPieceOn(6, 0, new Pawn(BLACK));
-        putChessPieceOn(6, 1, new Pawn(BLACK));
-        putChessPieceOn(6, 2, new Pawn(BLACK));
-        putChessPieceOn(6, 3, new Pawn(BLACK));
-        putChessPieceOn(6, 4, new Pawn(BLACK));
-        putChessPieceOn(6, 5, new Pawn(BLACK));
-        putChessPieceOn(6, 6, new Pawn(BLACK));
-        putChessPieceOn(6, 7, new Pawn(BLACK));
+        putPawnOn(6, 0, BLACK);
+        putPawnOn(6, 1, BLACK);
+        putPawnOn(6, 2, BLACK);
+        putPawnOn(6, 3, BLACK);
+        putPawnOn(6, 4, BLACK);
+        putPawnOn(6, 5, BLACK);
+        putPawnOn(6, 6, BLACK);
+        putPawnOn(6, 7, BLACK);
+    }
+
+    public void putPawnOn(int row, int column, Color color) {
+        board[row][column] = new Pawn(color, this.board);
     }
 
     public void putChessPieceOn(int row, int column, ChessPiece chessPiece){
@@ -95,10 +100,10 @@ public class Board {
             possibleMoves.removeIf(move -> move.row > 7 || move.row < 0 || move.column > 7 || move.column < 0);
     }
 
-    public boolean isAttacked(Field figure){
+    public boolean isAttacked(Field fieldOfChessPiece){
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
-               if (getMoves(row, column).contains(figure)) {
+               if (getMoves(row, column).contains(fieldOfChessPiece)) {
                     return true;
                }
             }

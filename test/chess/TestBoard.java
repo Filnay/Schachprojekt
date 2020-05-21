@@ -1,6 +1,7 @@
 package chess;
 
 import chess.chesspiece.*;
+import com.sun.source.tree.WhileLoopTree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -117,7 +118,7 @@ class TestBoard {
     }
     @Test
     void testGetMovesPawn(){
-        board.putChessPieceOn(2, 1, new Pawn(WHITE));
+        board.putPawnOn(2, 1, WHITE);
 
         List<Field> moves = board.getMoves(1,0);
         List<Field> move = board.getMoves(2,1);
@@ -155,13 +156,16 @@ class TestBoard {
 
     @Test
     void testIsAttacked(){
-        board.move(new Field(0,1), new Field(5,2));
+        board.putChessPieceOn( 5,2, new Knight(WHITE));
+        board.putPawnOn(5, 5, WHITE);
 
         boolean right = board.isAttacked(new Field(7,3));
+        boolean rightPawn = board.isAttacked(new Field(6,6));
         boolean notRight = board.isAttacked(new Field(0,0));
 
         assertFalse(notRight);
         assertTrue(right);
+        assertTrue(rightPawn);
     }
 
 }
