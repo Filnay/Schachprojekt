@@ -33,8 +33,8 @@ public abstract class ChessPiece {
     }
     public abstract List<ArrayList<Field>> getMoves(int row, int column);
 
-    protected void addFields(List<ArrayList<Field>> possibleFields, Field... f) {
-        possibleFields.add(new ArrayList(Arrays.asList(f)));
+    protected void addMove(List<ArrayList<Field>> move, Field... f) {
+        move.add(new ArrayList(Arrays.asList(f)));
     }
 
 

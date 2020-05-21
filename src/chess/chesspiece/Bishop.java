@@ -20,20 +20,14 @@ public class Bishop extends ChessPiece {
         Field[] fieldsRightDown = new Field[7];
         for (int i = 1; i < 8; i++) {
             fieldsRightUp[i-1] = new Field(row + i, column + i);
-        }
-        for (int i = 1; i < 8; i++) {
             fieldsLeftUp[i-1] = new Field(row + i, column - i);
-        }
-        for (int i = 1; i < 8; i++) {
             fieldsLeftDown[i-1] = new Field(row - i, column - i);
-        }
-        for (int i = 1; i < 8; i++) {
             fieldsRightDown[i-1] = new Field(row - i, column + i);
         }
-        addFields(moves, fieldsRightUp);
-        addFields(moves, fieldsLeftUp);
-        addFields(moves, fieldsLeftDown);
-        addFields(moves, fieldsRightDown);
+        addMove(moves, fieldsRightUp);
+        addMove(moves, fieldsLeftUp);
+        addMove(moves, fieldsLeftDown);
+        addMove(moves, fieldsRightDown);
         return moves;
     }
 }
