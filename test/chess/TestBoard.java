@@ -156,16 +156,20 @@ class TestBoard {
 
     @Test
     void testIsAttacked(){
-        board.putChessPieceOn( 5,2, new Knight(WHITE));
+        board.putChessPieceOn( 5,3, new Knight(WHITE));
         board.putPawnOn(5, 5, WHITE);
 
-        boolean right = board.isAttacked(new Field(7,3));
-        boolean rightPawn = board.isAttacked(new Field(6,6));
+        boolean correct = board.isAttacked(new Field(7,4));
+        boolean correctPawn = board.isAttacked(new Field(6,6));
+        boolean correctPawnAttackKnight = board.isAttacked(new Field(5,3));
         boolean notRight = board.isAttacked(new Field(0,0));
 
+        ChessPiece pawn = board.getChessPiece(new Field(6,2));
+        System.out.println(board.toString());
+        board.getMoves(6, 2);
+        assertTrue(correct);
+        assertTrue(correctPawn);
+        assertTrue(correctPawnAttackKnight);
         assertFalse(notRight);
-        assertTrue(right);
-        assertTrue(rightPawn);
     }
-
 }

@@ -75,6 +75,7 @@ public class Board {
         ChessPiece chesspiece = board[row][column];
         ArrayList<Field> moves = new ArrayList<>();
         if(chesspiece != null){
+            System.out.println(chesspiece.getName());
             List<ArrayList<Field>> possibleMoves = chesspiece.getMoves(row,column);
             for (List<Field> pMoves: possibleMoves) {
                 removeOutOfBounds(pMoves);
