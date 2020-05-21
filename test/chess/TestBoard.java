@@ -130,6 +130,17 @@ class TestBoard {
     }
 
     @Test
+    void testGetMovesKing(){
+        board.putChessPieceOn(2, 0, new King(WHITE));
+
+        List<Field> moves = board.getMoves(2, 0);
+
+        assertEquals(3, moves.size());
+        assertTrue(moves.contains(new Field(2, 1)));
+        assertTrue(moves.contains(new Field(3, 1)));
+        assertTrue(moves.contains(new Field(3, 0)));
+    }
+    @Test
     void testMove(){
         Field from = new Field(1,3);
         ChessPiece chessPiece = board.getChessPiece(from);
@@ -142,7 +153,7 @@ class TestBoard {
         assertEquals(chessPiece, board.getChessPiece(to));
     }
 
-    @Test @Disabled
+    @Test
     void testIsAttacked(){
         board.move(new Field(0,1), new Field(5,2));
 
