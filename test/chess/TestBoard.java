@@ -1,5 +1,6 @@
 package chess;
 
+import chess.chesspiece.Bishop;
 import chess.chesspiece.ChessPiece;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,9 +37,24 @@ class TestBoard {
     }
 
     @Test
-    void testGetMoveKBishopBottomLeft() {
+    void testGetMoveBishopBottomLeft() {
         List<Field> moves = board.getMoves(0, 2);
+
         assertEquals(0, moves.size());
+    }
+
+    @Test
+    void testGetMoveBishop(){
+        board.putChessPieceOn(2, 0, new Bishop(ChessPiece.Color.WHITE));
+
+        List<Field> moves = board.getMoves(2, 0);
+
+        assertEquals(4, moves.size());
+        assertTrue(moves.contains(new Field(3,1)));
+        assertTrue(moves.contains(new Field(4,2)));
+        assertTrue(moves.contains(new Field(5,3)));
+        assertTrue(moves.contains(new Field(6,4)));
+
     }
 
     @Test

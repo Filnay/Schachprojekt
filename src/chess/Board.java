@@ -59,7 +59,7 @@ public class Board {
         putChessPieceOn(6, 7, new Pawn(BLACK));
     }
 
-    private void putChessPieceOn(int row, int column, ChessPiece chessPiece){
+    public void putChessPieceOn(int row, int column, ChessPiece chessPiece){
         board[row][column] = chessPiece;
     }
 
