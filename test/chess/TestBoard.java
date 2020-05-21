@@ -1,9 +1,6 @@
 package chess;
 
-import chess.chesspiece.Bishop;
-import chess.chesspiece.ChessPiece;
-import chess.chesspiece.Queen;
-import chess.chesspiece.Rook;
+import chess.chesspiece.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -117,6 +114,19 @@ class TestBoard {
         assertTrue(moves.contains(new Field(4,2)));
         assertTrue(moves.contains(new Field(5,3)));
         assertTrue(moves.contains(new Field(6,4)));
+    }
+    @Test
+    void testGetMovesPawn(){
+        board.putChessPieceOn(2, 1, new Pawn(WHITE));
+
+        List<Field> moves = board.getMoves(1,0);
+        List<Field> move = board.getMoves(2,1);
+
+        assertEquals(2, moves.size());
+        assertTrue(moves.contains(new Field(2, 0)));
+        assertTrue(moves.contains(new Field(3, 0)));
+        assertEquals(1, move.size());
+        assertTrue(move.contains(new Field(3, 1)));
     }
 
     @Test

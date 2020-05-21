@@ -13,6 +13,11 @@ public class Pawn extends ChessPiece {
 
     @Override
     public List<ArrayList<Field>> getMoves(int row, int column) {
-        return null;
+        List<ArrayList<Field>> moves = new ArrayList<>();
+        addMove(moves,new Field(row + 1,column));
+        if (row == 1){
+            addMove(moves, new Field(row + 2, column));
+        }
+        return moves;
     }
 }
