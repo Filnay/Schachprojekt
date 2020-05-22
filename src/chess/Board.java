@@ -68,7 +68,11 @@ public class Board {
         board[row][column] = chessPiece;
     }
 
-    public List<Field> getMoves(int row, int column){
+    public  List<Field> getMoves(int row, int column){
+        return getMoves(row, column, true);
+    }
+
+    private List<Field> getMoves(int row, int column, boolean level){
         if(row < 0  || row > 7 || column < 0 || column > 7){
             throw new IllegalArgumentException("column or row out of bounce");
         }
@@ -78,20 +82,42 @@ public class Board {
             System.out.println(chessPiece.getName());
             List<ArrayList<Field>> possibleMoves = chessPiece.getMoves(row,column);
             List<Field> ownKing = findChessPiece(new King(chessPiece.getColor()));
+            System.out.printf("own King on Field %d %d%n", ownKing.get(0).row, ownKing.get(0).column);
             for (List<Field> pMoves: possibleMoves) {
                 removeOutOfBounds(pMoves);
                 for (Field move : pMoves) {
-                    if (board[move.row][move.column] == null) {
-                        moves.add(move);
-                        System.out.printf("Field %d %d%n", move.row, move.column);
-                    } else if (board[move.row][move.column].getColor() != board[row][column].getColor()) {
-                        moves.add(move);
-                        System.out.printf("Attack on Field %d %d%n", move.row, move.column);
-                        break;
-                    } else if (board[move.row][move.column].getColor() == board[row][column].getColor()){
-                        System.out.println("break");
-                        break;
-                    }
+                    Field from = new Field(row, column);
+                      if (board[move.row][move.column] == null) {
+                          if(level) {
+                            move(from, move);
+                                if (!isAttacked(ownKing.get(0))) {
+                                    moves.add(move);
+                                    System.out.printf("Field %d %d%n", move.row, move.column);
+                                }
+                            move(move, from);
+                          } else {
+                            moves.add(move);
+                            System.out.printf("Field %d %d%n", move.row, move.column);
+                          }
+                        } else if (board[move.row][move.column].getColor() != board[row][column].getColor()) {
+                          if(level) {
+                              ChessPiece current = board[move.row][move.column];
+                              move(from, move);
+                              if(!isAttacked(ownKing.get(0))){
+                                  moves.add(move);
+                                  System.out.printf("Attack on Field %d %d%n", move.row, move.column);
+                              }
+                              move(move, from);
+                              putChessPieceOn(move.row, move.column, current);
+                          } else {
+                              moves.add(move);
+                              System.out.printf("Attack on Field %d %d%n", move.row, move.column);
+                          }
+                          break;
+                        } else if (board[move.row][move.column].getColor() == board[row][column].getColor()) {
+                            System.out.println("break");
+                            break;
+                        }
                 }
             }
         }
@@ -118,7 +144,7 @@ public class Board {
     public boolean isAttacked(Field fieldOfChessPiece){
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
-               if (getMoves(row, column).contains(fieldOfChessPiece)) {
+               if (getMoves(row, column,false).contains(fieldOfChessPiece)) {
                     return true;
                }
             }

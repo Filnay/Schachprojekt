@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static chess.chesspiece.ChessPiece.Color.BLACK;
 import static chess.chesspiece.ChessPiece.Color.WHITE;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,6 +19,18 @@ class TestBoard {
     @BeforeEach
     void before(){
         board = new Board();
+    }
+
+    @Test
+    void testGetMovesTiedUp(){
+        board.putChessPieceOn(0, 4, null);
+        board.putChessPieceOn(2,2,new King(WHITE));
+        board.putChessPieceOn(3, 2, new Bishop(WHITE));
+        board.putChessPieceOn(5, 2, new Queen(BLACK));
+
+        List<Field> tiedUp = board.getMoves(3, 2);
+
+        assertEquals(0, tiedUp.size());
     }
 
     @Test
