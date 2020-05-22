@@ -89,26 +89,20 @@ public class Board {
                     Field from = new Field(row, column);
                       if (board[move.row][move.column] == null) {
                           if(level) {
-                            move(from, move);
-                                if (!isAttacked(ownKing.get(0))) {
+                                if (isChessPieceAttackedAfterMove(ownKing.get(0), from, move)) {
                                     moves.add(move);
                                     System.out.printf("Field %d %d%n", move.row, move.column);
                                 }
-                            move(move, from);
                           } else {
                             moves.add(move);
                             System.out.printf("Field %d %d%n", move.row, move.column);
                           }
                         } else if (board[move.row][move.column].getColor() != board[row][column].getColor()) {
                           if(level) {
-                              ChessPiece current = board[move.row][move.column];
-                              move(from, move);
-                              if(!isAttacked(ownKing.get(0))){
+                              if(isChessPieceAttackedAfterMove(ownKing.get(0), from, move)){
                                   moves.add(move);
                                   System.out.printf("Attack on Field %d %d%n", move.row, move.column);
                               }
-                              move(move, from);
-                              putChessPieceOn(move.row, move.column, current);
                           } else {
                               moves.add(move);
                               System.out.printf("Attack on Field %d %d%n", move.row, move.column);
@@ -122,6 +116,18 @@ public class Board {
             }
         }
         return moves;
+    }
+
+    public boolean isChessPieceAttackedAfterMove(Field attackedField,Field from, Field to){
+        boolean isAttacked = false;
+        ChessPiece current = board[to.row][to.column];
+        move(from, to);
+        if(!isAttacked(attackedField)){
+            isAttacked = true;
+        }
+        move(to, from);
+        putChessPieceOn(to.row, to.column, current);
+        return isAttacked;
     }
 
     public List<Field> findChessPiece(ChessPiece chessPiece) {
