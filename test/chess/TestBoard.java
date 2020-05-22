@@ -24,9 +24,10 @@ class TestBoard {
     @Test
     void testGetMovesTiedUp(){
         board.putChessPieceOn(0, 4, null);
-        board.putChessPieceOn(2,2,new King(WHITE));
+        board.putChessPieceOn(2,3,new King(WHITE));
         board.putChessPieceOn(3, 2, new Bishop(WHITE));
         board.putChessPieceOn(5, 2, new Queen(BLACK));
+
 
         List<Field> tiedUp = board.getMoves(3, 2);
 
@@ -192,5 +193,30 @@ class TestBoard {
         assertTrue(king.contains(new Field(0,4)));
         assertEquals(8, whitePawn.size());
         assertTrue(whitePawn.contains(new Field(1,4)));
+    }
+
+    @Test
+    void testIsCheck() {
+        board.putChessPieceOn(2, 3, new Knight(BLACK));
+
+        boolean check = board.isCheck(WHITE);
+
+        assertTrue(check);
+    }
+
+    @Test
+    void testCheckmate(){
+        board.putChessPieceOn(2, 3, new Knight(BLACK));
+        board.move(new Field(7,4), new Field(5,0));
+        board.putChessPieceOn(4,1, new Queen(WHITE));
+        board.putChessPieceOn(3, 2, new Bishop(WHITE));
+
+       // boolean notCheckmate = board.isCheckmate(WHITE);
+        boolean check = board.isCheck(BLACK);
+        boolean Checkmate = board.isCheckmate(BLACK);
+
+        //assertFalse(notCheckmate);
+        assertTrue(check);
+        assertTrue(Checkmate);
     }
 }
