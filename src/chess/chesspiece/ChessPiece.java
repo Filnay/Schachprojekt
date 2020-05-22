@@ -5,6 +5,7 @@ import chess.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class ChessPiece {
 
@@ -38,5 +39,17 @@ public abstract class ChessPiece {
         move.add(new ArrayList(Arrays.asList(f)));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChessPiece)) return false;
+        ChessPiece that = (ChessPiece) o;
+        return color == that.color &&
+                name.equals(that.name);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, name);
+    }
 }

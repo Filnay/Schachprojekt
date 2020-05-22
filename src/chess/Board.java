@@ -72,11 +72,12 @@ public class Board {
         if(row < 0  || row > 7 || column < 0 || column > 7){
             throw new IllegalArgumentException("column or row out of bounce");
         }
-        ChessPiece chesspiece = board[row][column];
+        ChessPiece chessPiece = board[row][column];
         ArrayList<Field> moves = new ArrayList<>();
-        if(chesspiece != null){
-            System.out.println(chesspiece.getName());
-            List<ArrayList<Field>> possibleMoves = chesspiece.getMoves(row,column);
+        if(chessPiece != null){
+            System.out.println(chessPiece.getName());
+            List<ArrayList<Field>> possibleMoves = chessPiece.getMoves(row,column);
+            List<Field> ownKing = findChessPiece(new King(chessPiece.getColor()));
             for (List<Field> pMoves: possibleMoves) {
                 removeOutOfBounds(pMoves);
                 for (Field move : pMoves) {
@@ -96,6 +97,19 @@ public class Board {
         }
         return moves;
     }
+
+    public List<Field> findChessPiece(ChessPiece chessPiece) {
+        ArrayList<Field> chessPieces = new ArrayList<>();
+        for (int row = 0; row < 8; row++) {
+            for (int column = 0; column < 8; column++) {
+                if(board[row][column] != null && board[row][column].equals(chessPiece)){
+                    chessPieces.add(new Field(row, column));
+                }
+            }
+        }
+        return chessPieces;
+    }
+
 
     private void removeOutOfBounds(List<Field> possibleMoves) {
             possibleMoves.removeIf(move -> move.row > 7 || move.row < 0 || move.column > 7 || move.column < 0);

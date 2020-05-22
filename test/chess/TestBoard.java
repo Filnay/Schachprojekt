@@ -169,4 +169,15 @@ class TestBoard {
         assertTrue(correctPawnAttackKnight);
         assertFalse(notRight);
     }
+
+    @Test
+    void testFindChessPiece(){
+        List<Field> king = board.findChessPiece(new King(WHITE));
+        List<Field> whitePawn = board.findChessPiece(new Pawn(WHITE, new ChessPiece[8][8]));
+
+        assertEquals(1, king.size());
+        assertTrue(king.contains(new Field(0,4)));
+        assertEquals(8, whitePawn.size());
+        assertTrue(whitePawn.contains(new Field(1,4)));
+    }
 }
