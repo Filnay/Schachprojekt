@@ -24,7 +24,7 @@ class TestBoard {
     @Test
     void testGetMovesTiedUp(){
         board.putChessPieceOn(0, 4, null);
-        board.putChessPieceOn(2,3,new King(WHITE));
+        board.putChessPieceOn(2,2,new King(WHITE));
         board.putChessPieceOn(3, 2, new Bishop(WHITE));
         board.putChessPieceOn(5, 2, new Queen(BLACK));
 
@@ -185,6 +185,86 @@ class TestBoard {
     }
 
     @Test
+    void testCastlingTrue(){
+        board.putChessPieceOn(7, 1, null);
+        board.putChessPieceOn(7, 2, null);
+        board.putChessPieceOn(7, 3, null);
+        board.putChessPieceOn(0, 1, null);
+        board.putChessPieceOn(0, 2, null);
+        board.putChessPieceOn(0, 3, null);
+        board.putChessPieceOn(7, 5, null);
+        board.putChessPieceOn(7, 6, null);
+        board.putChessPieceOn(0, 5, null);
+        board.putChessPieceOn(0, 6, null);
+
+        List<Field> castlingWhite = board.castling(WHITE);
+        List<Field> castlingBlack = board.castling(BLACK);
+
+        assertEquals(2, castlingWhite.size());
+        assertTrue(castlingWhite.contains(new Field(0, 2)));
+        assertTrue(castlingWhite.contains(new Field(0, 6)));
+        assertEquals(2, castlingBlack.size());
+        assertTrue(castlingBlack.contains(new Field(7, 2)));
+        assertTrue(castlingBlack.contains(new Field(7, 6)));
+    }
+
+    @Test
+    void testCastlingFalse(){
+        List<Field> castlingWhite = board.castling(WHITE);
+        List<Field> castlingBlack = board.castling(BLACK);
+
+        assertEquals(0, castlingWhite.size());
+        assertEquals(0, castlingBlack.size());
+    }
+
+    @Test
+    void testCastlingFalseBecAttack(){
+        board.putChessPieceOn(7, 1, null);
+        board.putChessPieceOn(7, 2, null);
+        board.putChessPieceOn(7, 3, null);
+        board.putChessPieceOn(5, 3, new Knight(WHITE));
+        board.putChessPieceOn(0, 1, null);
+        board.putChessPieceOn(0, 2, null);
+        board.putChessPieceOn(0, 3, null);
+        board.putChessPieceOn(2, 4, new Knight(BLACK));
+        board.putChessPieceOn(7, 5, null);
+        board.putChessPieceOn(7, 6, null);
+        board.putChessPieceOn(5, 5, new Knight(WHITE));
+        board.putChessPieceOn(0, 5, null);
+        board.putChessPieceOn(0, 6, null);
+        board.putChessPieceOn(0, 6, new Knight(BLACK));
+
+        List<Field> castlingWhite = board.castling(WHITE);
+        List<Field> castlingBlack = board.castling(BLACK);
+
+        assertEquals(0, castlingWhite.size());
+        assertEquals(0, castlingBlack.size());
+    }
+
+    @Test
+    void testCastlingFalseMove(){
+        board.putChessPieceOn(7, 1, null);
+        board.putChessPieceOn(7, 2, null);
+        board.putChessPieceOn(7, 3, null);
+        board.putChessPieceOn(0, 1, null);
+        board.putChessPieceOn(0, 2, null);
+        board.putChessPieceOn(0, 3, null);
+        board.putChessPieceOn(7, 5, null);
+        board.putChessPieceOn(7, 6, null);
+        board.putChessPieceOn(0, 5, null);
+        board.putChessPieceOn(0, 6, null);
+        board.move(new Field(0, 4), new Field(0,5));
+        board.move(new Field(0, 5), new Field(0,4));
+        board.move(new Field(7, 4), new Field(7,5));
+        board.move(new Field(7, 5), new Field(7,4));
+
+        List<Field> castlingWhite = board.castling(WHITE);
+        List<Field> castlingBlack = board.castling(BLACK);
+
+        assertEquals(0, castlingWhite.size());
+        assertEquals(0, castlingBlack.size());
+    }
+    @Test
     void testFindChessPiece(){
         List<Field> king = board.findChessPiece(new King(WHITE));
         List<Field> whitePawn = board.findChessPiece(new Pawn(WHITE, new ChessPiece[8][8]));
@@ -204,7 +284,7 @@ class TestBoard {
         assertTrue(check);
     }
 
-    @Test
+    @Test @Disabled
     void testCheckmate(){
         board.putChessPieceOn(2, 3, new Knight(BLACK));
         board.move(new Field(7,4), new Field(5,0));
