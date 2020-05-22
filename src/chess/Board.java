@@ -262,21 +262,34 @@ public class Board {
         return isAttacked(fieldOfKing.get(0));
     }
 
-   public boolean isCheckmate(Color person){
+    public boolean isCheckmate(Color person){
         List<Field> fieldOfKings = findChessPiece(new King(person));
         Field fieldOfKing = fieldOfKings.get(0);
         List<Field> movesOfKing = getMoves(fieldOfKing.row, fieldOfKing.column);
-        List<Field> attackers = whoAttacks(fieldOfKing);
         boolean checkmate = false;
 
-        for(Field attacker: attackers){
-            if(!isAttacked(attacker)){
+        List<Field> attackers = whoAttacks(fieldOfKing);
+        if (attackers.size() > 1){
+            checkmate = true;
+        }
+        Field attacker = attackers.get(0);
+        List<Field> attackerOfAttacker =  whoAttacks(attacker, person.otherColor());
+        if (attackerOfAttacker.contains(fieldOfKing) && isDefended(attacker, person)) {
+            attackerOfAttacker.remove(fieldOfKing);
+            if (attackerOfAttacker.size() == 0) {
                 checkmate = true;
             }
         }
         return (movesOfKing.size() == 0 && isCheck(person) && checkmate);
     }
 
+    private boolean isDefended(Field field, Color color) {
+        ChessPiece current = getChessPiece(field);
+        putChessPieceOn(field.row, field.column, null);
+        boolean isDefended = isAttacked(field, color.otherColor());
+        putChessPieceOn(field.row, field.column, current);
+        return isDefended;
+    }
 
     @Override
     public String toString(){

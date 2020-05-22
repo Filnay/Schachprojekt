@@ -16,6 +16,9 @@ public abstract class ChessPiece {
         Color(String name) {
             this.name = name;
         }
+        public Color otherColor(){
+            if(this == WHITE)return BLACK;
+            return WHITE;}
     }
     private final Color color;
     private final String name;

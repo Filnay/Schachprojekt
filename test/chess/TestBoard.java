@@ -284,19 +284,34 @@ class TestBoard {
         assertTrue(check);
     }
 
-    @Test @Disabled
+    @Test
     void testCheckmate(){
         board.putChessPieceOn(2, 3, new Knight(BLACK));
         board.move(new Field(7,4), new Field(5,0));
         board.putChessPieceOn(4,1, new Queen(WHITE));
         board.putChessPieceOn(3, 2, new Bishop(WHITE));
-
-       // boolean notCheckmate = board.isCheckmate(WHITE);
+        System.out.println(board.toString());
+        boolean notCheckmate = board.isCheckmate(WHITE);
         boolean check = board.isCheck(BLACK);
-        boolean Checkmate = board.isCheckmate(BLACK);
+        boolean checkmate = board.isCheckmate(BLACK);
 
-        //assertFalse(notCheckmate);
+        assertFalse(notCheckmate);
         assertTrue(check);
-        assertTrue(Checkmate);
+        assertTrue(checkmate);
+    }
+
+    @Test
+    void testCheckmateTwo(){
+        board.putChessPieceOn(0, 4, null);
+        board.putChessPieceOn(2,2,new King(WHITE));
+        board.putChessPieceOn(3, 2, new Bishop(WHITE));
+        board.putChessPieceOn(5, 2, new Queen(BLACK));
+        board.putChessPieceOn(5, 1, new Rook(BLACK));
+        board.putChessPieceOn(5, 3, new Rook(BLACK));
+        board.putChessPieceOn(2, 0, new Rook(BLACK));
+
+        boolean checkmate = board.isCheckmate(WHITE);
+
+        assertTrue(checkmate);
     }
 }
