@@ -35,6 +35,17 @@ class TestBoard {
     }
 
     @Test
+    void testKingCantAttackDefendedField(){
+        board.putChessPieceOn(0, 4, null);
+        board.putChessPieceOn(2,2,new King(WHITE));
+        board.putChessPieceOn(3, 2, new Rook(BLACK));
+        board.putChessPieceOn(5, 2, new Queen(BLACK));
+
+        List<Field> kingMoves = board.getMoves(2, 2);
+
+        assertFalse(kingMoves.contains(new Field(3,2)));
+    }
+    @Test
     void testGetMovesKnightBottomLeft() {
         List<Field> moves = board.getMoves(0, 1);
 
@@ -189,11 +200,14 @@ class TestBoard {
         board.putChessPieceOn(7, 1, null);
         board.putChessPieceOn(7, 2, null);
         board.putChessPieceOn(7, 3, null);
+
+        board.putChessPieceOn(7, 5, null);
+        board.putChessPieceOn(7, 6, null);
+
         board.putChessPieceOn(0, 1, null);
         board.putChessPieceOn(0, 2, null);
         board.putChessPieceOn(0, 3, null);
-        board.putChessPieceOn(7, 5, null);
-        board.putChessPieceOn(7, 6, null);
+
         board.putChessPieceOn(0, 5, null);
         board.putChessPieceOn(0, 6, null);
 

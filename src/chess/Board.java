@@ -78,7 +78,7 @@ public class Board {
 
     public  List<Field> getMoves(int row, int column){
         if(row < 0  || row > 7 || column < 0 || column > 7){
-            throw new IllegalArgumentException("column or row out of bounce");
+            throw new IllegalArgumentException("column or row out of bounds");
         }
         ChessPiece chessPiece = board[row][column];
         List<Field> moves = getMoves(row, column, true);
@@ -90,15 +90,15 @@ public class Board {
 
     private List<Field> getMoves(int row, int column, boolean checkKingIsAttacked){
         if(row < 0  || row > 7 || column < 0 || column > 7){
-            throw new IllegalArgumentException("column or row out of bounce");
+            throw new IllegalArgumentException("column or row out of bounds");
         }
         ChessPiece chessPiece = board[row][column];
         ArrayList<Field> moves = new ArrayList<>();
         if(chessPiece == null) return moves;
         List<ArrayList<Field>> possibleMoves = chessPiece.getMoves(row,column);
-        for (List<Field> pMoves: possibleMoves) {
-            removeOutOfBounds(pMoves);
-            for (Field move : pMoves) {
+        for (List<Field> direction: possibleMoves) {
+            removeOutOfBounds(direction);
+            for (Field move : direction) {
                 Field from = new Field(row, column);
                 if (board[move.row][move.column] == null) {
                     addMove(checkKingIsAttacked, chessPiece, moves, move, from);
@@ -114,11 +114,15 @@ public class Board {
         return moves;
     }
 
+    private void removeOutOfBounds(List<Field> possibleMoves) {
+            possibleMoves.removeIf(move -> move.row > 7 || move.row < 0 || move.column > 7 || move.column < 0);
+    }
+
     private void addMove(boolean checkKingIsAttacked, ChessPiece chessPiece, ArrayList<Field> moves, Field move, Field from) {
-        List<Field> ownKings = findChessPiece(new King(chessPiece.getColor()));
-        Field ownKing = ownKings.get(0);
         if (checkKingIsAttacked) {
-            if (isChessPieceAttackedAfterMove(ownKing, from, move)) {
+            List<Field> ownKings = findChessPiece(new King(chessPiece.getColor()));
+            Field ownKing = ownKings.get(0);
+            if (isChessPieceNotAttackedAfterMove(ownKing, from, move)) {
                 moves.add(move);
             }
         } else {
@@ -126,18 +130,50 @@ public class Board {
         }
     }
 
-    public boolean isChessPieceAttackedAfterMove(Field attackedField,Field from, Field to){
+    public boolean isChessPieceNotAttackedAfterMove(Field attackedField, Field from, Field to){
         ChessPiece current = board[to.row][to.column];
         move(from, to);
-        boolean isAttacked = false;
-        if(!isAttacked(attackedField)){
-            isAttacked = true;
+        boolean isNotAttacked = false;
+        if(!isAttacked(attackedField, null, false)){
+            isNotAttacked = true;
         }
         move(to, from);
         putChessPieceOn(to.row, to.column, current);
-        return isAttacked;
+        return isNotAttacked;
     }
 
+    public List<Field> whoAttacks(Field attackedField, Color from) {
+        return whoAttacks(attackedField, from, true);
+    }
+
+    public List<Field> whoAttacks(Field attackedField) {
+        return whoAttacks(attackedField, null);
+    }
+
+    private List<Field> whoAttacks(Field attackedField, Color from, boolean checkKingIsAttacked) {
+        List<Field> whoAttacks = new ArrayList<>();
+        for (int row = 0; row < 8; row++) {
+            for (int column = 0; column < 8; column++) {
+                if (getMoves(row, column,checkKingIsAttacked).contains(attackedField)
+                        && (from == null || board[row][column].getColor() != from)) {
+                    whoAttacks.add(new Field(row, column));
+                }
+            }
+        }
+        return whoAttacks;
+    }
+
+    public boolean isAttacked(Field attackedField){
+        return isAttacked(attackedField, null);
+    }
+
+    public boolean isAttacked(Field attackedField, Color from){
+        return isAttacked(attackedField, from, true);
+    }
+    public boolean isAttacked(Field attackedField, Color from, boolean checkKingIsAttacked) {
+        List<Field> attackers = whoAttacks(attackedField, from, checkKingIsAttacked);
+        return (attackers.size() != 0);
+    }
     public List<Field> castling(Color color) {
         List<Field> moves = new ArrayList<>();
         if(color == BLACK) {
@@ -198,35 +234,6 @@ public class Board {
     }
 
 
-    private void removeOutOfBounds(List<Field> possibleMoves) {
-            possibleMoves.removeIf(move -> move.row > 7 || move.row < 0 || move.column > 7 || move.column < 0);
-    }
-
-    private List<Field> whoAttacks(Field attackedField) {
-        return whoAttacks(attackedField, null);
-    }
-
-    private List<Field> whoAttacks(Field attackedField, Color from) {
-        List<Field> whoAttacks = new ArrayList<>();
-        for (int row = 0; row < 8; row++) {
-            for (int column = 0; column < 8; column++) {
-                if (getMoves(row, column,false).contains(attackedField)
-                        && (from == null || board[row][column].getColor() != from)) {
-                    whoAttacks.add(new Field(row, column));
-                }
-            }
-        }
-        return whoAttacks;
-    }
-
-    public boolean isAttacked(Field attackedField){
-        return isAttacked(attackedField, null);
-    }
-
-    public boolean isAttacked(Field attackedField, Color from){
-        List<Field> attackers = whoAttacks(attackedField, from);
-        return(attackers.size() != 0);
-    }
 
     public void move(Field from, Field to){
         ChessPiece currentChessPiece = board[from.row][from.column];
@@ -266,21 +273,8 @@ public class Board {
         List<Field> fieldOfKings = findChessPiece(new King(person));
         Field fieldOfKing = fieldOfKings.get(0);
         List<Field> movesOfKing = getMoves(fieldOfKing.row, fieldOfKing.column);
-        boolean checkmate = false;
 
-        List<Field> attackers = whoAttacks(fieldOfKing);
-        if (attackers.size() > 1){
-            checkmate = true;
-        }
-        Field attacker = attackers.get(0);
-        List<Field> attackerOfAttacker =  whoAttacks(attacker, person.otherColor());
-        if (attackerOfAttacker.contains(fieldOfKing) && isDefended(attacker, person)) {
-            attackerOfAttacker.remove(fieldOfKing);
-            if (attackerOfAttacker.size() == 0) {
-                checkmate = true;
-            }
-        }
-        return (movesOfKing.size() == 0 && isCheck(person) && checkmate);
+        return (movesOfKing.size() == 0 && isCheck(person));
     }
 
     private boolean isDefended(Field field, Color color) {
