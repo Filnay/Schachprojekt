@@ -69,15 +69,30 @@ public class Board {
         putPawnOn(6, 7, BLACK);
     }
 
+    public Board (Board board){
+        for (int row = 0; row < 8; row++) {
+            for (int column = 0; column < 8; column++) {
+                putChessPieceOn(row, column, board.getChessPiece(new Field(row, column)));
+            }
+        }
+        setCastlingBlackLeft(board.getCastlingBlackLeft());
+        setCastlingBlackRight(board.getCastlingBlackRight());
+        setCastlingWhiteLeft(board.getCastlingWhiteLeft());
+        setCastlingWhiteRight(board.getCastlingWhiteRight());
+    }
+
     public void setCastlingBlackLeft(boolean castling){
         castlingBlackLeft = castling;
     }
+
     public void setCastlingBlackRight(boolean castling){
         castlingBlackRight = castling;
     }
+
     public void setCastlingWhiteLeft(boolean castling){
         castlingWhiteLeft = castling;
     }
+
     public void setCastlingWhiteRight(boolean castling){
         castlingWhiteRight = castling;
     }
@@ -85,15 +100,19 @@ public class Board {
     public boolean getCastlingBlackLeft(){
         return castlingBlackLeft;
     }
+
     public boolean getCastlingBlackRight(){
         return castlingBlackRight;
     }
+
     public boolean getCastlingWhiteLeft(){
         return castlingWhiteLeft;
     }
+
     public boolean getCastlingWhiteRight(){
         return castlingWhiteRight;
     }
+
     public ChessPiece getChessPiece(Field field) {
         return board[field.row][field.column];
     }
@@ -165,7 +184,7 @@ public class Board {
     }
 
     public boolean isChessPieceNotAttackedAfterMove(Field attackedField, Field from, Field to){
-        Board current = this.clone();
+        Board current = new Board(this);
         current.move(from, to);
         boolean isNotAttacked = false;
         if(!current.isAttacked(attackedField, null, false)){
@@ -228,11 +247,6 @@ public class Board {
     }
 
     public boolean castlingWhiteLeft() {
-        boolean i = isAttacked(new Field(0, 1), WHITE);
-        boolean k = isAttacked(new Field(0, 2), WHITE);
-        boolean j = isAttacked(new Field(0, 3), WHITE);
-        boolean l = isAttacked(new Field(0, 4), WHITE);
-
         return(castlingWhiteLeft && board[0][1] == null && board[0][2] == null && board[0][3] == null
                 && !isAttacked(new Field(0, 1), WHITE) && !isAttacked(new Field(0, 2), WHITE)
                 && !isAttacked(new Field(0, 3), WHITE) && !isAttacked(new Field(0, 4), WHITE));
@@ -358,20 +372,6 @@ public class Board {
     }
 
 
-    @Override
-    public Board clone(){
-        Board cloned = new Board();
-        for (int row = 0; row < 8; row++) {
-            for (int column = 0; column < 8; column++) {
-                cloned.putChessPieceOn(row, column, this.getChessPiece(new Field(row, column)));
-            }
-        }
-        cloned.setCastlingBlackLeft(castlingBlackLeft);
-        cloned.setCastlingBlackRight(castlingBlackRight);
-        cloned.setCastlingWhiteLeft(castlingWhiteLeft);
-        cloned.setCastlingWhiteRight(castlingWhiteRight);
-        return cloned;
-    }
 
     @Override
     public String toString(){
