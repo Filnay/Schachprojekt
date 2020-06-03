@@ -27,6 +27,10 @@ public class Board {
 
     public Board(){
         setUpBoard();
+        castlingBlackLeft = true;
+        castlingBlackRight = true;
+        castlingWhiteLeft = true;
+        castlingWhiteRight = true;
     }
 
     private void setUpBoard(){
@@ -64,8 +68,37 @@ public class Board {
         putPawnOn(6, 7, BLACK);
     }
 
+    public void setCastlingBlackLeft(boolean castling){
+        castlingBlackLeft = castling;
+    }
+    public void setCastlingBlackRight(boolean castling){
+        castlingBlackRight = castling;
+    }
+    public void setCastlingWhiteLeft(boolean castling){
+        castlingWhiteLeft = castling;
+    }
+    public void setCastlingWhiteRight(boolean castling){
+        castlingWhiteRight = castling;
+    }
+
+    public boolean getCastlingBlackLeft(){
+        return castlingBlackLeft;
+    }
+    public boolean getCastlingBlackRight(){
+        return castlingBlackRight;
+    }
+    public boolean getCastlingWhiteLeft(){
+        return castlingWhiteLeft;
+    }
+    public boolean getCastlingWhiteRight(){
+        return castlingWhiteRight;
+    }
     public ChessPiece getChessPiece(Field field) {
         return board[field.row][field.column];
+    }
+
+    public ChessPiece[][] getBoard() {
+        return board;
     }
 
     public void putPawnOn(int row, int column, Color color) {
@@ -131,14 +164,12 @@ public class Board {
     }
 
     public boolean isChessPieceNotAttackedAfterMove(Field attackedField, Field from, Field to){
-        ChessPiece current = board[to.row][to.column];
-        move(from, to);
+        Board current = this.clone();
+        current.move(from, to);
         boolean isNotAttacked = false;
-        if(!isAttacked(attackedField, null, false)){
+        if(!current.isAttacked(attackedField, null, false)){
             isNotAttacked = true;
         }
-        move(to, from);
-        putChessPieceOn(to.row, to.column, current);
         return isNotAttacked;
     }
 
@@ -202,7 +233,7 @@ public class Board {
     }
 
     public boolean castlingWhiteRight() {
-        return(castlingWhiteRight && board[7][5] == null && board[7][6] == null
+        return(castlingWhiteRight && board[0][5] == null && board[0][6] == null
                 && !isAttacked(new Field(0, 4), WHITE) && !isAttacked(new Field(0, 5), WHITE)
                 && !isAttacked(new Field(0, 6), WHITE));
     }
@@ -283,6 +314,21 @@ public class Board {
         boolean isDefended = isAttacked(field, color.otherColor());
         putChessPieceOn(field.row, field.column, current);
         return isDefended;
+    }
+
+    @Override
+    public Board clone(){
+        Board cloned = new Board();
+        for (int row = 0; row < 8; row++) {
+            for (int column = 0; column < 8; column++) {
+                cloned.putChessPieceOn(row, column, this.getChessPiece(new Field(row, column)));
+            }
+        }
+        cloned.setCastlingBlackLeft(castlingBlackLeft);
+        cloned.setCastlingBlackRight(castlingBlackRight);
+        cloned.setCastlingWhiteLeft(castlingWhiteLeft);
+        cloned.setCastlingWhiteRight(castlingWhiteRight);
+        return cloned;
     }
 
     @Override

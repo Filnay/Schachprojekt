@@ -246,11 +246,11 @@ class TestBoard {
         board.putChessPieceOn(5, 5, new Knight(WHITE));
         board.putChessPieceOn(0, 5, null);
         board.putChessPieceOn(0, 6, null);
-        board.putChessPieceOn(0, 6, new Knight(BLACK));
+        board.putChessPieceOn(2, 6, new Knight(BLACK));
 
         List<Field> castlingWhite = board.castling(WHITE);
         List<Field> castlingBlack = board.castling(BLACK);
-
+        System.out.println(board.toString());
         assertEquals(0, castlingWhite.size());
         assertEquals(0, castlingBlack.size());
     }
