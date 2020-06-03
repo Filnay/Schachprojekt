@@ -5,6 +5,7 @@ import com.sun.source.tree.WhileLoopTree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.BlacklistedExceptions;
 
 import java.util.List;
 
@@ -292,6 +293,7 @@ class TestBoard {
     @Test
     void testIsCheck() {
         board.putChessPieceOn(2, 3, new Knight(BLACK));
+        board.move(new Field(0, 4), new Field(4, 4));
 
         boolean check = board.isCheck(WHITE);
 
@@ -317,11 +319,10 @@ class TestBoard {
 
     @Test
     void testCheckmate(){
-        board.putChessPieceOn(2, 3, new Knight(BLACK));
         board.move(new Field(7,4), new Field(5,0));
         board.putChessPieceOn(4,1, new Queen(WHITE));
         board.putChessPieceOn(3, 2, new Bishop(WHITE));
-        System.out.println(board.toString());
+
         boolean notCheckmate = board.isCheckmate(WHITE);
         boolean check = board.isCheck(BLACK);
         boolean checkmate = board.isCheckmate(BLACK);

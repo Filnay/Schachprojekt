@@ -303,7 +303,8 @@ public class Board {
 
     public boolean isCheck(Color person){
         List<Field> fieldOfKing = findChessPiece(new King(person));
-        return isAttacked(fieldOfKing.get(0));
+        boolean attacked = isAttacked(fieldOfKing.get(0), person, false);
+        return attacked;
     }
 
     public boolean isCheckmate(Color person){
@@ -311,7 +312,7 @@ public class Board {
         Field fieldOfKing = fieldOfKings.get(0);
         List<Field> movesOfKing = getMoves(fieldOfKing.row, fieldOfKing.column);
 
-        return (movesOfKing.size() == 0 && isCheck(person));
+        return (movesOfKing.size() == 0 && isCheck(person) && canMoveBetween(fieldOfKing, WHITE));
     }
 
     public boolean canMoveBetween(Field attackedField, Color by) {
