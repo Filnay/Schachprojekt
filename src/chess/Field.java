@@ -25,4 +25,9 @@ public class Field {
     public int hashCode() {
         return Objects.hash(row, column);
     }
+
+    @Override
+    public String toString(){
+        return "" + row + " " + column;
+    }
 }

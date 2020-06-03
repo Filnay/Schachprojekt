@@ -22,12 +22,12 @@ public class Pawn extends ChessPiece {
         List<ArrayList<Field>> moves = new ArrayList<>();
         if (this.getColor() == WHITE) {
             if(board[row + 1][column] == null) {
-                if (row == 1) {
+                if (row == 1 && board[3][column] == null) {
                     Field[] twoFields = new Field[2];
                     twoFields[0] = new Field(row + 1, column);
                     twoFields[1] = new Field(row + 2, column);
                     addMove(moves, twoFields);
-                } else {
+                } else{
                     addMove(moves, new Field(row + 1, column));
                 }
             }
@@ -43,7 +43,7 @@ public class Pawn extends ChessPiece {
             }
         } else {
             if(board[row - 1][column] == null) {
-                if (row == 6) {
+                if (row == 6 && board[4][column] == null) {
                     Field[] twoFields = new Field[2];
                     twoFields[0] = new Field(row - 1, column);
                     twoFields[1] = new Field(row - 2, column);
