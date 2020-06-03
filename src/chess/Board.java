@@ -182,8 +182,7 @@ public class Board {
         return whoAttacks(attackedField, null);
     }
 
-    private @NotNull
-    List<Field> whoAttacks(Field attackedField, Color from, boolean checkKingIsAttacked) {
+    private List<Field> whoAttacks(Field attackedField, Color from, boolean checkKingIsAttacked) {
         List<Field> whoAttacks = new ArrayList<>();
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
@@ -315,13 +314,48 @@ public class Board {
         return (movesOfKing.size() == 0 && isCheck(person));
     }
 
-    private boolean isDefended(Field field, Color color) {
-        ChessPiece current = getChessPiece(field);
-        putChessPieceOn(field.row, field.column, null);
-        boolean isDefended = isAttacked(field, color.otherColor());
-        putChessPieceOn(field.row, field.column, current);
-        return isDefended;
+    public boolean canMoveBetween(Field attackedField, Color by) {
+        List<Field> attackers = whoAttacks(attackedField, by);
+        if (attackers.size() > 1) return false;
+        if (attackers.size() == 0) return true;
+
+        Field fieldAttack = attackers.get(0);
+        ChessPiece attacker = getChessPiece(fieldAttack);
+        List<ArrayList<Field>> attackerDirections = attacker.getMoves(fieldAttack.row, fieldAttack.column);
+        ArrayList<Field> directionOfAttack = null;
+
+        for (ArrayList<Field> attackerDirection: attackerDirections){
+            if(attackerDirection.contains(attackedField)) {
+                directionOfAttack = attackerDirection;
+                break;
+            }
+        }
+        removeOutOfBounds(directionOfAttack);
+        cutDirectionBeforeField(directionOfAttack, attackedField);
+
+        boolean canMoveBetween = false;
+        for (Field inWayField: directionOfAttack){
+            List<Field> defender = whoAttacks(inWayField, by.otherColor());
+            defender.remove(attackedField);
+            if(defender.size() > 0) {
+                canMoveBetween = true;
+            }
+        }
+        return canMoveBetween;
     }
+
+    public void cutDirectionBeforeField(ArrayList<Field> direction, Field field) {
+        ArrayList<Field> current = new ArrayList<>();
+        for (Field inWayField: direction){
+            if(inWayField.equals(field)){
+                break;
+            } else {
+                current.add(inWayField);
+            }
+        }
+        direction = current;
+    }
+
 
     @Override
     public Board clone(){

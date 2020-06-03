@@ -299,6 +299,23 @@ class TestBoard {
     }
 
     @Test
+    void testCanMoveBetween(){
+        board.putChessPieceOn(3, 5, new Rook(WHITE));
+        board.putChessPieceOn(4, 7, new Rook(WHITE));
+        board.putChessPieceOn(5, 5, new Queen(BLACK));
+
+        boolean whiteTrue = board.canMoveBetween(new Field(3, 5),WHITE);
+        boolean blackFalse = board.canMoveBetween(new Field (5,5), BLACK);
+        boolean blackTrue = board.canMoveBetween(new Field(0,0), BLACK);
+        boolean whiteFalse = board.canMoveBetween(new Field (4,5), BLACK);
+
+        assertTrue(whiteTrue);
+        assertFalse(blackFalse);
+        assertTrue(blackTrue);
+        assertFalse(whiteFalse);
+    }
+
+    @Test
     void testCheckmate(){
         board.putChessPieceOn(2, 3, new Knight(BLACK));
         board.move(new Field(7,4), new Field(5,0));
