@@ -2,6 +2,7 @@ package chess;
 
 import chess.chesspiece.*;
 import chess.chesspiece.ChessPiece.Color;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,7 +182,8 @@ public class Board {
         return whoAttacks(attackedField, null);
     }
 
-    private List<Field> whoAttacks(Field attackedField, Color from, boolean checkKingIsAttacked) {
+    private @NotNull
+    List<Field> whoAttacks(Field attackedField, Color from, boolean checkKingIsAttacked) {
         List<Field> whoAttacks = new ArrayList<>();
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
@@ -227,6 +229,11 @@ public class Board {
     }
 
     public boolean castlingWhiteLeft() {
+        boolean i = isAttacked(new Field(0, 1), WHITE);
+        boolean k = isAttacked(new Field(0, 2), WHITE);
+        boolean j = isAttacked(new Field(0, 3), WHITE);
+        boolean l = isAttacked(new Field(0, 4), WHITE);
+
         return(castlingWhiteLeft && board[0][1] == null && board[0][2] == null && board[0][3] == null
                 && !isAttacked(new Field(0, 1), WHITE) && !isAttacked(new Field(0, 2), WHITE)
                 && !isAttacked(new Field(0, 3), WHITE) && !isAttacked(new Field(0, 4), WHITE));
