@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GUIControls extends JFrame {
     JButton reset = new JButton("Reset");
@@ -34,7 +35,12 @@ public class GUIControls extends JFrame {
 
         reset.setBackground(Color.lightGray);
         reset.setBorder(null);
-        //reset.addActionListener(ActionEvent e);
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GUI();
+            }
+        });
         controlPanel.add(reset);
 
         switchSides.setBackground(Color.lightGray);
