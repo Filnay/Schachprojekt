@@ -2,7 +2,6 @@ package chess;
 
 import chess.chesspiece.*;
 import chess.chesspiece.ChessPiece.Color;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,15 +170,20 @@ public class Board {
             possibleMoves.removeIf(move -> move.row > 7 || move.row < 0 || move.column > 7 || move.column < 0);
     }
 
-    private void addMove(boolean checkKingIsAttacked, ChessPiece chessPiece, ArrayList<Field> moves, Field move, Field from) {
+    private void addMove(boolean checkKingIsAttacked, ChessPiece chessPiece, ArrayList<Field> moves, Field to, Field from) {
         if (checkKingIsAttacked) {
             List<Field> ownKings = findChessPiece(new King(chessPiece.getColor()));
             Field ownKing = ownKings.get(0);
-            if (isChessPieceNotAttackedAfterMove(ownKing, from, move)) {
-                moves.add(move);
+            if (ownKing.equals(from)){
+                if (isChessPieceNotAttackedAfterMove(to, from, to)) {
+                    moves.add(to);
+                }
+            }
+            if (isChessPieceNotAttackedAfterMove(ownKing, from, to)) {
+                moves.add(to);
             }
         } else {
-            moves.add(move);
+            moves.add(to);
         }
     }
 

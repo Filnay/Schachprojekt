@@ -159,6 +159,7 @@ class TestBoard {
     @Test
     void testGetMovesKing(){
         board.putChessPieceOn(2, 0, new King(WHITE));
+        board.putChessPieceOn(0, 4, null);
 
         List<Field> moves = board.getMoves(2, 0);
 
