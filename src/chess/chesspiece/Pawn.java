@@ -42,7 +42,7 @@ public class Pawn extends ChessPiece {
                 }
             }
         } else {
-            if(row - 1 > 8 && board[row - 1][column] == null) {
+            if(row - 1 > 0 && board[row - 1][column] == null) {
                 if (row == 6 && board[4][column] == null) {
                     Field[] twoFields = new Field[2];
                     twoFields[0] = new Field(row - 1, column);
