@@ -42,14 +42,14 @@ public class Board {
         putChessPieceOn(0, 5, new Bishop(WHITE));
         putChessPieceOn(0, 6, new Knight(WHITE));
         putChessPieceOn(0, 7, new Rook(WHITE));
-        putPawnOn(1, 0, WHITE);
-        putPawnOn(1, 1, WHITE);
-        putPawnOn(1, 2, WHITE);
-        putPawnOn(1, 3, WHITE);
-        putPawnOn(1, 4, WHITE);
-        putPawnOn(1, 5, WHITE);
-        putPawnOn(1, 6, WHITE);
-        putPawnOn(1, 7, WHITE);
+        putChessPieceOn(1, 0, new Pawn(WHITE));
+        putChessPieceOn(1, 1, new Pawn(WHITE));
+        putChessPieceOn(1, 2, new Pawn(WHITE));
+        putChessPieceOn(1, 3, new Pawn(WHITE));
+        putChessPieceOn(1, 4, new Pawn(WHITE));
+        putChessPieceOn(1, 5, new Pawn(WHITE));
+        putChessPieceOn(1, 6, new Pawn(WHITE));
+        putChessPieceOn(1, 7, new Pawn(WHITE));
         putChessPieceOn(7, 0, new Rook(BLACK));
         putChessPieceOn(7, 1, new Knight(BLACK));
         putChessPieceOn(7, 2, new Bishop(BLACK));
@@ -58,14 +58,14 @@ public class Board {
         putChessPieceOn(7, 5, new Bishop(BLACK));
         putChessPieceOn(7, 6, new Knight(BLACK));
         putChessPieceOn(7, 7, new Rook(BLACK));
-        putPawnOn(6, 0, BLACK);
-        putPawnOn(6, 1, BLACK);
-        putPawnOn(6, 2, BLACK);
-        putPawnOn(6, 3, BLACK);
-        putPawnOn(6, 4, BLACK);
-        putPawnOn(6, 5, BLACK);
-        putPawnOn(6, 6, BLACK);
-        putPawnOn(6, 7, BLACK);
+        putChessPieceOn(6, 0, new Pawn(BLACK));
+        putChessPieceOn(6, 1, new Pawn(BLACK));
+        putChessPieceOn(6, 2, new Pawn(BLACK));
+        putChessPieceOn(6, 3, new Pawn(BLACK));
+        putChessPieceOn(6, 4, new Pawn(BLACK));
+        putChessPieceOn(6, 5, new Pawn(BLACK));
+        putChessPieceOn(6, 6, new Pawn(BLACK));
+        putChessPieceOn(6, 7, new Pawn(BLACK));
     }
 
     public Board (Board board){
@@ -120,10 +120,6 @@ public class Board {
         return board;
     }
 
-    public void putPawnOn(int row, int column, Color color) {
-        board[row][column] = new Pawn(color, this.board);
-    }
-
     public void putChessPieceOn(int row, int column, ChessPiece chessPiece){
         board[row][column] = chessPiece;
     }
@@ -147,7 +143,12 @@ public class Board {
         ChessPiece chessPiece = board[row][column];
         ArrayList<Field> moves = new ArrayList<>();
         if(chessPiece == null) return moves;
-        List<ArrayList<Field>> possibleMoves = chessPiece.getMoves(row,column);
+        List<ArrayList<Field>> possibleMoves = null;
+        if(chessPiece instanceof Pawn){
+            possibleMoves = ((Pawn) chessPiece).getMoves(row,column,board);
+        } else {
+            possibleMoves = chessPiece.getMoves(row, column);
+        }
         for (List<Field> direction: possibleMoves) {
             removeOutOfBounds(direction);
             for (Field move : direction) {

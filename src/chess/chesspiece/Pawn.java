@@ -1,7 +1,9 @@
 package chess.chesspiece;
 
+import chess.Board;
 import chess.Field;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,15 +12,16 @@ import static chess.chesspiece.ChessPiece.Color.BLACK;
 
 public class Pawn extends ChessPiece {
 
-    private final ChessPiece[][] board;
 
-    public Pawn(Color color, ChessPiece[][] board) {
+    public Pawn(Color color) {
         super(color, "P");
-        this.board = board;
     }
 
     @Override
     public List<ArrayList<Field>> getMoves(int row, int column) {
+        throw new UnsupportedOperationException("This is a Pawn");
+    }
+    public List<ArrayList<Field>> getMoves(int row, int column, ChessPiece[][] board) {
         List<ArrayList<Field>> moves = new ArrayList<>();
         if (this.getColor() == WHITE) {
             if(row + 1 < 8 && board[row + 1][column] == null) {

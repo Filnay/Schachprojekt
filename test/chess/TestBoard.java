@@ -144,7 +144,7 @@ class TestBoard {
     }
     @Test
     void testGetMovesPawn(){
-        board.putPawnOn(2, 1, WHITE);
+        board.putChessPieceOn(2, 1, new Pawn(WHITE));
 
         List<Field> moves = board.getMoves(1,0);
         List<Field> move = board.getMoves(2,1);
@@ -158,7 +158,7 @@ class TestBoard {
 
     @Test
     void testGetMovesPawn2(){
-        board.putPawnOn(6, 1, WHITE);
+        board.putChessPieceOn(6, 1, new Pawn(WHITE));
         System.out.println(board.toString());
 
         List<Field> moves = board.getMoves(6, 1);
@@ -179,9 +179,9 @@ class TestBoard {
 
     @Test
     void testGetMovesKing2(){
-        board.putChessPieceOn(2, 4, new Pawn(BLACK, board.getBoard()));
+        board.putChessPieceOn(2, 4, new Pawn(BLACK));
         board.putChessPieceOn(1, 4, null);
-
+        System.out.println(board.toString());
         List<Field> moves = board.getMoves(0, 4);
 
         assertEquals(1, moves.size());
@@ -203,7 +203,7 @@ class TestBoard {
     @Test
     void testIsAttacked(){
         board.putChessPieceOn( 5,3, new Knight(WHITE));
-        board.putPawnOn(5, 5, WHITE);
+        board.putChessPieceOn(5, 5, new Pawn(WHITE));
 
         boolean correct = board.isAttacked(new Field(7,4));
         boolean correctPawn = board.isAttacked(new Field(6,6));
@@ -319,7 +319,7 @@ class TestBoard {
     @Test
     void testFindChessPiece(){
         List<Field> king = board.findChessPiece(new King(WHITE));
-        List<Field> whitePawn = board.findChessPiece(new Pawn(WHITE, new ChessPiece[8][8]));
+        List<Field> whitePawn = board.findChessPiece(new Pawn(WHITE));
 
         assertEquals(1, king.size());
         assertTrue(king.contains(new Field(0,4)));
