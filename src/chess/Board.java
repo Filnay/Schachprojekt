@@ -295,6 +295,18 @@ public class Board {
         board[from.row][from.column] = null;
         board[to.row][to.column] = currentChessPiece;
         if (currentChessPiece instanceof King){
+            if(castlingWhiteRight && to.equals(new Field(0, 6 ))){
+                move(new Field(0,7), new Field(0,5));
+            }
+            if(castlingWhiteLeft && to.equals(new Field(0, 2 ))){
+                move(new Field(0,0), new Field(0,3));
+            }
+            if(castlingBlackRight && to.equals(new Field(7, 6 ))){
+                move(new Field(7,7), new Field(7,5));
+            }
+            if(castlingBlackLeft && to.equals(new Field(7, 2 ))){
+                move(new Field(7,0), new Field(7,3));
+            }
             if (currentChessPiece.getColor() == WHITE){
                 castlingWhiteRight = false;
                 castlingWhiteLeft = false;

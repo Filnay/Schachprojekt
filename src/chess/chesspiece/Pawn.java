@@ -21,7 +21,7 @@ public class Pawn extends ChessPiece {
     public List<ArrayList<Field>> getMoves(int row, int column) {
         List<ArrayList<Field>> moves = new ArrayList<>();
         if (this.getColor() == WHITE) {
-            if(board[row + 1][column] == null) {
+            if(row + 1 < 8 && board[row + 1][column] == null) {
                 if (row == 1 && board[3][column] == null) {
                     Field[] twoFields = new Field[2];
                     twoFields[0] = new Field(row + 1, column);
@@ -36,13 +36,13 @@ public class Pawn extends ChessPiece {
                     addMove(moves, new Field(row + 1, column + 1));
                 }
             }
-            if (row + 1 < 8 && column - 1 > 0) {
+            if (row + 1 < 8 && column - 1 >= 0) {
                 if (board[row + 1][column - 1] != null && board[row + 1][column - 1].getColor() == BLACK) {
                     addMove(moves, new Field(row + 1, column - 1));
                 }
             }
         } else {
-            if(board[row - 1][column] == null) {
+            if(row - 1 > 8 && board[row - 1][column] == null) {
                 if (row == 6 && board[4][column] == null) {
                     Field[] twoFields = new Field[2];
                     twoFields[0] = new Field(row - 1, column);
@@ -52,12 +52,12 @@ public class Pawn extends ChessPiece {
                     addMove(moves, new Field(row - 1, column));
                 }
             }
-            if (row - 1 > 0 && column + 1 < 8) {
+            if (row - 1 >= 0 && column + 1 < 8) {
                 if (board[row - 1][column + 1] != null && board[row - 1][column + 1].getColor() == WHITE) {
                     addMove(moves, new Field(row - 1, column + 1));
                 }
             }
-            if (row - 1 > 0 && column - 1 > 0) {
+            if (row - 1 >= 0 && column - 1 > 0) {
                 if (board[row - 1][column - 1] != null && board[row - 1][column - 1].getColor() == WHITE) {
                     addMove(moves, new Field(row - 1, column - 1));
                 }
