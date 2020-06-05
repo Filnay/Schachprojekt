@@ -160,6 +160,7 @@ public class Board {
                         addMove(checkKingIsAttacked, chessPiece, moves, move, from);
                     }
                     break;
+
                 }
             }
         }
