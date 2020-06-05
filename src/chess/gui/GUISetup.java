@@ -1,4 +1,4 @@
-package chess.GUI;
+package chess.gui;
 
 public class GUISetup {
 }

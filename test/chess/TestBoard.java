@@ -1,11 +1,8 @@
 package chess;
 
 import chess.chesspiece.*;
-import com.sun.source.tree.WhileLoopTree;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.BlacklistedExceptions;
 
 import java.util.List;
 
@@ -387,5 +384,7 @@ class TestBoard {
     @Test
     void testWhoDefends(){
         List<Field> defenderTrue = board.whoDefends(new Field(0,3));
+
+        assertEquals(1, defenderTrue.size());
     }
 }

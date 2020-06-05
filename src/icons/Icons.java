@@ -2,7 +2,6 @@ package icons;
 
 import javax.swing.*;
 import java.net.URL;
-import chess.GUI.GUIControls;
 
 public class Icons {
     public static ImageIcon getImageIcon(String fileName) {
