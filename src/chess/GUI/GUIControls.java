@@ -11,12 +11,14 @@ import java.awt.event.ActionListener;
 
 public class GUIControls extends JFrame {
     GUI chessGUI = new GUI();
-    int toggleCounter = 0;
+    int legendCounter = 0;
+    public int skinCounter = 0;
 
     JButton reset = new JButton("Reset");
     JButton showLegend = new JButton("Show Legend");
     JButton changeSkin = new JButton("ChangeSkin");
     JButton undo = new JButton("Undo");
+    JButton close = new JButton(("Exit Game"));
 
     public GUIControls() {
         super("Chess Controls!");
@@ -31,23 +33,27 @@ public class GUIControls extends JFrame {
         setupControls();
     }
 
-//    public void GUILegend() {
-//        super("Chess Legend!");
-//        setVisible(true);
-//        setDefaultCloseOperation(EXIT_ON_CLOSE);
-//        setSize(300, 700);
-//        setResizable(false);
-//    }
+    public int getSkinCounter() {
+        return skinCounter;
+    }
 
     public void setupControls() {
         JPanel controlPanel = new JPanel();
         JFrame legends = new GUILegend(chessGUI.getX(), chessGUI.getY());
         controlPanel.setBorder(new LineBorder(Color.WHITE, 30));
-        GridLayout controlPanelLayout = new GridLayout(4, 1, 20, 20);
+        GridLayout controlPanelLayout = new GridLayout(5, 1, 20, 20);
         controlPanel.setLayout(controlPanelLayout);
         controlPanel.setBackground(Color.WHITE);
 
-
+        undo.setBackground(Color.lightGray);
+        undo.setBorder(null);
+        undo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                chessGUI.undoMove();
+            }
+        });
+        controlPanel.add(undo);
 
         reset.setBackground(Color.lightGray);
         reset.setBorder(null);
@@ -66,13 +72,13 @@ public class GUIControls extends JFrame {
         showLegend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (toggleCounter == 0) {
+                if (legendCounter == 0) {
                     legends.setVisible(true);
-                    toggleCounter = 1;
+                    legendCounter = 1;
                 }
-                else if (toggleCounter == 1) {
+                else if (legendCounter == 1) {
                     legends.setVisible(false);
-                    toggleCounter = 0;
+                    legendCounter = 0;
                 }
             }
         });
@@ -80,11 +86,32 @@ public class GUIControls extends JFrame {
 
         changeSkin.setBackground(Color.lightGray);
         changeSkin.setBorder(null);
+
+        changeSkin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (skinCounter == 0) {
+                    skinCounter = 1;
+                }
+                else if (skinCounter == 1) {
+                    skinCounter = 2;
+                }
+                else if (skinCounter == 2) {
+                    skinCounter = 0;
+                }
+            }
+        });
         controlPanel.add(changeSkin);
 
-        undo.setBackground(Color.lightGray);
-        undo.setBorder(null);
-        controlPanel.add(undo);
+        close.setBackground(Color.lightGray);
+        close.setBorder(null);
+        close.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ExitGame();
+            }
+        });
+        controlPanel.add(close);
 
         controlPanel.setVisible(true);
         add(controlPanel);

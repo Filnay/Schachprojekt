@@ -27,6 +27,11 @@ public class GUI extends JFrame {
 
     private ChessPiece.Color playerStatus;
 
+    private int undoCounter  = 0;
+    ChessPiece beatenChessPiece = null;
+
+    private Field[] lastMove = new Field[2];
+
 
     public GUI() {
         super("Chess!");
@@ -177,17 +182,35 @@ public class GUI extends JFrame {
 
 
     public void processMove(Field from, Field to) {
+        lastMove[0] = from;
+        lastMove[1] = to;
+        beatenChessPiece = board.getChessPiece(to);
         board.move(from, to);
         updateBoard();
+        switchPlayer();
+        fieldsOffered = false;
+        undoCounter = 1;
+    }
+
+    public void undoMove() {
+        if (undoCounter == 1) {
+            board.move(lastMove[1], lastMove[0]);
+            board.putChessPieceOn(lastMove[1].row,lastMove[1].column, beatenChessPiece);
+            switchPlayer();
+            updateBoard();
+            undoCounter = 0;
+        }
+    }
+
+    public void switchPlayer() {
         if (playerStatus == ChessPiece.Color.WHITE) {
             playerStatus = ChessPiece.Color.BLACK;
         } else {
             playerStatus = ChessPiece.Color.WHITE;
         }
-        fieldsOffered = false;
     }
 
-    private String getURLFromChessPiece(ChessPiece chesspiece) {
+    public String getURLFromChessPiece(ChessPiece chesspiece) {
         String URL = "";
 
         if (chesspiece instanceof Pawn) {
