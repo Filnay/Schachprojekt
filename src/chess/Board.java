@@ -210,6 +210,7 @@ public class Board {
         List<Field> whoAttacks = new ArrayList<>();
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
+                List<Field> dsa= getMoves(row, column,checkKingIsAttacked);
                 if (getMoves(row, column,checkKingIsAttacked).contains(attackedField)
                         && (from == null || board[row][column].getColor() != from)) {
                     whoAttacks.add(new Field(row, column));
@@ -230,6 +231,12 @@ public class Board {
         List<Field> attackers = whoAttacks(attackedField, from, checkKingIsAttacked);
         return (attackers.size() != 0);
     }
+
+    public List<Field> whoDefends(Field field){
+        Color defendedColor = getChessPiece(field).getColor();
+        return whoAttacks(field, defendedColor.otherColor(), false);
+    }
+
     public List<Field> castling(Color color) {
         List<Field> moves = new ArrayList<>();
         if(color == BLACK) {
@@ -388,10 +395,6 @@ public class Board {
         direction = current;
     }
 
-    public List<Field> whoDefends(Field field){
-        Color defendedColor = getChessPiece(field).getColor();
-        return whoAttacks(field, defendedColor);
-    }
 
 
     @Override
