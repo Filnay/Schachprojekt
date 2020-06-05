@@ -16,7 +16,8 @@ public class GUIControls extends JFrame {
     JButton showLegend = new JButton("Show Legend");
     JButton changeSkin = new JButton("ChangeSkin");
     JButton undo = new JButton("Undo");
-    JButton close = new JButton(("Exit Game"));
+    JButton close = new JButton("Exit Game");
+    JButton showScore = new JButton("Show Score");
 
     public GUIControls() {
         super("Chess Controls!");
@@ -38,7 +39,7 @@ public class GUIControls extends JFrame {
         JFrame exit = new GUIExitGame();
         JFrame changeChessPieceSkin = new GUIChangeSkin();
         controlPanel.setBorder(new LineBorder(Color.WHITE, 30));
-        GridLayout controlPanelLayout = new GridLayout(5, 1, 20, 20);
+        GridLayout controlPanelLayout = new GridLayout(6, 1, 20, 20);
         controlPanel.setLayout(controlPanelLayout);
         controlPanel.setBackground(Color.WHITE);
 
@@ -102,6 +103,16 @@ public class GUIControls extends JFrame {
             }
         });
         controlPanel.add(close);
+
+        showScore.setBackground(Color.lightGray);
+        showScore.setBorder(null);
+        showScore.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        controlPanel.add(showScore);
 
         controlPanel.setVisible(true);
         add(controlPanel);
