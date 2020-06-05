@@ -11,10 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class GUI extends JFrame {
-    private final Board board = new Board();
+    private Board board = new Board();
 
     private final Chessfield[][] fields = new Chessfield[8][8];
 
@@ -41,12 +40,18 @@ public class GUI extends JFrame {
         updateBoard();
     }
 
-    private void setupField() {
+
+    public void setPlayerStatus(ChessPiece.Color playerStatus) {
+        this.playerStatus = playerStatus;
+    }
+
+
+    public void setupField() {
         setupField(Color.WHITE);
     }
 
 
-    private void setupField(Color color) {
+    public void setupField(Color color) {
         Container contents = getContentPane();
         contents.setLayout(new GridLayout(8, 8));
 
@@ -99,6 +104,11 @@ public class GUI extends JFrame {
                 }
             }
         }
+    }
+
+
+    public void setBoard(Board newBoard) {
+        board = newBoard;
     }
 
 
@@ -221,8 +231,4 @@ public class GUI extends JFrame {
         return URL;
     }
 
-
-    public static void main(String[] args) {
-        new GUI();
-    }
 }
