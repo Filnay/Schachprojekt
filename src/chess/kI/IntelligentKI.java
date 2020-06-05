@@ -7,7 +7,7 @@ import chess.chesspiece.*;
 import java.util.List;
 
 public class IntelligentKI {
-    public int evaluate(Board board){
+    public static int evaluate(Board board){
         int points = 0;
         if(board.findChessPiece(new Queen(ChessPiece.Color.WHITE)).size() > 0 && board.findChessPiece(new Queen(ChessPiece.Color.BLACK)).size() > 0){
             points = evaluateMidgame(board);
@@ -17,7 +17,7 @@ public class IntelligentKI {
         return points;
     }
 
-    private int evaluateEndgame(Board board) {
+    public static int evaluateEndgame(Board board) {
         int points = 0;
         boolean knightCombineWhite = true;
         boolean bishopCombineWhite = true;
@@ -94,7 +94,7 @@ public class IntelligentKI {
         return points;
     }
 
-    private int evaluateMidgame(Board board) {
+    public static int evaluateMidgame(Board board) {
         int points = 0;
         boolean knightCombineWhite = true;
         boolean bishopCombineWhite = true;

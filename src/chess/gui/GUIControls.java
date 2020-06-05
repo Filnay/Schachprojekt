@@ -2,6 +2,7 @@ package chess.gui;
 
 import chess.Board;
 import chess.chesspiece.ChessPiece;
+import chess.kI.IntelligentKI;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -70,7 +71,8 @@ public class GUIControls extends JFrame {
         showScore.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                int evaluate = IntelligentKI.evaluate(chessGUI.getBoard());
+                System.out.println(evaluate);
             }
         });
         controlPanel.add(showScore);

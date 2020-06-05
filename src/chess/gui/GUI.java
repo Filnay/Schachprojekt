@@ -40,7 +40,6 @@ public class GUI extends JFrame {
         }
     }
 
-
     public GUI() {
         super("Chess");
         setVisible(true);
@@ -52,6 +51,9 @@ public class GUI extends JFrame {
         updateBoard();
     }
 
+    public Board getBoard(){
+        return board;
+    }
 
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
