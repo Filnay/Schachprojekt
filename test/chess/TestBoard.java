@@ -383,4 +383,9 @@ class TestBoard {
 
         assertTrue(checkmate);
     }
+
+    @Test
+    void testWhoDefends(){
+        List<Field> defenderTrue = board.whoDefends(new Field(0,3));
+    }
 }

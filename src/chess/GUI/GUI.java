@@ -31,6 +31,13 @@ public class GUI extends JFrame {
     ChessPiece beatenChessPiece = null;
 
     private Field[] lastMove = new Field[2];
+    enum Ordner{
+        ORDNER1("Schachfiguren"),ORDNER2("Schachfiguren 2"),ORDNER3("Schachfiguren 3");
+        public final String name;
+        Ordner(String name) {
+            this.name = name;
+        }
+    }
 
 
     public GUI() {
@@ -95,15 +102,17 @@ public class GUI extends JFrame {
             }
         }
     }
+    public void updateBoard(){
+        updateBoard(Ordner.ORDNER1);
+    }
 
-
-    public void updateBoard() {
+    public void updateBoard(Ordner ordner) {
         for (int row = 7; row >= 0; row--) {
             for (int column = 0; column < 8; column++) {
                 ChessPiece current = board.getChessPiece(new Field(row, column));
                 if (current != null) {
                     String url = getURLFromChessPiece(current);
-                    fields[row][column].setIconTo(url);
+                    fields[row][column].setIconTo(ordner.name + "/" + url);
                 } else {
                     fields[row][column].setIcon(null);
                 }

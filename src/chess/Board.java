@@ -160,7 +160,6 @@ public class Board {
                         addMove(checkKingIsAttacked, chessPiece, moves, move, from);
                     }
                     break;
-
                 }
             }
         }
@@ -389,6 +388,10 @@ public class Board {
         direction = current;
     }
 
+    public List<Field> whoDefends(Field field){
+        Color defendedColor = getChessPiece(field).getColor();
+        return whoAttacks(field, defendedColor);
+    }
 
 
     @Override
