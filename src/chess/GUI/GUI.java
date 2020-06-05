@@ -11,10 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class GUI extends JFrame {
-    private final Board board = new Board();
+    private Board board = new Board();
 
     private final Chessfield[][] fields = new Chessfield[8][8];
 
@@ -27,6 +26,11 @@ public class GUI extends JFrame {
     private boolean fieldsOffered = false;
 
     private ChessPiece.Color playerStatus;
+
+    private int undoCounter  = 0;
+    ChessPiece beatenChessPiece = null;
+
+    private Field[] lastMove = new Field[2];
 
 
     public GUI() {
@@ -41,12 +45,18 @@ public class GUI extends JFrame {
         updateBoard();
     }
 
-    private void setupField() {
+
+    public void setPlayerStatus(ChessPiece.Color playerStatus) {
+        this.playerStatus = playerStatus;
+    }
+
+
+    public void setupField() {
         setupField(Color.WHITE);
     }
 
 
-    private void setupField(Color color) {
+    public void setupField(Color color) {
         Container contents = getContentPane();
         contents.setLayout(new GridLayout(8, 8));
 
@@ -99,6 +109,11 @@ public class GUI extends JFrame {
                 }
             }
         }
+    }
+
+
+    public void setBoard(Board newBoard) {
+        board = newBoard;
     }
 
 
@@ -167,17 +182,35 @@ public class GUI extends JFrame {
 
 
     public void processMove(Field from, Field to) {
+        lastMove[0] = from;
+        lastMove[1] = to;
+        beatenChessPiece = board.getChessPiece(to);
         board.move(from, to);
         updateBoard();
+        switchPlayer();
+        fieldsOffered = false;
+        undoCounter = 1;
+    }
+
+    public void undoMove() {
+        if (undoCounter == 1) {
+            board.move(lastMove[1], lastMove[0]);
+            board.putChessPieceOn(lastMove[1].row,lastMove[1].column, beatenChessPiece);
+            switchPlayer();
+            updateBoard();
+            undoCounter = 0;
+        }
+    }
+
+    public void switchPlayer() {
         if (playerStatus == ChessPiece.Color.WHITE) {
             playerStatus = ChessPiece.Color.BLACK;
         } else {
             playerStatus = ChessPiece.Color.WHITE;
         }
-        fieldsOffered = false;
     }
 
-    private String getURLFromChessPiece(ChessPiece chesspiece) {
+    public String getURLFromChessPiece(ChessPiece chesspiece) {
         String URL = "";
 
         if (chesspiece instanceof Pawn) {
@@ -221,8 +254,4 @@ public class GUI extends JFrame {
         return URL;
     }
 
-
-    public static void main(String[] args) {
-        new GUI();
-    }
 }
