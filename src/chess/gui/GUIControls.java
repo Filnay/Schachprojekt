@@ -121,6 +121,7 @@ public class GUIControls extends JFrame {
 
         controlPanel.setVisible(true);
         add(controlPanel);
+        setVisible(true);
     }
 
     public static void main(String[] args) {
