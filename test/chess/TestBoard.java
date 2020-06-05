@@ -1,11 +1,8 @@
 package chess;
 
 import chess.chesspiece.*;
-import com.sun.source.tree.WhileLoopTree;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.BlacklistedExceptions;
 
 import java.util.List;
 

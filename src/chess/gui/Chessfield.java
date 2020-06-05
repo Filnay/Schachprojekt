@@ -1,4 +1,4 @@
-package chess.GUI;
+package chess.gui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,15 +12,15 @@ public class Chessfield extends JButton {
         super(img);
     }
 
-    public void setIconTo(String fileName) {
+    public void setButtonIconTo(String fileName) {
         ImageIcon icon = getImageIcon(fileName);
-        Image scaledImage = getScaledImage(icon.getImage(), this.getWidth(), this.getHeight());
+        Image scaledImage = getScaledButtonImage(icon.getImage(), this.getWidth(), this.getHeight());
         ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
         super.setIcon(scaledImageIcon);
     }
 
 
-    private Image getScaledImage(Image srcImg, int w, int h){
+    private Image getScaledButtonImage(Image srcImg, int w, int h){
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = resizedImg.createGraphics();
 

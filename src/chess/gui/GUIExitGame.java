@@ -1,16 +1,16 @@
-package chess.GUI;
+package chess.gui;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ExitGame extends JFrame {
-    public ExitGame() {
+public class GUIExitGame extends JFrame {
+    public GUIExitGame() {
         super("Are you sure?");
         setLocationRelativeTo(null);
         setSize(300, 200);
-        setVisible(true);
+        setVisible(false);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
@@ -50,13 +50,10 @@ public class ExitGame extends JFrame {
         no.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                setVisible(false);
             }
         });
         panel.add(no, constraints);
-        setVisible(true);
-
-        panel.setVisible(true);
         add(panel);
 
     }

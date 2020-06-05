@@ -1,4 +1,4 @@
-package chess.GUI;
+package chess.gui;
 
 import chess.Board;
 import chess.Field;
@@ -17,8 +17,8 @@ public class GUI extends JFrame {
 
     private final Chessfield[][] fields = new Chessfield[8][8];
 
-    private final LineBorder selected = new LineBorder(Color.RED, 2);
-    private final LineBorder offered = new LineBorder(Color.GREEN, 2);
+    private final LineBorder selected = new LineBorder(Color.RED, 5);
+    private final LineBorder offered = new LineBorder(Color.GREEN, 5);
     private final LineBorder unselected = new LineBorder(null);
 
     private List<Field> currentPossibleMoves;
@@ -30,11 +30,12 @@ public class GUI extends JFrame {
     private int undoCounter  = 0;
     ChessPiece beatenChessPiece = null;
 
-    private Field[] lastMove = new Field[2];
-    enum Ordner{
-        ORDNER1("Schachfiguren"),ORDNER2("Schachfiguren 2"),ORDNER3("Schachfiguren 3");
+    private final Field[] lastMove = new Field[2];
+
+    enum Folder{
+        FOLDER1("Schachfiguren"),FOLDER2("Schachfiguren 2"),FOLDER3("Schachfiguren 3");
         public final String name;
-        Ordner(String name) {
+        Folder(String name) {
             this.name = name;
         }
     }
@@ -43,7 +44,6 @@ public class GUI extends JFrame {
     public GUI() {
         super("Chess!");
         setVisible(true);
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(700, 700);
         setLocationRelativeTo(null);
@@ -102,17 +102,20 @@ public class GUI extends JFrame {
             }
         }
     }
-    public void updateBoard(){
-        updateBoard(Ordner.ORDNER1);
+
+
+    public void updateBoard() {
+        updateBoard(Folder.FOLDER1);
     }
 
-    public void updateBoard(Ordner ordner) {
+
+    public void updateBoard(Folder folder) {
         for (int row = 7; row >= 0; row--) {
             for (int column = 0; column < 8; column++) {
                 ChessPiece current = board.getChessPiece(new Field(row, column));
                 if (current != null) {
                     String url = getURLFromChessPiece(current);
-                    fields[row][column].setIconTo(ordner.name + "/" + url);
+                    fields[row][column].setButtonIconTo(folder.name + "/" + url);
                 } else {
                     fields[row][column].setIcon(null);
                 }
