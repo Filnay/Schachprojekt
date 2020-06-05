@@ -18,7 +18,7 @@ public class GUIControls extends JFrame {
     JButton changeSkin = new JButton("ChangeSkin");
     JButton undo = new JButton("Undo");
     JButton close = new JButton("Exit Game");
-    JButton showScore = new JButton("Show Score");
+    JLabel showScore = new JLabel();
 
     public GUIControls() {
         super("Chess Controls");
@@ -44,6 +44,14 @@ public class GUIControls extends JFrame {
         controlPanel.setLayout(controlPanelLayout);
         controlPanel.setBackground(Color.WHITE);
 
+        showScore.setBackground(Color.lightGray);
+        showScore.setBorder(null);
+        showScore.setHorizontalAlignment(SwingConstants.CENTER);
+        int evaluate = IntelligentKI.evaluate(chessGUI.getBoard());
+        showScore.setText(""+ evaluate +"");
+        controlPanel.add(showScore);
+
+
         undo.setBackground(Color.lightGray);
         undo.setBorder(null);
         undo.addActionListener(new ActionListener() {
@@ -65,17 +73,6 @@ public class GUIControls extends JFrame {
             }
         });
         controlPanel.add(reset);
-
-        showScore.setBackground(Color.lightGray);
-        showScore.setBorder(null);
-        showScore.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int evaluate = IntelligentKI.evaluate(chessGUI.getBoard());
-                System.out.println(evaluate);
-            }
-        });
-        controlPanel.add(showScore);
 
         showLegend.setBackground(Color.lightGray);
         showLegend.setBorder(null);
