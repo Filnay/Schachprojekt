@@ -42,7 +42,7 @@ public class GUI extends JFrame {
 
 
     public GUI() {
-        super("Chess!");
+        super("Chess");
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(700, 700);

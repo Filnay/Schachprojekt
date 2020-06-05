@@ -9,8 +9,8 @@ public class GUIChangeSkin extends JFrame {
     private final Chessfield[][] fields = new Chessfield[2][2];
     
     public GUIChangeSkin() {
-        super("Chess Skins!");
-        setVisible(true);
+        super("Chess Skins");
+        setVisible(false);
         setSize(700, 290);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -22,7 +22,7 @@ public class GUIChangeSkin extends JFrame {
 //        Chessfield skin1 = new Chessfield();
 
 
-        panel.setVisible(true);
+        panel.setVisible(false);
         add(panel);
     }
 

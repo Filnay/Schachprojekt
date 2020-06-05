@@ -8,7 +8,7 @@ import static icons.Icons.getImageIcon;
 public class GUILegend extends JFrame {
 
     public GUILegend(int x, int y, int height) {
-        super("Chess Legend!");
+        super("Chess Legend");
         setBounds(x - 300, y, 300, height);
         setResizable(false);
         setVisible(false);
@@ -26,7 +26,6 @@ public class GUILegend extends JFrame {
         pawn.setBackground(Color.WHITE);
         pawn.setBorder(null);
         legend.add(pawn);
-        legend.setVisible(true);
 
         JLabel pawnText = new JLabel("Pawn");
         legend.add(pawnText);
@@ -36,7 +35,6 @@ public class GUILegend extends JFrame {
         rook.setButtonIconTo("Rook_Black.png");
         rook.setBackground(Color.WHITE);
         rook.setBorder(null);
-        legend.setVisible(true);
 
         JLabel rookText = new JLabel("Rook");
         legend.add(rook);
@@ -48,7 +46,6 @@ public class GUILegend extends JFrame {
         knight.setBackground(Color.WHITE);
         knight.setBorder(null);
         legend.add(knight);
-        legend.setVisible(true);
 
         JLabel knightText = new JLabel("Knight");
         legend.add(knightText);
@@ -59,7 +56,6 @@ public class GUILegend extends JFrame {
         bishop.setBackground(Color.WHITE);
         bishop.setBorder(null);
         legend.add(bishop);
-        legend.setVisible(true);
 
         JLabel bishopText = new JLabel("Bishop");
         legend.add(bishopText);
@@ -70,7 +66,6 @@ public class GUILegend extends JFrame {
         queen.setBackground(Color.WHITE);
         queen.setBorder(null);
         legend.add(queen);
-        legend.setVisible(true);
 
         JLabel queenText = new JLabel("Queen");
         legend.add(queenText);
@@ -86,15 +81,8 @@ public class GUILegend extends JFrame {
         JLabel kingText = new JLabel("King");
         legend.add(kingText);
 
-
-
-
-
-
-
-        legend.setVisible(true);
         add(legend);
-        setVisible(true);
+        setVisible(false);
     }
 
     public static void main(String[] args) {

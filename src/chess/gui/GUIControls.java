@@ -20,7 +20,7 @@ public class GUIControls extends JFrame {
     JButton showScore = new JButton("Show Score");
 
     public GUIControls() {
-        super("Chess Controls!");
+        super("Chess Controls");
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         int guiX = chessGUI.getX();
@@ -65,15 +65,25 @@ public class GUIControls extends JFrame {
         });
         controlPanel.add(reset);
 
+        showScore.setBackground(Color.lightGray);
+        showScore.setBorder(null);
+        showScore.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        controlPanel.add(showScore);
+
         showLegend.setBackground(Color.lightGray);
         showLegend.setBorder(null);
         showLegend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (legends.isVisible()) {
-                    legends.setVisible(false);
-                } else if (!legends.isVisible()) {
+                if (!legends.isVisible()) {
                     legends.setVisible(true);
+                } else if (legends.isVisible()) {
+                    legends.setVisible(false);
                 }
             }
         });
@@ -85,7 +95,11 @@ public class GUIControls extends JFrame {
         changeSkin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if (changeChessPieceSkin.isVisible()) {
+                    changeChessPieceSkin.setVisible(false);
+                } else if (!changeChessPieceSkin.isVisible()) {
+                    changeChessPieceSkin.setVisible(true);
+                }
             }
         });
         controlPanel.add(changeSkin);
@@ -104,15 +118,6 @@ public class GUIControls extends JFrame {
         });
         controlPanel.add(close);
 
-        showScore.setBackground(Color.lightGray);
-        showScore.setBorder(null);
-        showScore.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        controlPanel.add(showScore);
 
         controlPanel.setVisible(true);
         add(controlPanel);
