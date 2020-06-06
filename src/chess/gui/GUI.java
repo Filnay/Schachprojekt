@@ -61,6 +61,10 @@ public class GUI extends JFrame {
         return board;
     }
 
+    public void setProgressBar(){
+        this.progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
+    }
+
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
     }
