@@ -8,19 +8,17 @@ import java.awt.*;
 public class ProgressBar extends JFrame {
 
     JLabel score = new JLabel("0");
-    GUI chessGui;
 
-    public ProgressBar(int x, int y, int width, int height, GUI gui) {
+    public ProgressBar(int x, int y, int width, int height, Board board) {
         super("Progress Bar");
-        chessGui = gui;
         setBounds(x, y - 100, width, 100);
         setResizable(true);
         setVisible(true);
-        updateScore();
+        updateScore(board);
     }
 
-    public void updateScore() {
-        int evaluate = IntelligentKI.evaluate(chessGui.getBoard());
+    public void updateScore(Board board) {
+        int evaluate = IntelligentKI.evaluate(board);
         score.setText("" + evaluate + "");
         score.setVisible(true);
         score.setHorizontalAlignment(SwingConstants.CENTER);
@@ -28,6 +26,6 @@ public class ProgressBar extends JFrame {
     }
 
     public static void main(String[] args) {
-        new ProgressBar(100, 200, 700, 400, new GUI());
+        new ProgressBar(100, 200, 700, 400, new Board());
     }
 }

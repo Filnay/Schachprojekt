@@ -45,7 +45,7 @@ public class GUIControls extends JFrame {
         JFrame legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight());
         JFrame exit = new GUIExitGame();
         JFrame changeChessPieceSkin = new GUIChangeSkin();
-        JFrame score = new ProgressBar(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI.getWidth(), chessGUI);
+       // JFrame score = new ProgressBar(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI.getWidth(), );
         controlPanel.setBorder(new LineBorder(Color.WHITE, 30));
         GridLayout controlPanelLayout = new GridLayout(6, 1, 20, 20);
         controlPanel.setLayout(controlPanelLayout);
@@ -95,7 +95,7 @@ public class GUIControls extends JFrame {
         });
         controlPanel.add(showLegend);
 
-        toggleScore.setBackground(Color.lightGray);
+        /*toggleScore.setBackground(Color.lightGray);
         toggleScore.setBorder(null);
         toggleScore.addActionListener(new ActionListener() {
             @Override
@@ -107,7 +107,7 @@ public class GUIControls extends JFrame {
                 }
             }
         });
-        controlPanel.add(toggleScore);
+        controlPanel.add(toggleScore);*/
 
 
 

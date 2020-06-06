@@ -3,6 +3,7 @@ package chess.gui;
 import chess.Board;
 import chess.Field;
 import chess.chesspiece.*;
+import chess.gui.ProgressBar;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -31,6 +32,8 @@ public class GUI extends JFrame {
     private int skinCounter = 0;
     ChessPiece beatenChessPiece = null;
 
+    private ProgressBar progressBar;
+
 
     private final Field[] lastMove = new Field[2];
 
@@ -49,6 +52,7 @@ public class GUI extends JFrame {
         setSize(700, 700);
         setLocationRelativeTo(null);
         setResizable(false);
+        progressBar = new ProgressBar(getX(),getY(), 700, 700, board);
         setupField();
         updateBoard();
     }
@@ -113,7 +117,7 @@ public class GUI extends JFrame {
 
 
     public void updateBoard() {
-        updateBoard(Folder.FOLDER3);
+        updateBoard(Folder.FOLDER1);
     }
 
 
@@ -129,6 +133,7 @@ public class GUI extends JFrame {
                 }
             }
         }
+        progressBar.updateScore(board);
     }
 
 
