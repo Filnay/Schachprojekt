@@ -61,6 +61,7 @@ public class GUI extends JFrame {
         return board;
     }
 
+
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
     }
@@ -115,6 +116,20 @@ public class GUI extends JFrame {
         }
     }
 
+    public void checkForTransfiguration() {
+        for (int column = 0; column < 8; column++) {
+            ChessPiece current = board.getChessPiece(new Field(0, column));
+            if (current.getClass().getName().equals("Pawn")) {
+                new TransfigurePawn(current.getColor().toString());
+            }
+        }
+        for (int column = 0; column < 8; column++) {
+            ChessPiece current = board.getChessPiece(new Field(7, column));
+            if (current.getClass().getName().equals("Pawn")) {
+                new TransfigurePawn(current.getColor().toString());
+            }
+        }
+    }
 
     public void updateBoard() {
         updateBoard(Folder.FOLDER1);
@@ -132,6 +147,7 @@ public class GUI extends JFrame {
                     fields[row][column].setIcon(null);
                 }
             }
+            checkForTransfiguration();
         }
         progressBar.updateScore(board);
     }
