@@ -122,7 +122,10 @@ public class GUI extends JFrame {
             }
         }
         clearAllBorders();
-        playerStatus = ChessPiece.Color.WHITE;
+        playerStatus = color;
+        if (playerStatus.equals(ChessPiece.Color.BLACK)) {
+            processMove(new Field(0, 0), new Field(0, 0));
+        }
     }
 
     private void setupF(int row, Container contents, ActionListener buttonHandler) {
@@ -269,13 +272,13 @@ public class GUI extends JFrame {
         undoCounter = 1;
         boolean whiteCheckmate = board.isCheckmate(ChessPiece.Color.WHITE);
         if (whiteCheckmate){
-            System.out.println("Black wins");
+            new GameEnd("Black Wins!");
         }
         if (board.isCheckmate(ChessPiece.Color.BLACK)){
-            System.out.println("White wins");
+            new GameEnd("White Wins!");
         }
         if (board.isStalemate(ChessPiece.Color.WHITE) || board.isStalemate(ChessPiece.Color.BLACK)){
-            System.out.println("Stalemate");
+            new GameEnd("Stalemate!");
         }
     }
 

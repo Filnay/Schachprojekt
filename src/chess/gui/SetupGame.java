@@ -108,7 +108,7 @@ public class SetupGame extends JFrame {
 //                }
 
                 gameMode = kI.isSelected();
-                new GUIControls();
+                new GUIControls(gameMode);
             }
         });
 

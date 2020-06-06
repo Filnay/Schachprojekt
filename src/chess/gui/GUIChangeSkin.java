@@ -9,16 +9,16 @@ import java.awt.event.ActionListener;
 
 public class GUIChangeSkin extends JFrame {
 
-    public GUIChangeSkin(GUI gui) {
+    public GUIChangeSkin(GUI gui, GUILegend guiLegend) {
         super("Chess Skins");
         setVisible(false);
         setSize(500, 200);
         setLocationRelativeTo(null);
         setResizable(false);
-        showSkins(gui);
+        showSkins(gui, guiLegend);
     }
 
-    public void showSkins(GUI gui) {
+    public void showSkins(GUI gui, GUILegend guiLegend) {
         JPanel skinPanelFrame = new JPanel();
 
         skinPanelFrame.setLayout(new GridLayout(0, 3, 30, 20));
@@ -39,6 +39,7 @@ public class GUIChangeSkin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 gui.setSkin(GUI.Folder.FOLDER1);
                 gui.updateBoard();
+                guiLegend.updateLegend(gui);
             }
         });
 
@@ -59,6 +60,7 @@ public class GUIChangeSkin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 gui.setSkin(GUI.Folder.FOLDER2);
                 gui.updateBoard();
+                guiLegend.updateLegend(gui);
             }
         });
         skinPanel2.add(skin2);
@@ -78,6 +80,7 @@ public class GUIChangeSkin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 gui.setSkin(GUI.Folder.FOLDER3);
                 gui.updateBoard();
+                guiLegend.updateLegend(gui);
             }
         });
 
