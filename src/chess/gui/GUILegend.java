@@ -82,10 +82,9 @@ public class GUILegend extends JFrame {
         legend.add(kingText);
 
         add(legend);
-        setVisible(false);
     }
 
     public static void main(String[] args) {
-        new GUILegend(300, 300, 700);
+        new GUILegend(300, 300, 700).setVisible(true);
     }
 }

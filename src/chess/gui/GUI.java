@@ -28,7 +28,9 @@ public class GUI extends JFrame {
     private ChessPiece.Color playerStatus;
 
     private int undoCounter  = 0;
+    private int skinCounter = 0;
     ChessPiece beatenChessPiece = null;
+
 
     private final Field[] lastMove = new Field[2];
 
@@ -57,6 +59,10 @@ public class GUI extends JFrame {
 
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
+    }
+
+    public void setSkinCounter(int counter) {
+        skinCounter = counter;
     }
 
 
@@ -107,11 +113,11 @@ public class GUI extends JFrame {
 
 
     public void updateBoard() {
-        updateBoard(Folder.FOLDER1);
+        updateBoard(Folder.FOLDER3);
     }
 
 
-    public void updateBoard(Folder folder) {
+    private void updateBoard(Folder folder) {
         for (int row = 7; row >= 0; row--) {
             for (int column = 0; column < 8; column++) {
                 ChessPiece current = board.getChessPiece(new Field(row, column));

@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUIControls extends JFrame {
+
+
     GUI chessGUI = new GUI();
 
     JButton reset = new JButton("Reset");
@@ -18,7 +20,11 @@ public class GUIControls extends JFrame {
     JButton changeSkin = new JButton("ChangeSkin");
     JButton undo = new JButton("Undo");
     JButton close = new JButton("Exit Game");
-    JButton showScore = new JButton("Show Score");
+    JButton toggleScore = new JButton("Toggle Score");
+
+    public GUI getChessGUI() {
+        return chessGUI;
+    }
 
     public GUIControls() {
         super("Chess Controls");
@@ -39,10 +45,19 @@ public class GUIControls extends JFrame {
         JFrame legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight());
         JFrame exit = new GUIExitGame();
         JFrame changeChessPieceSkin = new GUIChangeSkin();
+        JFrame score = new ProgressBar(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI.getWidth(), chessGUI);
         controlPanel.setBorder(new LineBorder(Color.WHITE, 30));
         GridLayout controlPanelLayout = new GridLayout(6, 1, 20, 20);
         controlPanel.setLayout(controlPanelLayout);
         controlPanel.setBackground(Color.WHITE);
+
+//        showScore.setBackground(Color.lightGray);
+//        showScore.setBorder(null);
+//        showScore.setHorizontalAlignment(SwingConstants.CENTER);
+//        int evaluate = IntelligentKI.evaluate(chessGUI.getBoard());
+//        showScore.setText(""+ evaluate +"");
+//        controlPanel.add(showScore);
+
 
         undo.setBackground(Color.lightGray);
         undo.setBorder(null);
@@ -66,17 +81,6 @@ public class GUIControls extends JFrame {
         });
         controlPanel.add(reset);
 
-        showScore.setBackground(Color.lightGray);
-        showScore.setBorder(null);
-        showScore.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int evaluate = IntelligentKI.evaluate(chessGUI.getBoard());
-                System.out.println(evaluate);
-            }
-        });
-        controlPanel.add(showScore);
-
         showLegend.setBackground(Color.lightGray);
         showLegend.setBorder(null);
         showLegend.addActionListener(new ActionListener() {
@@ -90,6 +94,22 @@ public class GUIControls extends JFrame {
             }
         });
         controlPanel.add(showLegend);
+
+        toggleScore.setBackground(Color.lightGray);
+        toggleScore.setBorder(null);
+        toggleScore.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!score.isVisible()) {
+                    score.setVisible(true);
+                } else if (score.isVisible()) {
+                    score.setVisible(false);
+                }
+            }
+        });
+        controlPanel.add(toggleScore);
+
+
 
         changeSkin.setBackground(Color.lightGray);
         changeSkin.setBorder(null);
