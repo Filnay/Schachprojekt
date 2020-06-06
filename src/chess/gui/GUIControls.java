@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUIControls extends JFrame {
+
+
     GUI chessGUI = new GUI();
 
     JButton reset = new JButton("Reset");
@@ -18,7 +20,11 @@ public class GUIControls extends JFrame {
     JButton changeSkin = new JButton("ChangeSkin");
     JButton undo = new JButton("Undo");
     JButton close = new JButton("Exit Game");
-    JLabel showScore = new JLabel();
+    JButton toggleScore = new JButton("Toggle Score");
+
+    public GUI getChessGUI() {
+        return chessGUI;
+    }
 
     public GUIControls() {
         super("Chess Controls");
@@ -39,9 +45,9 @@ public class GUIControls extends JFrame {
         JFrame legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight());
         JFrame exit = new GUIExitGame();
         JFrame changeChessPieceSkin = new GUIChangeSkin();
-        JFrame progressBar = new ProgressBar(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI.getWidth());
+        JFrame score = new ProgressBar(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI.getWidth(), chessGUI);
         controlPanel.setBorder(new LineBorder(Color.WHITE, 30));
-        GridLayout controlPanelLayout = new GridLayout(5, 1, 20, 20);
+        GridLayout controlPanelLayout = new GridLayout(6, 1, 20, 20);
         controlPanel.setLayout(controlPanelLayout);
         controlPanel.setBackground(Color.WHITE);
 
@@ -88,6 +94,22 @@ public class GUIControls extends JFrame {
             }
         });
         controlPanel.add(showLegend);
+
+        toggleScore.setBackground(Color.lightGray);
+        toggleScore.setBorder(null);
+        toggleScore.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!score.isVisible()) {
+                    score.setVisible(true);
+                } else if (score.isVisible()) {
+                    score.setVisible(false);
+                }
+            }
+        });
+        controlPanel.add(toggleScore);
+
+
 
         changeSkin.setBackground(Color.lightGray);
         changeSkin.setBorder(null);

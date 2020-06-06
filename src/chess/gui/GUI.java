@@ -113,11 +113,11 @@ public class GUI extends JFrame {
 
 
     public void updateBoard() {
-        updateBoard(Folder.FOLDER1);
+        updateBoard(Folder.FOLDER3);
     }
 
 
-    public void updateBoard(Folder folder) {
+    private void updateBoard(Folder folder) {
         for (int row = 7; row >= 0; row--) {
             for (int column = 0; column < 8; column++) {
                 ChessPiece current = board.getChessPiece(new Field(row, column));

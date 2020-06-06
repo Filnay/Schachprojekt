@@ -11,7 +11,7 @@ public class GUIChangeSkin extends JFrame {
 
     public GUIChangeSkin() {
         super("Chess Skins");
-        setVisible(true);
+        setVisible(false);
         setSize(500, 200);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -83,7 +83,6 @@ public class GUIChangeSkin extends JFrame {
         skinPanelFrame.add(skinPanel3);
 
         add(skinPanelFrame);
-        setVisible(true);
 
 
 
