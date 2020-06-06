@@ -137,6 +137,10 @@ public class Board {
     }
 
     private List<Field> getMoves(int row, int column, boolean checkKingIsAttacked){
+        return getMoves(row, column, checkKingIsAttacked, false);
+    }
+
+    private List<Field> getMoves(int row, int column, boolean checkKingIsAttacked, boolean canMoveOnOwnChessPieces){
         if(row < 0  || row > 7 || column < 0 || column > 7){
             throw new IllegalArgumentException("column or row out of bounds");
         }
@@ -156,7 +160,7 @@ public class Board {
                 if (board[move.row][move.column] == null) {
                     addMove(checkKingIsAttacked, chessPiece, moves, move, from);
                 } else {
-                    if (board[move.row][move.column].getColor() != chessPiece.getColor()) {
+                    if (board[move.row][move.column].getColor() != chessPiece.getColor() || canMoveOnOwnChessPieces) {
                         addMove(checkKingIsAttacked, chessPiece, moves, move, from);
                     }
                     break;
@@ -205,13 +209,16 @@ public class Board {
     public List<Field> whoAttacks(Field attackedField) {
         return whoAttacks(attackedField, null);
     }
-
     private List<Field> whoAttacks(Field attackedField, Color from, boolean checkKingIsAttacked) {
+        return whoAttacks(attackedField, from, checkKingIsAttacked, false);
+    }
+
+    private List<Field> whoAttacks(Field attackedField, Color from, boolean checkKingIsAttacked, boolean canMoveOnOwnChessPieces) {
         List<Field> whoAttacks = new ArrayList<>();
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
                 List<Field> dsa= getMoves(row, column,checkKingIsAttacked);
-                if (getMoves(row, column,checkKingIsAttacked).contains(attackedField)
+                if (getMoves(row, column,checkKingIsAttacked, canMoveOnOwnChessPieces).contains(attackedField)
                         && (from == null || board[row][column].getColor() != from)) {
                     whoAttacks.add(new Field(row, column));
                 }
@@ -234,7 +241,11 @@ public class Board {
 
     public List<Field> whoDefends(Field field){
         Color defendedColor = getChessPiece(field).getColor();
-        return whoAttacks(field, defendedColor.otherColor(), false);
+        return whoAttacks(field, defendedColor.otherColor(), false, true);
+    }
+
+    public boolean isDefended(Field field){
+        return whoDefends(field).size()
     }
 
     public List<Field> castling(Color color) {
@@ -353,6 +364,20 @@ public class Board {
         return (movesOfKing.size() == 0 && isCheck(person) && canMoveBetween(fieldOfKing, WHITE));
     }
 
+    public boolean stalemate(Color person){
+        boolean stalemate = true;
+        for (int row = 0; row < 8; row++) {
+            for (int column = 0; column < 8; column++) {
+                ChessPiece chessPiece = getChessPiece(new Field(row, column));
+                if(chessPiece != null && chessPiece.getColor() == person && getMoves(row, column).size() > 0){
+                    stalemate = false;
+                }
+            }
+        }
+        if (isCheck(person)) stalemate = false;
+        return stalemate;
+    }
+
     public boolean canMoveBetween(Field attackedField, Color by) {
         List<Field> attackers = whoAttacks(attackedField, by);
         if (attackers.size() > 1) return false;
@@ -414,12 +439,4 @@ public class Board {
         }
         return builder.toString();
     }
-
-
-    public static void main(String[] args) {
-        Board test = new Board();
-        System.out.print(test.toString());
-        test.getMoves(1, 3);
-    }
-
 }

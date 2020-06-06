@@ -387,4 +387,32 @@ class TestBoard {
 
         assertEquals(1, defenderTrue.size());
     }
+
+    @Test
+    void testIsStaleMate(){
+        board.putChessPieceOn(1, 0, null);
+        board.putChessPieceOn(1, 1, null);
+        board.putChessPieceOn(1, 2, null);
+        board.putChessPieceOn(1, 3, null);
+        board.putChessPieceOn(1, 4, null);
+        board.putChessPieceOn(1, 5, null);
+        board.putChessPieceOn(1, 6, null);
+        board.putChessPieceOn(1, 7, null);
+        board.putChessPieceOn(0, 0, null);
+        board.putChessPieceOn(0, 1, null);
+        board.putChessPieceOn(0, 2, null);
+        board.putChessPieceOn(0, 3, null);
+        board.putChessPieceOn(0, 5, null);
+        board.putChessPieceOn(0, 6, null);
+        board.putChessPieceOn(0, 7, null);
+        board.putChessPieceOn(3, 3, new Rook(BLACK));
+        board.putChessPieceOn(3, 5, new Rook(BLACK));
+        board.putChessPieceOn(1, 0, new Rook(BLACK));
+
+        boolean whiteStalemateTrue = board.stalemate(WHITE);
+        boolean blackStalemateFalse = board.stalemate(BLACK);
+        System.out.println(board.toString());
+        assertTrue(whiteStalemateTrue);
+        assertFalse(blackStalemateFalse);
+    }
 }
