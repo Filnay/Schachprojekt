@@ -39,17 +39,18 @@ public class GUIControls extends JFrame {
         JFrame legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight());
         JFrame exit = new GUIExitGame();
         JFrame changeChessPieceSkin = new GUIChangeSkin();
+        JFrame progressBar = new ProgressBar(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI.getWidth());
         controlPanel.setBorder(new LineBorder(Color.WHITE, 30));
-        GridLayout controlPanelLayout = new GridLayout(6, 1, 20, 20);
+        GridLayout controlPanelLayout = new GridLayout(5, 1, 20, 20);
         controlPanel.setLayout(controlPanelLayout);
         controlPanel.setBackground(Color.WHITE);
 
-        showScore.setBackground(Color.lightGray);
-        showScore.setBorder(null);
-        showScore.setHorizontalAlignment(SwingConstants.CENTER);
-        int evaluate = IntelligentKI.evaluate(chessGUI.getBoard());
-        showScore.setText(""+ evaluate +"");
-        controlPanel.add(showScore);
+//        showScore.setBackground(Color.lightGray);
+//        showScore.setBorder(null);
+//        showScore.setHorizontalAlignment(SwingConstants.CENTER);
+//        int evaluate = IntelligentKI.evaluate(chessGUI.getBoard());
+//        showScore.setText(""+ evaluate +"");
+//        controlPanel.add(showScore);
 
 
         undo.setBackground(Color.lightGray);

@@ -28,7 +28,9 @@ public class GUI extends JFrame {
     private ChessPiece.Color playerStatus;
 
     private int undoCounter  = 0;
+    private int skinCounter = 0;
     ChessPiece beatenChessPiece = null;
+
 
     private final Field[] lastMove = new Field[2];
 
@@ -57,6 +59,10 @@ public class GUI extends JFrame {
 
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
+    }
+
+    public void setSkinCounter(int counter) {
+        skinCounter = counter;
     }
 
 
