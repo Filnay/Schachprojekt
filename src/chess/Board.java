@@ -245,7 +245,7 @@ public class Board {
     }
 
     public boolean isDefended(Field field){
-        return whoDefends(field).size()
+        return whoDefends(field).size() > 0;
     }
 
     public List<Field> castling(Color color) {
