@@ -3,7 +3,6 @@ package chess.gui;
 import chess.Board;
 import chess.Field;
 import chess.chesspiece.*;
-import chess.gui.ProgressBar;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -28,18 +27,21 @@ public class GUI extends JFrame {
 
     private ChessPiece.Color playerStatus;
 
-    private int undoCounter  = 0;
-    private int skinCounter = 0;
+    private int undoCounter = 0;
+
+    private Folder skin = Folder.FOLDER2;
     ChessPiece beatenChessPiece = null;
 
-    private ProgressBar progressBar;
+
+    private final ProgressBar progressBar;
 
 
     private final Field[] lastMove = new Field[2];
 
-    enum Folder{
-        FOLDER1("Schachfiguren"),FOLDER2("Schachfiguren 2"),FOLDER3("Schachfiguren 3");
+    enum Folder {
+        FOLDER1("Schachfiguren 1"), FOLDER2("Schachfiguren 2"), FOLDER3("Schachfiguren 3");
         public final String name;
+
         Folder(String name) {
             this.name = name;
         }
@@ -52,13 +54,9 @@ public class GUI extends JFrame {
         setSize(700, 700);
         setLocationRelativeTo(null);
         setResizable(false);
-        progressBar = new ProgressBar(getX(),getY(), 700, 700, board);
+        progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
         setupField();
         updateBoard();
-    }
-
-    public Board getBoard(){
-        return board;
     }
 
 
@@ -66,13 +64,26 @@ public class GUI extends JFrame {
         this.playerStatus = playerStatus;
     }
 
-    public void setSkinCounter(int counter) {
-        skinCounter = counter;
-    }
 
 
     public void setupField() {
         setupField(Color.WHITE);
+    }
+
+    public ProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    public Folder getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Folder skin) {
+        this.skin = skin;
+    }
+
+    public void setUndoCounter(int counter) {
+        undoCounter = counter;
     }
 
 
@@ -117,22 +128,22 @@ public class GUI extends JFrame {
     }
 
     public void checkForTransfiguration() {
-        for (int column = 0; column < 8; column++) {
+        for (int column = 0; column < 7; column++) {
             ChessPiece current = board.getChessPiece(new Field(0, column));
-            if (current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor().toString());
+            if (current != null && current.getClass().getName().equals("Pawn")) {
+                new TransfigurePawn(current.getColor().toString(), this);
             }
         }
-        for (int column = 0; column < 8; column++) {
+        for (int column = 0; column < 7; column++) {
             ChessPiece current = board.getChessPiece(new Field(7, column));
-            if (current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor().toString());
+            if (current != null && current.getClass().getName().equals("Pawn")) {
+                new TransfigurePawn(current.getColor().toString(), this);
             }
         }
     }
 
     public void updateBoard() {
-        updateBoard(Folder.FOLDER1);
+        updateBoard(skin);
     }
 
 
@@ -236,7 +247,7 @@ public class GUI extends JFrame {
     public void undoMove() {
         if (undoCounter == 1) {
             board.move(lastMove[1], lastMove[0]);
-            board.putChessPieceOn(lastMove[1].row,lastMove[1].column, beatenChessPiece);
+            board.putChessPieceOn(lastMove[1].row, lastMove[1].column, beatenChessPiece);
             switchPlayer();
             updateBoard();
             undoCounter = 0;

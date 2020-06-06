@@ -1,5 +1,7 @@
 package chess.gui;
 
+import chess.chesspiece.*;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -7,101 +9,66 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TransfigurePawn extends JFrame {
-    public TransfigurePawn(String color) {
+
+    public TransfigurePawn(String color, GUI gui) {
         super("choose new Figure");
         setVisible(true);
-        setSize(500, 400);
+        setSize(500, 200);
         setLocationRelativeTo(null);
-        offerFigures(color);
+        offerFigures(color, gui);
     }
 
-    public void offerFigures(String color) {
-        JPanel panel = new JPanel();
+    public void offerFigures(String color, GUI gui) {
 
-        panel.setLayout(new GridLayout(0, 3, 30, 20));
-        panel.setBorder(new LineBorder(Color.WHITE, 20));
-        panel.setBackground(Color.WHITE);
-
-        JPanel figurePanel1 = new JPanel();
-        figurePanel1.setSize(this.getWidth() / 3, this.getHeight()/ 3);
-
-        Chessfield figure1 = new Chessfield(null);
-        figure1.setSize(100, 100);
-        figure1.setButtonIconTo("Queen_" + color.toString() + ".png");
-        figure1.setBackground(Color.lightGray);
-        figure1.setBorder(null);
-
-        figure1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        figurePanel1.setVisible(true);
-        figurePanel1.add(figure1);
-        panel.add(figurePanel1);
-
-        JPanel figurePanel2 = new JPanel();
-        figurePanel2.setSize(100, 100);
-
-        Chessfield figure2 = new Chessfield(null);
-        figure2.setSize(100, 100);
-        figure2.setButtonIconTo("Knight_" + color.toString() + ".png");
-        figure2.setBackground(Color.lightGray);
-        figure2.setBorder(null);
-
-        figure2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        figurePanel2.setVisible(true);
-        figurePanel2.add(figure2);
-        panel.add(figurePanel2);
-
-        JPanel figurePanel3 = new JPanel();
-        figurePanel3.setSize(100, 100);
-
-        Chessfield figure3 = new Chessfield(null);
-        figure3.setSize(100, 100);
-        figure3.setButtonIconTo("Rook_" + color.toString() + ".png");
-        figure3.setBackground(Color.lightGray);
-        figure3.setBorder(null);
-
-        figure3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        figurePanel3.setVisible(true);
-        figurePanel3.add(figure3);
-        panel.add(figurePanel3);
+        JPanel offeredFigures = new JPanel();
+        offeredFigures.setLayout(new GridLayout(0, 4));
+        offeredFigures.setBackground(Color.WHITE);
+        String url = "";
 
 
-        JPanel figurePanel4 = new JPanel();
-        figurePanel4.setSize(100, 100);
 
-        Chessfield figure4 = new Chessfield(null);
-        figure4.setSize(100, 100);
-        figure4.setButtonIconTo("Pawn_" + color.toString() + ".png");
-        figure4.setBackground(Color.lightGray);
-        figure4.setBorder(null);
+        Chessfield rook = new Chessfield(null);
+        rook.setSize(70, 70);
+        url = gui.getURLFromChessPiece(new Rook(ChessPiece.Color.BLACK));
+        rook.setButtonIconTo(gui.getSkin().name + "/" + url);
+        rook.setBackground(Color.WHITE);
+        rook.setBorder(null);
+        offeredFigures.add(rook);
 
-        figure4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
-        figurePanel4.setVisible(true);
-        figurePanel4.add(figure4);
-        panel.add(figurePanel4);
-        panel.setVisible(true);
+
+
+        Chessfield knight = new Chessfield(null);
+        knight.setSize(70, 70);
+        url = gui.getURLFromChessPiece(new Knight(ChessPiece.Color.BLACK));
+        knight.setButtonIconTo(gui.getSkin().name + "/" + url);
+        knight.setBackground(Color.WHITE);
+        knight.setBorder(null);
+        offeredFigures.add(knight);
+
+
+
+
+        Chessfield bishop = new Chessfield(null);
+        bishop.setSize(70, 70);
+        url = gui.getURLFromChessPiece(new Bishop(ChessPiece.Color.BLACK));
+        bishop.setButtonIconTo(gui.getSkin().name + "/" + url);
+        bishop.setBackground(Color.WHITE);
+        bishop.setBorder(null);
+        offeredFigures.add(bishop);
+
+
+        Chessfield queen = new Chessfield(null);
+        queen.setSize(70, 70);
+        url = gui.getURLFromChessPiece(new Queen(ChessPiece.Color.BLACK));
+        queen.setButtonIconTo(gui.getSkin().name + "/" + url);
+        queen.setBackground(Color.WHITE);
+        queen.setBorder(null);
+        offeredFigures.add(queen);
+        add(offeredFigures);
     }
 
     public static void main(String[] args) {
-        new TransfigurePawn("White");
+        new TransfigurePawn("White", new GUI());
     }
 }

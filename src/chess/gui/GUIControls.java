@@ -22,9 +22,14 @@ public class GUIControls extends JFrame {
     JButton close = new JButton("Exit Game");
     JButton toggleScore = new JButton("Toggle Score");
 
-    public GUI getChessGUI() {
-        return chessGUI;
-    }
+    JPanel controlPanel = new JPanel();
+
+
+    JFrame legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
+    JFrame exit = new GUIExitGame();
+    JFrame changeChessPieceSkin = new GUIChangeSkin(chessGUI);
+
+
 
     public GUIControls() {
         super("Chess Controls");
@@ -40,11 +45,14 @@ public class GUIControls extends JFrame {
         setupControls();
     }
 
+    public GUI getChessGUI() {
+        return chessGUI;
+    }
+    public JFrame getLegends() {
+        return legends;
+    }
+
     public void setupControls() {
-        JPanel controlPanel = new JPanel();
-        JFrame legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight());
-        JFrame exit = new GUIExitGame();
-        JFrame changeChessPieceSkin = new GUIChangeSkin();
        // JFrame score = new ProgressBar(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI.getWidth(), );
         controlPanel.setBorder(new LineBorder(Color.WHITE, 30));
         GridLayout controlPanelLayout = new GridLayout(6, 1, 20, 20);
@@ -77,6 +85,7 @@ public class GUIControls extends JFrame {
                 chessGUI.setBoard(new Board());
                 chessGUI.setPlayerStatus(ChessPiece.Color.WHITE);
                 chessGUI.updateBoard();
+                chessGUI.setUndoCounter = 0;
             }
         });
         controlPanel.add(reset);
@@ -100,7 +109,12 @@ public class GUIControls extends JFrame {
         toggleScore.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                JFrame progressBar = chessGUI.getProgressBar();
+                if (!progressBar.isVisible()) {
+                    progressBar.setVisible(true);
+                } else if (progressBar.isVisible()) {
+                    progressBar.setVisible(false);
+                }
             }
         });
         controlPanel.add(toggleScore);
