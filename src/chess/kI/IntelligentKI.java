@@ -7,6 +7,43 @@ import chess.chesspiece.*;
 import java.util.List;
 
 public class IntelligentKI {
+
+    private Board board;
+    private ChessPiece.Color color;
+
+    IntelligentKI(Board board, ChessPiece.Color color){
+        this.board = board;
+        this.color = color;
+    }
+
+    public void move(){
+        Field from = null;
+        Field to = null;
+        int bestEvaluate = 0;
+
+
+        for (int row = 0; row < 8; row++) {
+            for (int column = 0; column < 8; column++) {
+                List<Field> possibleMoves = board.getMoves(row, column);
+                for (Field move : possibleMoves) {
+                    Board newBoard = new Board(board);
+                    newBoard.move(new Field(row, column), move);
+                    int evaluate = evaluate(newBoard);
+                    if(color == ChessPiece.Color.BLACK && evaluate > bestEvaluate){
+                        bestEvaluate = evaluate;
+                        from = new Field(row, column);
+                        to = move;
+                    }
+                    if(color == ChessPiece.Color.WHITE && evaluate < bestEvaluate) {
+                        bestEvaluate = evaluate;
+                        from = new Field(row, column);
+                        to = move;
+                    }
+                }
+            }
+        }
+        board.move(from, to);
+    }
     public static int evaluate(Board board){
         int points = 0;
         if(board.findChessPiece(new Queen(ChessPiece.Color.WHITE)).size() > 0 && board.findChessPiece(new Queen(ChessPiece.Color.BLACK)).size() > 0){
@@ -72,6 +109,7 @@ public class IntelligentKI {
                         }
                         points = points + board.getMoves(row, column).size() * 10;
                         points = points + (7 - row)*5;
+
                     }
                     if(current.getColor() == ChessPiece.Color.WHITE){
                         if(current instanceof Knight && knightCombineWhite){
@@ -191,8 +229,10 @@ public class IntelligentKI {
     }
 
     public static void main(String[] args) {
-        IntelligentKI test = new IntelligentKI();
         Board board = new Board();
-        System.out.println(test.evaluate(board));
+        IntelligentKI test = new IntelligentKI(board, ChessPiece.Color.WHITE);
+        System.out.println(board.toString());
+        test.move();
+        System.out.println(board.toString());
     }
 }

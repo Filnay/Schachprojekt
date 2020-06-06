@@ -384,8 +384,10 @@ class TestBoard {
     @Test
     void testWhoDefends(){
         List<Field> defenderTrue = board.whoDefends(new Field(0,3));
+        boolean defended = board.isDefended(new Field(0, 3));
 
         assertEquals(1, defenderTrue.size());
+        assertTrue(defended);
     }
 
     @Test
