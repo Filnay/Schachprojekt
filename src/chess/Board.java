@@ -351,9 +351,14 @@ public class Board {
     }
 
     public boolean isCheck(Color person){
-        List<Field> fieldOfKing = findChessPiece(new King(person));
-        boolean attacked = isAttacked(fieldOfKing.get(0), person, false);
+        Field fieldOfKing = findKing(person);
+        boolean attacked = isAttacked(fieldOfKing, person, false);
         return attacked;
+    }
+
+    public Field findKing(Color color){
+        List<Field> fieldOfKing = findChessPiece(new King(color));
+        return fieldOfKing.get(0);
     }
 
     public boolean isCheckmate(Color person){
@@ -361,10 +366,10 @@ public class Board {
         Field fieldOfKing = fieldOfKings.get(0);
         List<Field> movesOfKing = getMoves(fieldOfKing.row, fieldOfKing.column);
 
-        return (movesOfKing.size() == 0 && isCheck(person) && canMoveBetween(fieldOfKing, WHITE));
+        return (movesOfKing.size() == 0 && isCheck(person) && !canMoveBetweenOrAttack(fieldOfKing, person));
     }
 
-    public boolean stalemate(Color person){
+    public boolean isStalemate(Color person){
         boolean stalemate = true;
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
@@ -378,10 +383,11 @@ public class Board {
         return stalemate;
     }
 
-    public boolean canMoveBetween(Field attackedField, Color by) {
+    public boolean canMoveBetweenOrAttack(Field attackedField, Color by) {
         List<Field> attackers = whoAttacks(attackedField, by);
         if (attackers.size() > 1) return false;
         if (attackers.size() == 0) return true;
+        if (isAttacked(attackers.get(0), by.otherColor())) return true;
 
         Field fieldAttack = attackers.get(0);
         ChessPiece attacker = getChessPiece(fieldAttack);
@@ -397,13 +403,19 @@ public class Board {
         removeOutOfBounds(directionOfAttack);
         cutDirectionBeforeField(directionOfAttack, attackedField);
 
+        Field fieldOfKing = findKing(by);
         boolean canMoveBetween = false;
         for (Field inWayField: directionOfAttack){
-            List<Field> defender = whoAttacks(inWayField, by.otherColor());
-            defender.remove(attackedField);
-            if(defender.size() > 0) {
-                canMoveBetween = true;
+            List<Field> defenders = whoAttacks(inWayField, by.otherColor());
+            defenders.remove(attackedField);
+            if(defenders.size() > 0) {
+                for(Field defender: defenders){
+                    if(isChessPieceNotAttackedAfterMove(fieldOfKing, defender, inWayField)) {
+                        canMoveBetween = true;
+                    }
+                }
             }
+            if(inWayField.equals(attackedField)) break;
         }
         return canMoveBetween;
     }

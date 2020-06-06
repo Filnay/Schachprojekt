@@ -340,13 +340,12 @@ class TestBoard {
         board.putChessPieceOn(4, 7, new Rook(WHITE));
         board.putChessPieceOn(5, 5, new Queen(BLACK));
 
-        boolean whiteTrue = board.canMoveBetween(new Field(3, 5),WHITE);
-        boolean blackFalse = board.canMoveBetween(new Field (5,5), BLACK);
-        boolean blackTrue = board.canMoveBetween(new Field(0,0), BLACK);
-        boolean whiteFalse = board.canMoveBetween(new Field (4,5), BLACK);
-
+        boolean whiteTrue = board.canMoveBetweenOrAttack(new Field(3, 5),WHITE);
+        boolean blackTrue = board.canMoveBetweenOrAttack(new Field(0,0), BLACK);
+        boolean whiteFalse = board.canMoveBetweenOrAttack(new Field (4,5), BLACK);
+        System.out.println(board.toString());
         assertTrue(whiteTrue);
-        assertFalse(blackFalse);
+
         assertTrue(blackTrue);
         assertFalse(whiteFalse);
     }
@@ -369,18 +368,55 @@ class TestBoard {
     @Test
     void testCheckmateTwo(){
         board.putChessPieceOn(0, 4, null);
-        board.putChessPieceOn(2,2,new King(WHITE));
+        board.putChessPieceOn(2, 2, new King(WHITE));
         board.putChessPieceOn(3, 2, new Bishop(WHITE));
         board.putChessPieceOn(5, 2, new Queen(BLACK));
         board.putChessPieceOn(5, 1, new Rook(BLACK));
         board.putChessPieceOn(5, 3, new Rook(BLACK));
         board.putChessPieceOn(2, 0, new Rook(BLACK));
+        board.putChessPieceOn(1, 0, new Pawn(BLACK));
+        board.putChessPieceOn(1, 1, new Knight(BLACK));
+        board.putChessPieceOn(0, 1, null);
 
         boolean checkmate = board.isCheckmate(WHITE);
 
+System.out.println(board.toString());
         assertTrue(checkmate);
     }
+    @Test
+    void testCheckMate3(){
+        board.putChessPieceOn(1, 5, null);
+        board.putChessPieceOn(1, 6, null);
+        board.putChessPieceOn(6, 4, null);
+        board.putChessPieceOn(7, 3, null);
+        board.putChessPieceOn(3, 7, new Queen(BLACK));
+        board.putChessPieceOn(3, 6, new Pawn(WHITE));
+        board.putChessPieceOn(2, 5, new Pawn(WHITE));
 
+        boolean isCheckmateTrue = board.isCheckmate(WHITE);
+        boolean isCheckmateFalse = board.isCheckmate(BLACK);
+        assertTrue(isCheckmateTrue);
+        assertFalse(isCheckmateFalse);
+    }
+
+    @Test
+    void testCheckMate4(){
+        board.putChessPieceOn(0, 4, null);
+        board.putChessPieceOn(2, 2, new King(WHITE));
+        board.putChessPieceOn(3, 2, new Bishop(WHITE));
+        board.putChessPieceOn(5, 2, new Queen(BLACK));
+        board.putChessPieceOn(5, 1, new Rook(BLACK));
+        board.putChessPieceOn(5, 3, new Rook(BLACK));
+        board.putChessPieceOn(2, 0, new Rook(BLACK));
+        board.putChessPieceOn(1, 0, new Pawn(BLACK));
+        board.putChessPieceOn(1, 1, new Bishop(WHITE));
+
+        System.out.println(board.toString());
+        boolean checkmate = board.isCheckmate(WHITE);
+
+        assertFalse(checkmate);
+
+    }
     @Test
     void testWhoDefends(){
         List<Field> defenderTrue = board.whoDefends(new Field(0,3));
@@ -411,8 +447,8 @@ class TestBoard {
         board.putChessPieceOn(3, 5, new Rook(BLACK));
         board.putChessPieceOn(1, 0, new Rook(BLACK));
 
-        boolean whiteStalemateTrue = board.stalemate(WHITE);
-        boolean blackStalemateFalse = board.stalemate(BLACK);
+        boolean whiteStalemateTrue = board.isStalemate(WHITE);
+        boolean blackStalemateFalse = board.isStalemate(BLACK);
         System.out.println(board.toString());
         assertTrue(whiteStalemateTrue);
         assertFalse(blackStalemateFalse);
