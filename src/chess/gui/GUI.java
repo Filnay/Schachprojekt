@@ -3,6 +3,7 @@ package chess.gui;
 import chess.Board;
 import chess.Field;
 import chess.chesspiece.*;
+import chess.kI.IntelligentKI;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -29,7 +30,7 @@ public class GUI extends JFrame {
 
     private int undoCounter = 0;
 
-    private Folder skin = Folder.FOLDER2;
+    private Folder skin = Folder.FOLDER1;
     ChessPiece beatenChessPiece = null;
 
 
@@ -37,6 +38,9 @@ public class GUI extends JFrame {
 
 
     private final Field[] lastMove = new Field[2];
+
+
+    private IntelligentKI ki;
 
     enum Folder {
         FOLDER1("Schachfiguren 1"), FOLDER2("Schachfiguren 2"), FOLDER3("Schachfiguren 3");
@@ -55,16 +59,32 @@ public class GUI extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
+        ki = null;
+        setupField();
+        updateBoard();
+    }
+
+    public GUI(ChessPiece.Color colorOfKI) {
+        super("Chess");
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(700, 700);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        this.ki = new IntelligentKI(board, colorOfKI);
+        progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
         setupField();
         updateBoard();
     }
 
 
+    public IntelligentKI getKi() { return ki; }
+
+    public void setKi(IntelligentKI ki) { this.ki = ki; }
+
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
     }
-
-
 
     public void setupField() {
         setupField(Color.WHITE);
@@ -239,7 +259,12 @@ public class GUI extends JFrame {
         beatenChessPiece = board.getChessPiece(to);
         board.move(from, to);
         updateBoard();
-        switchPlayer();
+        if(ki != null) {
+            ki.move();
+            updateBoard();
+        } else {
+            switchPlayer();
+        }
         fieldsOffered = false;
         undoCounter = 1;
         boolean whiteCheckmate = board.isCheckmate(ChessPiece.Color.WHITE);
@@ -258,7 +283,9 @@ public class GUI extends JFrame {
         if (undoCounter == 1) {
             board.move(lastMove[1], lastMove[0]);
             board.putChessPieceOn(lastMove[1].row, lastMove[1].column, beatenChessPiece);
-            switchPlayer();
+            if (ki == null) {
+                switchPlayer();
+            }
             updateBoard();
             undoCounter = 0;
         }

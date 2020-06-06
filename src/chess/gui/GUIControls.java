@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 public class GUIControls extends JFrame {
 
 
-    GUI chessGUI = new GUI();
+    GUI chessGUI = new GUI(ChessPiece.Color.BLACK);
 
     JButton reset = new JButton("Reset");
     JButton showLegend = new JButton("Show Legend");
@@ -82,10 +82,14 @@ public class GUIControls extends JFrame {
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                chessGUI.setBoard(new Board());
+                Board newBoard = new Board();
+                chessGUI.setBoard(newBoard);
                 chessGUI.setPlayerStatus(ChessPiece.Color.WHITE);
                 chessGUI.updateBoard();
-                chessGUI.setUndoCounter = 0;
+                chessGUI.setUndoCounter(0);
+                if(chessGUI.getKi() != null ){
+                    chessGUI.setKi(new IntelligentKI(newBoard, chessGUI.getKi().getColor()));
+                }
             }
         });
         controlPanel.add(reset);

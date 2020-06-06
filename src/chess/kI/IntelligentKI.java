@@ -4,6 +4,7 @@ import chess.Board;
 import chess.Field;
 import chess.chesspiece.*;
 
+import java.awt.*;
 import java.util.List;
 
 public class IntelligentKI {
@@ -11,10 +12,20 @@ public class IntelligentKI {
     private Board board;
     private ChessPiece.Color color;
 
-    IntelligentKI(Board board, ChessPiece.Color color){
+    public IntelligentKI(Board board, ChessPiece.Color color){
         this.board = board;
         this.color = color;
     }
+
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public ChessPiece.Color getColor() {
+        return color;
+    }
+
 
     public void move(){
         Field from = null;
@@ -107,7 +118,7 @@ public class IntelligentKI {
                         } else if(current instanceof Pawn) {
                             points = points + 110;
                         }
-                        points = points + board.getMoves(row, column).size() * 10;
+                        points = points + board.getMoves(row, column).size() * 5;
                         points = points + (7 - row)*5;
 
                     }
@@ -124,7 +135,7 @@ public class IntelligentKI {
                             points = points - 110;
                         }
                     }
-                    points = points + board.getMoves(row, column).size()*10;
+                    points = points + board.getMoves(row, column).size()*5;
                     points = points - (row*5);
                     }
             }
@@ -195,8 +206,7 @@ public class IntelligentKI {
                         }
                         points = points + board.getMoves(row, column).size() * 10;
                         points = points + (7 - row)*5;
-                    }
-                    if (current.getColor() == ChessPiece.Color.WHITE) {
+                    } else if (current.getColor() == ChessPiece.Color.WHITE) {
                         if (current instanceof Knight && knightCombineWhite) {
                             points = points - 275;
                         } else if (current instanceof Bishop && bishopCombineWhite) {
@@ -217,7 +227,7 @@ public class IntelligentKI {
                             if (row == 0 && column == 2) points = points - 60;
                         }
 
-                        points = points - board.getMoves(row, column).size() * 10;
+                        points = points - board.getMoves(row, column).size() * 5;
                         points = points - (row*5);
                     }
 

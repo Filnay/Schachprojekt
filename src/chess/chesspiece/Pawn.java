@@ -60,7 +60,7 @@ public class Pawn extends ChessPiece {
                     addMove(moves, new Field(row - 1, column + 1));
                 }
             }
-            if (row - 1 >= 0 && column - 1 > 0) {
+            if (row - 1 >= 0 && column - 1 >= 0) {
                 if (board[row - 1][column - 1] != null && board[row - 1][column - 1].getColor() == WHITE) {
                     addMove(moves, new Field(row - 1, column - 1));
                 }
