@@ -4,7 +4,6 @@ import chess.Board;
 import chess.Field;
 import chess.chesspiece.*;
 
-import java.awt.*;
 import java.util.List;
 
 public class IntelligentKI {
@@ -30,7 +29,12 @@ public class IntelligentKI {
     public void move(){
         Field from = null;
         Field to = null;
-        int bestEvaluate = 0;
+        int bestEvaluate;
+        if(color == ChessPiece.Color.WHITE){
+            bestEvaluate = 1000;
+        } else {
+        bestEvaluate = -1000;
+        }
 
 
         for (int row = 0; row < 8; row++) {
@@ -38,17 +42,19 @@ public class IntelligentKI {
                 List<Field> possibleMoves = board.getMoves(row, column);
                 for (Field move : possibleMoves) {
                     Board newBoard = new Board(board);
-                    newBoard.move(new Field(row, column), move);
-                    int evaluate = evaluate(newBoard);
-                    if(color == ChessPiece.Color.BLACK && evaluate > bestEvaluate){
-                        bestEvaluate = evaluate;
-                        from = new Field(row, column);
-                        to = move;
-                    }
-                    if(color == ChessPiece.Color.WHITE && evaluate < bestEvaluate) {
-                        bestEvaluate = evaluate;
-                        from = new Field(row, column);
-                        to = move;
+                    if (!(board.getChessPiece(move) instanceof King)) {
+                        newBoard.move(new Field(row, column), move);
+                        int evaluate = evaluate(newBoard);
+                        if (color == ChessPiece.Color.BLACK && evaluate > bestEvaluate) {
+                            bestEvaluate = evaluate;
+                            from = new Field(row, column);
+                            to = move;
+                        }
+                        if (color == ChessPiece.Color.WHITE && evaluate < bestEvaluate) {
+                            bestEvaluate = evaluate;
+                            from = new Field(row, column);
+                            to = move;
+                        }
                     }
                 }
             }
@@ -120,7 +126,6 @@ public class IntelligentKI {
                         }
                         points = points + board.getMoves(row, column).size() * 5;
                         points = points + (7 - row)*5;
-
                     }
                     if(current.getColor() == ChessPiece.Color.WHITE){
                         if(current instanceof Knight && knightCombineWhite){
@@ -204,7 +209,7 @@ public class IntelligentKI {
                             if (row == 7 && column == 6) points = points + 100;
                             if (row == 7 && column == 2) points = points + 60;
                         }
-                        points = points + board.getMoves(row, column).size() * 10;
+                        points = points + board.getMoves(row, column).size() * 5;
                         points = points + (7 - row)*5;
                     } else if (current.getColor() == ChessPiece.Color.WHITE) {
                         if (current instanceof Knight && knightCombineWhite) {
