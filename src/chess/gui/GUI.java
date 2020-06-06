@@ -242,6 +242,16 @@ public class GUI extends JFrame {
         switchPlayer();
         fieldsOffered = false;
         undoCounter = 1;
+        boolean whiteCheckmate = board.isCheckmate(ChessPiece.Color.WHITE);
+        if (whiteCheckmate){
+            System.out.println("Black wins");
+        }
+        if (board.isCheckmate(ChessPiece.Color.BLACK)){
+            System.out.println("White wins");
+        }
+        if (board.isStalemate(ChessPiece.Color.WHITE) || board.isStalemate(ChessPiece.Color.BLACK)){
+            System.out.println("Stalemate");
+        }
     }
 
     public void undoMove() {
