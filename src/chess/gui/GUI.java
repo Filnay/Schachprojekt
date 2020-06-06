@@ -73,7 +73,7 @@ public class GUI extends JFrame {
         setResizable(false);
         this.ki = new IntelligentKI(board, colorOfKI);
         progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
-        setupField();
+        setupField(colorOfKI.otherColor());
         updateBoard();
     }
 
@@ -84,10 +84,6 @@ public class GUI extends JFrame {
 
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
-    }
-
-    public void setupField() {
-        setupField(Color.WHITE);
     }
 
     public ProgressBar getProgressBar() {
@@ -106,17 +102,21 @@ public class GUI extends JFrame {
         undoCounter = counter;
     }
 
+    public void setupField() {
+        setupField(ChessPiece.Color.WHITE);
+    }
 
-    public void setupField(Color color) {
+
+    public void setupField(ChessPiece.Color color) {
         Container contents = getContentPane();
         contents.setLayout(new GridLayout(8, 8));
 
         ButtonHandler buttonHandler = new ButtonHandler();
-        if (color.equals(Color.WHITE)) {
+        if (color.equals(ChessPiece.Color.WHITE)) {
             for (int row = 7; row >= 0; row--) {
                 setupF(row, contents, buttonHandler);
             }
-        } else if (color.equals(Color.BLACK)) {
+        } else if (color.equals(ChessPiece.Color.BLACK)) {
             for (int row = 0; row < 8; row++) {
                 setupF(row, contents, buttonHandler);
             }

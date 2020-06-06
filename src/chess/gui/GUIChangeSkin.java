@@ -89,6 +89,6 @@ public class GUIChangeSkin extends JFrame {
     }
 
     public static void main(String[] args) {
-        new GUIChangeSkin(new GUI());
+//        new GUIChangeSkin(new GUI());
     }
 }
