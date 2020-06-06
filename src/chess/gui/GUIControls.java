@@ -95,19 +95,15 @@ public class GUIControls extends JFrame {
         });
         controlPanel.add(showLegend);
 
-        /*toggleScore.setBackground(Color.lightGray);
+        toggleScore.setBackground(Color.lightGray);
         toggleScore.setBorder(null);
         toggleScore.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!score.isVisible()) {
-                    score.setVisible(true);
-                } else if (score.isVisible()) {
-                    score.setVisible(false);
-                }
+
             }
         });
-        controlPanel.add(toggleScore);*/
+        controlPanel.add(toggleScore);
 
 
 
