@@ -61,7 +61,6 @@ public class GUI extends JFrame {
         progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
         ki = null;
         setupField();
-        updateBoard();
     }
 
     public GUI(ChessPiece.Color colorOfKI) {
@@ -78,9 +77,13 @@ public class GUI extends JFrame {
     }
 
 
-    public IntelligentKI getKi() { return ki; }
+    public IntelligentKI getKi() {
+        return ki;
+    }
 
-    public void setKi(IntelligentKI ki) { this.ki = ki; }
+    public void setKi(IntelligentKI ki) {
+        this.ki = ki;
+    }
 
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
@@ -88,6 +91,10 @@ public class GUI extends JFrame {
 
     public ProgressBar getProgressBar() {
         return progressBar;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public Folder getSkin() {
@@ -126,6 +133,7 @@ public class GUI extends JFrame {
         if (playerStatus.equals(ChessPiece.Color.BLACK)) {
             processMove(new Field(0, 0), new Field(0, 0));
         }
+        updateBoard();
     }
 
     private void setupF(int row, Container contents, ActionListener buttonHandler) {
@@ -154,13 +162,13 @@ public class GUI extends JFrame {
         for (int column = 0; column < 7; column++) {
             ChessPiece current = board.getChessPiece(new Field(0, column));
             if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor().toString(), this);
+                new TransfigurePawn(current.getColor(), this, new Field(0, column));
             }
         }
         for (int column = 0; column < 7; column++) {
             ChessPiece current = board.getChessPiece(new Field(7, column));
             if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor().toString(), this);
+                new TransfigurePawn(current.getColor(), this, new Field(7, column));
             }
         }
     }
@@ -181,7 +189,6 @@ public class GUI extends JFrame {
                     fields[row][column].setIcon(null);
                 }
             }
-            checkForTransfiguration();
         }
         progressBar.updateScore(board);
     }
@@ -261,6 +268,7 @@ public class GUI extends JFrame {
         lastMove[1] = to;
         beatenChessPiece = board.getChessPiece(to);
         board.move(from, to);
+        checkForTransfiguration();
         updateBoard();
         if(ki != null) {
             ki.move();

@@ -1,5 +1,6 @@
 package chess.gui;
 
+import chess.chesspiece.ChessPiece;
 import com.sun.source.tree.WhileLoopTree;
 
 import javax.swing.*;
@@ -9,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SetupGame extends JFrame {
+
+    GUIControls guiControls;
 
     public SetupGame() {
         super("Chess Setup");
@@ -49,7 +52,6 @@ public class SetupGame extends JFrame {
         JPanel spacer1 = new JPanel();
         spacer1.setBackground(Color.WHITE);
         panel.add(spacer1);
-
 
 
         JLabel switchColor = new JLabel("<html><body>Do you want to play<br>as Black or as White?</body></html>");
@@ -98,17 +100,18 @@ public class SetupGame extends JFrame {
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Color color;
-                boolean gameMode;
-
+//                ChessPiece.Color color;
+//                boolean gameMode;
+//
 //                if (Black.isSelected()) {
-//                    color = Color.BLACK;
-//                }else {
-//                    color = Color.WHITE;
+//                    color = ChessPiece.Color.BLACK;
+//                } else {
+//                    color = ChessPiece.Color.WHITE;
 //                }
-
-                gameMode = kI.isSelected();
-                new GUIControls(gameMode);
+//
+//                gameMode = kI.isSelected();
+                dispose();
+                guiControls = new GUIControls();
             }
         });
 
