@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUIControls extends JFrame {
+    GUI chessGUI = new GUI();
 
     JButton undo = new JButton("Undo");
     JButton reset = new JButton("Reset");
@@ -89,9 +90,8 @@ public class GUIControls extends JFrame {
                 chessGUI.updateBoard();
                 chessGUI.setUndoCounter(0);
                 if(chessGUI.getKi() != null ){
-                    chessGUI.setKi(new IntelligentKI(newBoard, chessGUI.getKi().getColor()));
                     if (chessGUI.getKi().getColor().equals(ChessPiece.Color.WHITE)) {
-                        chessGUI.processMove(new Field(4, 1), new Field(4, 3));
+                        chessGUI.getKi().move();
                         chessGUI.setPlayerStatus(ChessPiece.Color.BLACK);
                     }
                 }

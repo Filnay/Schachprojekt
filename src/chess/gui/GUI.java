@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GUI extends JFrame {
-    private Board board = new Board();
+    private Board board;
 
     private final Chessfield[][] fields = new Chessfield[8][8];
 
@@ -72,6 +72,7 @@ public class GUI extends JFrame {
         setResizable(false);
         this.ki = new IntelligentKI(board, colorOfKI);
         progressBar = new ProgressBar(getX(), getY(), 700, board);
+        setBoard(new Board());
         setupField(colorOfKI);
         playerStatus = colorOfKI.otherColor();
         updateBoard();
@@ -88,6 +89,13 @@ public class GUI extends JFrame {
 
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
+    }
+
+    public void setBoard(Board newBoard) {
+        board = newBoard;
+        if (ki != null) {
+            ki.setBoard(newBoard);
+        }
     }
 
     public ProgressBar getProgressBar() {
@@ -186,6 +194,7 @@ public class GUI extends JFrame {
 
 
     private class ButtonHandler implements ActionListener {
+
         public void actionPerformed(ActionEvent e) {
             Object source = e.getSource();
             for (int row = 0; row < 8; row++) {
