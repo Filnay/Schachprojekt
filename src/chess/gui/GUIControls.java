@@ -1,30 +1,31 @@
 package chess.gui;
-
+//imports
 import chess.Board;
 import chess.Field;
 import chess.chesspiece.ChessPiece;
 import chess.kI.IntelligentKI;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GUIControls extends JFrame {
 
+    //Initialize all Buttons
     JButton undo = new JButton("Undo");
     JButton reset = new JButton("Reset");
-    JButton showLegend = new JButton("Show Legend");
+    JButton toggleLegend = new JButton("Show Legend");
     JButton changeSkin = new JButton("ChangeSkin");
     JButton toggleScore = new JButton("Toggle Score");
     JButton close = new JButton("Exit Game");
 
+    //Initialize Panel
     JPanel controlPanel = new JPanel();
 
+    //Declares legend; only one that needs to be declared here because otherwise the Changing of the Skins wouldn't affect the legend/toggling wound't work
     GUILegend legends;
+    private int legendCount;
 
-
+    //Constructor
     public GUIControls(boolean gameMode, ChessPiece.Color kIColor) {
         super("Chess Controls");
         setVisible(true);
@@ -33,24 +34,30 @@ public class GUIControls extends JFrame {
         setupControls(gameMode, kIColor);
     }
 
-
-    public void setNewLegend(GUI chessGUI) {
+    //get and Set-Methods, only needed for Legend
+    public void setLegendCount(int count) {
+        legendCount = count;
+    }
+    public void setNewLegend(GUI chessGUI, boolean state) {
         legends.dispose();
         legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
-        legends.setVisible(true);
+        legends.setVisible(state);
     }
 
-
+    //Setup for the ControlPanel
     public void setupControls(boolean gameMode, ChessPiece.Color kIColor) {
+
+        //declaration of the chessGUI
         GUI chessGUI;
 
+        //calling of the GUI-Constructor whether you want to play against a KI or an other Player
         if (gameMode) {
             chessGUI = new GUI(kIColor);
-        }
-        else{
+        } else {
             chessGUI = new GUI();
         }
 
+        //get the Position of the GUI Window to arrange the Controls to the right of the GUI
         int guiX = chessGUI.getX();
         int guiWidth = chessGUI.getWidth();
         int guiY = chessGUI.getY();
@@ -58,105 +65,92 @@ public class GUIControls extends JFrame {
         setLocation(guiX + guiWidth, guiY);
         setSize(300, guiHeight);
 
-        GUILegend legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
+        /*Declarations and Initializations*/
+        //Legend-Window, arranged to the left to the GUI
+        legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
+        //ExitGame-Window
         GUIExitGame exit = new GUIExitGame();
-        GUIChangeSkin changeChessPieceSkin = new GUIChangeSkin(chessGUI, legends, this);
+        //ChangeSkin-Window
+        GUIChangeSkin changeChessPieceSkin = new GUIChangeSkin(chessGUI, this);
 
+        //ControlPanel
         controlPanel.setBorder(new LineBorder(Color.WHITE, 30));
         GridLayout controlPanelLayout = new GridLayout(6, 1, 20, 20);
         controlPanel.setLayout(controlPanelLayout);
         controlPanel.setBackground(Color.WHITE);
 
 
+        /*Settings for the Buttons*/
+        //All Buttons that open a new Window are Toggle Buttons, so they toggle the Windows
+
+        //Undo-Button
         undo.setBackground(Color.lightGray);
         undo.setBorder(null);
-        undo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                chessGUI.undoMove();
-            }
-        });
+        undo.addActionListener(e -> chessGUI.undoMove());
         controlPanel.add(undo);
 
+        //Reset-Button: only one more complex, needs to set an New KI with the color of the last one
         reset.setBackground(Color.lightGray);
         reset.setBorder(null);
-        reset.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Board newBoard = new Board();
-                chessGUI.setBoard(newBoard);
-                chessGUI.setPlayerStatus(ChessPiece.Color.WHITE);
-                chessGUI.updateBoard();
-                chessGUI.setUndoCounter(0);
-                if(chessGUI.getKi() != null ){
-                    chessGUI.setKi(new IntelligentKI(newBoard, chessGUI.getKi().getColor()));
-                    if (chessGUI.getKi().getColor().equals(ChessPiece.Color.WHITE)) {
-                        chessGUI.processMove(new Field(4, 1), new Field(4, 3));
-                        chessGUI.setPlayerStatus(ChessPiece.Color.BLACK);
-                    }
+        reset.addActionListener(e -> {
+            Board newBoard = new Board();
+            chessGUI.setBoard(newBoard);
+            chessGUI.setPlayerStatus(ChessPiece.Color.WHITE);
+            chessGUI.updateBoard();
+            chessGUI.setUndoCounter(0);
+            if (chessGUI.getKi() != null) {
+                chessGUI.setKi(new IntelligentKI(newBoard, chessGUI.getKi().getColor()));
+                if (chessGUI.getKi().getColor().equals(ChessPiece.Color.WHITE)) {
+                    chessGUI.processMove(new Field(4, 1), new Field(4, 3));
+                    chessGUI.setPlayerStatus(ChessPiece.Color.BLACK);
                 }
             }
         });
         controlPanel.add(reset);
 
-        showLegend.setBackground(Color.lightGray);
-        showLegend.setBorder(null);
-        showLegend.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                legends.setVisible(legends.isVisible());
+        //Legend-Button
+        toggleLegend.setBackground(Color.lightGray);
+        toggleLegend.setBorder(null);
+        toggleLegend.addActionListener(e -> {
+            if (legendCount == 0) {
+                setNewLegend(chessGUI, true);
+                legendCount = 1;
+            } else if (legendCount == 1) {
+                setNewLegend(chessGUI, false);
+                legendCount = 0;
+
             }
         });
-        controlPanel.add(showLegend);
+        controlPanel.add(toggleLegend);
 
+        //Score-Button
         toggleScore.setBackground(Color.lightGray);
         toggleScore.setBorder(null);
-        toggleScore.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame progressBar = chessGUI.getProgressBar();
-                if (!progressBar.isVisible()) {
-                    progressBar.setVisible(true);
-                } else if (progressBar.isVisible()) {
-                    progressBar.setVisible(false);
-                }
-            }
+        toggleScore.addActionListener(e -> {
+            JFrame progressBar = chessGUI.getProgressBar();
+            progressBar.setVisible(!progressBar.isVisible());
         });
         controlPanel.add(toggleScore);
 
-
-
+        //ChangeSkin-Button
         changeSkin.setBackground(Color.lightGray);
         changeSkin.setBorder(null);
 
-        changeSkin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeChessPieceSkin.setVisible(!changeChessPieceSkin.isVisible());
-            }
-        });
+        changeSkin.addActionListener(e -> changeChessPieceSkin.setVisible(!changeChessPieceSkin.isVisible()));
         controlPanel.add(changeSkin);
 
+        //Close-Button
         close.setBackground(Color.lightGray);
         close.setBorder(null);
-        close.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (exit.isVisible()) {
-                    exit.setVisible(false);
-                } else {
-                    exit.setVisible(true);
-                }
-            }
-        });
+        close.addActionListener(e -> exit.setVisible(!exit.isVisible()));
         controlPanel.add(close);
-
 
         controlPanel.setVisible(true);
         add(controlPanel);
         setVisible(true);
     }
 
+    //current StartPosition, SetupGame doesn't work
     public static void main(String[] args) {
         new GUIControls(true, ChessPiece.Color.WHITE);
     }
