@@ -14,12 +14,12 @@ public class ProgressBar extends JFrame {
     int evaluate;
 
     //Constructor
-    public ProgressBar(int x, int y, int width, Board board) {
+    public ProgressBar(int x, int y, int width) {
         super("Progress Bar");
         setBounds(x, y - 100, width, 100);
         setResizable(true);
         setVisible(true);
-        setScore(board);
+        setScore(new Board());
     }
 
     //setup of the ProgressBar

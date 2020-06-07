@@ -15,11 +15,10 @@ import java.util.List;
 
 
 public class GUI extends JFrame {
-
     /*Attributes*/
 
-    //new Object Bord to load the ChessPieces from
-    private Board board = new Board();
+    //Bord to handle the ChessPieces
+    private Board board;
 
     //New 2Dimensional ChessField
     private final Chessfield[][] fields = new Chessfield[8][8];
@@ -71,8 +70,9 @@ public class GUI extends JFrame {
         setSize(700, 700);
         setLocationRelativeTo(null);
         setResizable(false);
-        progressBar = new ProgressBar(getX(), getY(), 700, board);
+        progressBar = new ProgressBar(getX(), getY(), 700);
         ki = null;
+        setBoard(new Board());
         setupField();
         updateBoard();
     }
@@ -85,9 +85,10 @@ public class GUI extends JFrame {
         setSize(700, 700);
         setLocationRelativeTo(null);
         setResizable(false);
-        this.ki = new IntelligentKI(board, colorOfKI);
-        progressBar = new ProgressBar(getX(), getY(), 700, board);
-        setupField(colorOfKI);
+        ki = new IntelligentKI(colorOfKI);
+        progressBar = new ProgressBar(getX(), getY(), 700);
+        setBoard(new Board());
+        setupField(colorOfKI.otherColor());
         updateBoard();
     }
 
@@ -115,6 +116,13 @@ public class GUI extends JFrame {
         this.playerStatus = playerStatus;
     }
 
+    public void setBoard(Board newBoard) {
+        board = newBoard;
+        if (ki != null) {
+            ki.setBoard(newBoard);
+        }
+    }
+
     //Progressbar
     public ProgressBar getProgressBar() {
         return progressBar;
@@ -123,9 +131,6 @@ public class GUI extends JFrame {
     //Board
     public Board getBoard() {
         return board;
-    }
-    public void setBoard(Board newBoard) {
-        board = newBoard;
     }
 
     //Undo counter
