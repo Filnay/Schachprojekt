@@ -3,6 +3,7 @@ package chess.gui;
 import chess.Board;
 import chess.Field;
 import chess.chesspiece.*;
+import chess.kI.IntelligentKI;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -29,7 +30,7 @@ public class GUI extends JFrame {
 
     private int undoCounter = 0;
 
-    private Folder skin = Folder.FOLDER2;
+    private Folder skin = Folder.FOLDER1;
     ChessPiece beatenChessPiece = null;
 
 
@@ -37,6 +38,9 @@ public class GUI extends JFrame {
 
 
     private final Field[] lastMove = new Field[2];
+
+
+    private IntelligentKI ki;
 
     enum Folder {
         FOLDER1("Schachfiguren 1"), FOLDER2("Schachfiguren 2"), FOLDER3("Schachfiguren 3");
@@ -55,23 +59,42 @@ public class GUI extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
+        ki = null;
         setupField();
+    }
+
+    public GUI(ChessPiece.Color colorOfKI) {
+        super("Chess");
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(700, 700);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        this.ki = new IntelligentKI(board, colorOfKI);
+        progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
+        setupField(colorOfKI.otherColor());
         updateBoard();
     }
 
+
+    public IntelligentKI getKi() {
+        return ki;
+    }
+
+    public void setKi(IntelligentKI ki) {
+        this.ki = ki;
+    }
 
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
     }
 
-
-
-    public void setupField() {
-        setupField(Color.WHITE);
-    }
-
     public ProgressBar getProgressBar() {
         return progressBar;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public Folder getSkin() {
@@ -86,23 +109,31 @@ public class GUI extends JFrame {
         undoCounter = counter;
     }
 
+    public void setupField() {
+        setupField(ChessPiece.Color.WHITE);
+    }
 
-    public void setupField(Color color) {
+
+    public void setupField(ChessPiece.Color color) {
         Container contents = getContentPane();
         contents.setLayout(new GridLayout(8, 8));
 
         ButtonHandler buttonHandler = new ButtonHandler();
-        if (color.equals(Color.WHITE)) {
+        if (color.equals(ChessPiece.Color.WHITE)) {
             for (int row = 7; row >= 0; row--) {
                 setupF(row, contents, buttonHandler);
             }
-        } else if (color.equals(Color.BLACK)) {
+        } else if (color.equals(ChessPiece.Color.BLACK)) {
             for (int row = 0; row < 8; row++) {
                 setupF(row, contents, buttonHandler);
             }
         }
         clearAllBorders();
-        playerStatus = ChessPiece.Color.WHITE;
+        playerStatus = color;
+        if (playerStatus.equals(ChessPiece.Color.BLACK)) {
+            processMove(new Field(0, 0), new Field(0, 0));
+        }
+        updateBoard();
     }
 
     private void setupF(int row, Container contents, ActionListener buttonHandler) {
@@ -131,13 +162,13 @@ public class GUI extends JFrame {
         for (int column = 0; column < 7; column++) {
             ChessPiece current = board.getChessPiece(new Field(0, column));
             if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor().toString(), this);
+                new TransfigurePawn(current.getColor(), this, new Field(0, column));
             }
         }
         for (int column = 0; column < 7; column++) {
             ChessPiece current = board.getChessPiece(new Field(7, column));
             if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor().toString(), this);
+                new TransfigurePawn(current.getColor(), this, new Field(7, column));
             }
         }
     }
@@ -158,7 +189,6 @@ public class GUI extends JFrame {
                     fields[row][column].setIcon(null);
                 }
             }
-            checkForTransfiguration();
         }
         progressBar.updateScore(board);
     }
@@ -238,19 +268,25 @@ public class GUI extends JFrame {
         lastMove[1] = to;
         beatenChessPiece = board.getChessPiece(to);
         board.move(from, to);
+        checkForTransfiguration();
         updateBoard();
-        switchPlayer();
+        if(ki != null) {
+            ki.move();
+            updateBoard();
+        } else {
+            switchPlayer();
+        }
         fieldsOffered = false;
         undoCounter = 1;
         boolean whiteCheckmate = board.isCheckmate(ChessPiece.Color.WHITE);
         if (whiteCheckmate){
-            System.out.println("Black wins");
+            new GameEnd("Black Wins!");
         }
         if (board.isCheckmate(ChessPiece.Color.BLACK)){
-            System.out.println("White wins");
+            new GameEnd("White Wins!");
         }
         if (board.isStalemate(ChessPiece.Color.WHITE) || board.isStalemate(ChessPiece.Color.BLACK)){
-            System.out.println("Stalemate");
+            new GameEnd("Stalemate!");
         }
     }
 
@@ -258,7 +294,9 @@ public class GUI extends JFrame {
         if (undoCounter == 1) {
             board.move(lastMove[1], lastMove[0]);
             board.putChessPieceOn(lastMove[1].row, lastMove[1].column, beatenChessPiece);
-            switchPlayer();
+            if (ki == null) {
+                switchPlayer();
+            }
             updateBoard();
             undoCounter = 0;
         }
