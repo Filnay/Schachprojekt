@@ -31,9 +31,9 @@ public class IntelligentKI {
         Field to = null;
         int bestEvaluate;
         if(color == ChessPiece.Color.WHITE){
-            bestEvaluate = 1000;
+            bestEvaluate = Integer.MAX_VALUE;
         } else {
-        bestEvaluate = -1000;
+        bestEvaluate = Integer.MIN_VALUE;
         }
 
 
@@ -42,7 +42,7 @@ public class IntelligentKI {
                 List<Field> possibleMoves = board.getMoves(row, column);
                 for (Field move : possibleMoves) {
                     Board newBoard = new Board(board);
-                    if (!(board.getChessPiece(move) instanceof King)) {
+                    if (!(newBoard.getChessPiece(move) instanceof King)) {
                         newBoard.move(new Field(row, column), move);
                         int evaluate = evaluate(newBoard);
                         if (color == ChessPiece.Color.BLACK && evaluate > bestEvaluate) {
