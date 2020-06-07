@@ -12,60 +12,56 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUIControls extends JFrame {
-    GUI chessGUI = new GUI();
 
+    JButton undo = new JButton("Undo");
     JButton reset = new JButton("Reset");
     JButton showLegend = new JButton("Show Legend");
     JButton changeSkin = new JButton("ChangeSkin");
-    JButton undo = new JButton("Undo");
-    JButton close = new JButton("Exit Game");
     JButton toggleScore = new JButton("Toggle Score");
+    JButton close = new JButton("Exit Game");
 
     JPanel controlPanel = new JPanel();
 
-
-    GUILegend legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
-    GUIExitGame exit = new GUIExitGame();
-    GUIChangeSkin changeChessPieceSkin = new GUIChangeSkin(chessGUI, legends, this);
+    GUILegend legends;
 
 
-
-    public GUIControls() {
+    public GUIControls(boolean gameMode, ChessPiece.Color kIColor) {
         super("Chess Controls");
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        int guiX = chessGUI.getX();
-        int guiWidth = chessGUI.getWidth();
-        int guiY = chessGUI.getY();
-        int guiHeight = chessGUI.getHeight();
-        setLocation(guiX + guiWidth, guiY);
-        setSize(300, guiHeight);
-//        if (gameMode) {
-//            chessGUI.setKi(new IntelligentKI(chessGUI.getBoard(), kIcolor));
-//        }
         setResizable(false);
-        setupControls();
+        setupControls(gameMode, kIColor);
     }
 
-//    public GUI getChessGUI() {
-//        return chessGUI;
-//    }
-//    public JFrame getLegends() {
-//        return legends;
-//    }
-//    public void updateLegend() {
-//        changeChessPieceSkin.dispose();
-//        JFrame changeChessPieceSkin = new GUIChangeSkin(chessGUI, legends, );
-//    }
 
-    public void setNewLegend() {
+    public void setNewLegend(GUI chessGUI) {
         legends.dispose();
         legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
         legends.setVisible(true);
     }
 
 
-    public void setupControls() {
+    public void setupControls(boolean gameMode, ChessPiece.Color kIColor) {
+        GUI chessGUI;
+
+        if (gameMode) {
+            chessGUI = new GUI(kIColor);
+        }
+        else{
+            chessGUI = new GUI();
+        }
+
+        int guiX = chessGUI.getX();
+        int guiWidth = chessGUI.getWidth();
+        int guiY = chessGUI.getY();
+        int guiHeight = chessGUI.getHeight();
+        setLocation(guiX + guiWidth, guiY);
+        setSize(300, guiHeight);
+
+        GUILegend legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
+        GUIExitGame exit = new GUIExitGame();
+        GUIChangeSkin changeChessPieceSkin = new GUIChangeSkin(chessGUI, legends, this);
+
         controlPanel.setBorder(new LineBorder(Color.WHITE, 30));
         GridLayout controlPanelLayout = new GridLayout(6, 1, 20, 20);
         controlPanel.setLayout(controlPanelLayout);
@@ -170,6 +166,6 @@ public class GUIControls extends JFrame {
     }
 
     public static void main(String[] args) {
-        new GUIControls();
+        new GUIControls(true, ChessPiece.Color.BLACK);
     }
 }

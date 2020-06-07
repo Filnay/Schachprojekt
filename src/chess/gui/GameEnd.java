@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameEnd extends JFrame {
-    public GameEnd(String status) {
+    public GameEnd(String status, GUI gui) {
         super("Game Over!");
         setVisible(true);
         setSize(500, 300);
@@ -43,6 +43,7 @@ public class GameEnd extends JFrame {
         restart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gui.dispose();
                 dispose();
                 new SetupGame();
             }
@@ -69,6 +70,6 @@ public class GameEnd extends JFrame {
 
 
     public static void main(String[] args) {
-        new GameEnd("Black Wins!");
+        new GameEnd("Black Wins!", new GUI());
     }
 }
