@@ -115,6 +115,7 @@ public class GUIControls extends JFrame {
         //Score-Button
         toggleScore.setBackground(Color.lightGray);
         toggleScore.setBorder(null);
+        chessGUI.getProgressBar().setVisible(true);
         toggleScore.addActionListener(e -> {
             JFrame progressBar = chessGUI.getProgressBar();
             progressBar.setVisible(!progressBar.isVisible());

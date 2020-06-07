@@ -151,13 +151,13 @@ public class GUI extends JFrame {
         contents.setLayout(new GridLayout(8, 8));
 
         ButtonHandler buttonHandler = new ButtonHandler();
-        if (color.equals(ChessPiece.Color.BLACK)) {
+        if (color.equals(ChessPiece.Color.WHITE)) {
             for (int row = 7; row >= 0; row--) {
                 for (int column = 7; column >= 0; column--) {
                     setupF(row, column, contents, buttonHandler);
                 }
             }
-        } else if (color.equals(ChessPiece.Color.WHITE)) {
+        } else if (color.equals(ChessPiece.Color.BLACK)) {
             for (int row = 0; row < 8; row++) {
                 for (int column = 0; column < 8; column++) {
                     setupF(row, column,  contents, buttonHandler);
