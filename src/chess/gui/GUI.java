@@ -74,6 +74,7 @@ public class GUI extends JFrame {
         progressBar = new ProgressBar(getX(), getY(), 700, board);
         ki = null;
         setupField();
+        updateBoard();
     }
 
     //Constructor for GUI with KI
@@ -86,7 +87,7 @@ public class GUI extends JFrame {
         setResizable(false);
         this.ki = new IntelligentKI(board, colorOfKI);
         progressBar = new ProgressBar(getX(), getY(), 700, board);
-        setupField();
+        setupField(colorOfKI);
         updateBoard();
     }
 
@@ -140,22 +141,22 @@ public class GUI extends JFrame {
     //setUpField-method with KI: calls another SetupField method with attributes depending on the Color that is given.
     //the Field must be constructed different whether the KI shall play as White or as Black, the KI always needs to be on Top.
     public void setupField(ChessPiece.Color color) {
+        playerStatus = color.otherColor();
         Container contents = getContentPane();
         contents.setLayout(new GridLayout(8, 8));
 
         ButtonHandler buttonHandler = new ButtonHandler();
-        if (color.equals(ChessPiece.Color.WHITE)) {
+        if (color.equals(ChessPiece.Color.BLACK)) {
             for (int row = 7; row >= 0; row--) {
                 setupF(row, contents, buttonHandler);
             }
-        } else if (color.equals(ChessPiece.Color.BLACK)) {
+        } else if (color.equals(ChessPiece.Color.WHITE)) {
             for (int row = 0; row < 8; row++) {
                 setupF(row, contents, buttonHandler);
             }
         }
         clearAllBorders();
-        playerStatus = color;
-        if (playerStatus.equals(ChessPiece.Color.BLACK)) {
+        if (color.equals(ChessPiece.Color.WHITE)) {
             processMove(new Field(0, 0), new Field(0, 0));
         }
         updateBoard();
@@ -332,6 +333,7 @@ public class GUI extends JFrame {
     }
 
     //uses the saved Move form the move-method to undo the last Move
+    //playing against a KI, the Function only undoes your move, not the one of the KI//TODO
     public void undoMove() {
         if (undoCounter == 1) {
             board.move(lastMove[1], lastMove[0]);
