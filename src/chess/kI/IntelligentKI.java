@@ -8,13 +8,18 @@ import java.util.List;
 
 public class IntelligentKI {
 
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
     private Board board;
     private ChessPiece.Color color;
 
-    public IntelligentKI(Board board, ChessPiece.Color color) {
-        this.board = board;
+    public IntelligentKI(ChessPiece.Color color) {
+        this.board = new Board();
         this.color = color;
     }
+
 
 
     public Board getBoard() {
@@ -27,8 +32,8 @@ public class IntelligentKI {
 
 
     public void move() {
-        Field from = null;
-        Field to = null;
+        Field bestFrom = null;
+        Field bestTo = null;
         int bestEvaluate;
         if(color == ChessPiece.Color.WHITE){
             bestEvaluate = Integer.MAX_VALUE;
@@ -45,21 +50,22 @@ public class IntelligentKI {
                     if (!(newBoard.getChessPiece(move) instanceof King)) {
                         newBoard.move(new Field(row, column), move);
                         int evaluate = evaluate(newBoard);
-                        if (color == ChessPiece.Color.BLACK && evaluate > bestEvaluate) {
+                        ChessPiece chessPiece = board.getChessPiece(new Field(row, column));
+                        if (color == ChessPiece.Color.BLACK && evaluate > bestEvaluate && chessPiece.getColor() == color ) {
                             bestEvaluate = evaluate;
-                            from = new Field(row, column);
-                            to = move;
+                            bestFrom = new Field(row, column);
+                            bestTo = move;
                         }
-                        if (color == ChessPiece.Color.WHITE && evaluate < bestEvaluate) {
+                        if (color == ChessPiece.Color.WHITE && evaluate < bestEvaluate && chessPiece.getColor() == color) {
                             bestEvaluate = evaluate;
-                            from = new Field(row, column);
-                            to = move;
+                            bestFrom = new Field(row, column);
+                            bestTo = move;
                         }
                     }
                 }
             }
         }
-        board.move(from, to);
+        board.move(bestFrom, bestTo);
     }
 
     public static int evaluate(Board board) {
@@ -246,7 +252,7 @@ public class IntelligentKI {
 
     public static void main(String[] args) {
         Board board = new Board();
-        IntelligentKI test = new IntelligentKI(board, ChessPiece.Color.WHITE);
+        IntelligentKI test = new IntelligentKI(ChessPiece.Color.WHITE);
         System.out.println(board.toString());
         test.move();
         System.out.println(board.toString());

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GUI extends JFrame {
-    private Board board = new Board();
+    private Board board;
 
     private final Chessfield[][] fields = new Chessfield[8][8];
 
@@ -58,8 +58,9 @@ public class GUI extends JFrame {
         setSize(700, 700);
         setLocationRelativeTo(null);
         setResizable(false);
-        progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
+        progressBar = new ProgressBar(getX(), getY(), 700, 700);
         ki = null;
+        setBoard(new Board());
         setupField();
     }
 
@@ -70,8 +71,9 @@ public class GUI extends JFrame {
         setSize(700, 700);
         setLocationRelativeTo(null);
         setResizable(false);
-        this.ki = new IntelligentKI(board, colorOfKI);
-        progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
+        ki = new IntelligentKI(colorOfKI);
+        progressBar = new ProgressBar(getX(), getY(), 700, 700);
+        setBoard(new Board());
         setupField(colorOfKI.otherColor());
         updateBoard();
     }
@@ -87,6 +89,13 @@ public class GUI extends JFrame {
 
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
+    }
+
+    public void setBoard(Board newBoard) {
+        board = newBoard;
+        if (ki != null) {
+            ki.setBoard(newBoard);
+        }
     }
 
     public ProgressBar getProgressBar() {
@@ -194,9 +203,6 @@ public class GUI extends JFrame {
     }
 
 
-    public void setBoard(Board newBoard) {
-        board = newBoard;
-    }
 
 
     private class ButtonHandler implements ActionListener {

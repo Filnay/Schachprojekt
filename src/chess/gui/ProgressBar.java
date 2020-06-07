@@ -9,13 +9,14 @@ public class ProgressBar extends JFrame {
 
     JLabel score = new JLabel("0");
 
-    public ProgressBar(int x, int y, int width, int height, Board board) {
+    public ProgressBar(int x, int y, int width, int height) {
         super("Progress Bar");
         setBounds(x, y - 100, width, 100);
         setResizable(true);
         setVisible(true);
-        updateScore(board);
+        updateScore(new Board());
     }
+
 
     public void updateScore(Board board) {
         int evaluate = IntelligentKI.evaluate(board);
@@ -26,6 +27,6 @@ public class ProgressBar extends JFrame {
     }
 
     public static void main(String[] args) {
-        new ProgressBar(100, 200, 700, 400, new Board());
+        new ProgressBar(100, 200, 700, 400);
     }
 }
