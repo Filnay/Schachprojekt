@@ -33,6 +33,8 @@ public class GUIExitGame extends JFrame {
         constraints.gridy = 1;
         constraints.gridwidth = 1;
         JButton yes = new JButton("Yes");
+//        yes.setBorder(null);
+        yes.setBackground(Color.lightGray);
         yes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -47,6 +49,8 @@ public class GUIExitGame extends JFrame {
         constraints.gridy = 1;
         constraints.fill = GridBagConstraints.CENTER;
         JButton no = new JButton("No");
+        no.setBackground(Color.LIGHT_GRAY);
+//        no.setBorder(null);
         no.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

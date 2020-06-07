@@ -74,7 +74,8 @@ public class GUI extends JFrame {
         ki = new IntelligentKI(colorOfKI);
         progressBar = new ProgressBar(getX(), getY(), 700, 700);
         setBoard(new Board());
-        setupField(colorOfKI.otherColor());
+        setupField(colorOfKI);
+        playerStatus = colorOfKI.otherColor();
         updateBoard();
     }
 
@@ -128,18 +129,18 @@ public class GUI extends JFrame {
         contents.setLayout(new GridLayout(8, 8));
 
         ButtonHandler buttonHandler = new ButtonHandler();
-        if (color.equals(ChessPiece.Color.WHITE)) {
+        if (color.equals(ChessPiece.Color.BLACK)) {
             for (int row = 7; row >= 0; row--) {
                 setupF(row, contents, buttonHandler);
             }
-        } else if (color.equals(ChessPiece.Color.BLACK)) {
+        } else if (color.equals(ChessPiece.Color.WHITE)) {
             for (int row = 0; row < 8; row++) {
                 setupF(row, contents, buttonHandler);
             }
         }
         clearAllBorders();
         playerStatus = color;
-        if (playerStatus.equals(ChessPiece.Color.BLACK)) {
+        if (playerStatus.equals(ChessPiece.Color.WHITE)) {
             processMove(new Field(0, 0), new Field(0, 0));
         }
         updateBoard();
@@ -163,21 +164,6 @@ public class GUI extends JFrame {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 fields[i][j].setBorder(unselected);
-            }
-        }
-    }
-
-    public void checkForTransfiguration() {
-        for (int column = 0; column < 7; column++) {
-            ChessPiece current = board.getChessPiece(new Field(0, column));
-            if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor(), this, new Field(0, column));
-            }
-        }
-        for (int column = 0; column < 7; column++) {
-            ChessPiece current = board.getChessPiece(new Field(7, column));
-            if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor(), this, new Field(7, column));
             }
         }
     }
@@ -206,6 +192,7 @@ public class GUI extends JFrame {
 
 
     private class ButtonHandler implements ActionListener {
+
         public void actionPerformed(ActionEvent e) {
             Object source = e.getSource();
             for (int row = 0; row < 8; row++) {
@@ -231,7 +218,6 @@ public class GUI extends JFrame {
             }
         }
     }
-
 
     private void processSelection(int row, int column) {
         clearAllBorders();
@@ -284,15 +270,29 @@ public class GUI extends JFrame {
         }
         fieldsOffered = false;
         undoCounter = 1;
-        boolean whiteCheckmate = board.isCheckmate(ChessPiece.Color.WHITE);
-        if (whiteCheckmate){
-            new GameEnd("Black Wins!");
+        if (board.isCheckmate(ChessPiece.Color.WHITE)){
+            new GameEnd("Black Wins!", this);
         }
         if (board.isCheckmate(ChessPiece.Color.BLACK)){
-            new GameEnd("White Wins!");
+            new GameEnd("White Wins!", this);
         }
         if (board.isStalemate(ChessPiece.Color.WHITE) || board.isStalemate(ChessPiece.Color.BLACK)){
-            new GameEnd("Stalemate!");
+            new GameEnd("Stalemate!", this);
+        }
+    }
+
+    public void checkForTransfiguration() {
+        for (int row = 0; row < 7; row++) {
+            ChessPiece current = board.getChessPiece(new Field(row, 0));
+            if (current != null && current.getClass().getName().equals("Pawn")) {
+                new TransfigurePawn(current.getColor(), this, new Field(row, 0));
+            }
+        }
+        for (int row = 0; row < 7; row++) {
+            ChessPiece current = board.getChessPiece(new Field(7, row));
+            if (current != null && current.getClass().getName().equals("Pawn")) {
+                new TransfigurePawn(current.getColor(), this, new Field(row, 7));
+            }
         }
     }
 
@@ -360,4 +360,7 @@ public class GUI extends JFrame {
         return URL;
     }
 
+    public static void main(String[] args) {
+        new GUI(ChessPiece.Color.WHITE);
+    }
 }

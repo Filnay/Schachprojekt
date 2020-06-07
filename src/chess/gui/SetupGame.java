@@ -111,7 +111,7 @@ public class SetupGame extends JFrame {
 //
 //                gameMode = kI.isSelected();
                 dispose();
-                guiControls = new GUIControls();
+                guiControls = new GUIControls(false, ChessPiece.Color.WHITE);
             }
         });
 
