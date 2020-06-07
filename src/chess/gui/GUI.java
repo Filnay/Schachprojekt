@@ -1,5 +1,5 @@
 package chess.gui;
-
+//imports
 import chess.Board;
 import chess.Field;
 import chess.chesspiece.*;
@@ -13,36 +13,47 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class GUI extends JFrame {
+
+    /*Attributes*/
+
+    //new Object Bord to load the ChessPieces from
     private Board board = new Board();
 
+    //New 2Dimensional Chessfield
     private final Chessfield[][] fields = new Chessfield[8][8];
 
+    //Different types of Outlinings for selected/Offered Chess Pieces
     private final LineBorder selected = new LineBorder(Color.RED, 5);
     private final LineBorder offered = new LineBorder(Color.GREEN, 5);
-    private final LineBorder highlighted = new LineBorder(Color.YELLOW, 2);
     private final LineBorder unselected = new LineBorder(null);
 
+    //new List of possible Moves
     private List<Field> currentPossibleMoves;
-    private Field originalField;
-    private boolean fieldsOffered = false;
 
-    private ChessPiece.Color playerStatus;
-
+    //Attributes for the undo-methode
     private int undoCounter = 0;
-
-    private Folder skin = Folder.FOLDER1;
+    private final Field[] lastMove = new Field[2];
+    private Field originalField;
     ChessPiece beatenChessPiece = null;
 
+    //active Player
+    private ChessPiece.Color playerStatus;
 
+    //Attribute for the move-methode
+    private boolean fieldsOffered = false;
+
+    //Standard Folder to load the Pieces from
+    private Folder skin = Folder.FOLDER1;
+
+    //New ProgressBar object
     private final ProgressBar progressBar;
 
-
-    private final Field[] lastMove = new Field[2];
-
-
+    //New KI object
     private IntelligentKI ki;
 
+    //Enumeration of the different Folders to load the Skins from
     enum Folder {
         FOLDER1("Schachfiguren 1"), FOLDER2("Schachfiguren 2"), FOLDER3("Schachfiguren 3");
         public final String name;
@@ -52,6 +63,7 @@ public class GUI extends JFrame {
         }
     }
 
+    //Constructor for GUI without KI
     public GUI() {
         super("Chess");
         setVisible(true);
@@ -64,6 +76,7 @@ public class GUI extends JFrame {
         setupField();
     }
 
+    //Constructor for GUI with KI
     public GUI(ChessPiece.Color colorOfKI) {
         super("Chess");
         setVisible(true);
@@ -77,27 +90,17 @@ public class GUI extends JFrame {
         updateBoard();
     }
 
+    /*Get and set- methods*/
 
+    //KI
     public IntelligentKI getKi() {
         return ki;
     }
-
     public void setKi(IntelligentKI ki) {
         this.ki = ki;
     }
 
-    public void setPlayerStatus(ChessPiece.Color playerStatus) {
-        this.playerStatus = playerStatus;
-    }
-
-    public ProgressBar getProgressBar() {
-        return progressBar;
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
+    //Skin
     public Folder getSkin() {
         return skin;
     }
@@ -106,15 +109,36 @@ public class GUI extends JFrame {
         this.skin = skin;
     }
 
+    //PlayerStatus
+    public void setPlayerStatus(ChessPiece.Color playerStatus) {
+        this.playerStatus = playerStatus;
+    }
+
+    //Progressbar
+    public ProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    //Board
+    public Board getBoard() {
+        return board;
+    }
+    public void setBoard(Board newBoard) {
+        board = newBoard;
+    }
+
+    //Undo counter
     public void setUndoCounter(int counter) {
         undoCounter = counter;
     }
 
+    //setupField-method without KI: calls SetupField with the value White; White is always at the Bottom
     public void setupField() {
         setupField(ChessPiece.Color.WHITE);
     }
 
-
+    //setUpField-method with KI: calls another SetupField method with attributes depending on the Color that is given.
+    //the Field must be constructed different whether the KI shall play as White or as Black, the KI always needs to be on Top.
     public void setupField(ChessPiece.Color color) {
         Container contents = getContentPane();
         contents.setLayout(new GridLayout(8, 8));
@@ -137,6 +161,7 @@ public class GUI extends JFrame {
         updateBoard();
     }
 
+    //setup-method, Builds the Field and adds the ActionListeners
     private void setupF(int row, Container contents, ActionListener buttonHandler) {
         for (int column = 0; column < 8; column++) {
             fields[row][column] = new Chessfield(null);
@@ -150,7 +175,7 @@ public class GUI extends JFrame {
         }
     }
 
-
+    //sets all Borders to null -> sets all Fields unselected
     public void clearAllBorders() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -159,6 +184,8 @@ public class GUI extends JFrame {
         }
     }
 
+    //Checks the Top and Bottom row for an Pawn, and opens a new Window when there is one
+    //Doesnt work properly //TODO
     public void checkForTransfiguration() {
         for (int row = 0; row < 7; row++) {
             ChessPiece current = board.getChessPiece(new Field(row, 0));
@@ -174,10 +201,9 @@ public class GUI extends JFrame {
         }
     }
 
-    public void updateBoard() {
-        updateBoard(skin);
-    }
 
+    //IDEA: mark all Pieces of the current Player so that it is clear who's turn it is.
+    //doesnt Work
 //    public void highlightCurrentPlayer() {
 //        for (int row = 0; row < 8; row++) {
 //            for (int column = 0; column < 8; column++) {
@@ -189,6 +215,14 @@ public class GUI extends JFrame {
 //        }
 //    }
 
+
+    //Updates the Board after an Move, calls another Method with the current Skin
+    public void updateBoard() {
+        updateBoard(skin);
+    }
+
+    //Updates every Field of the ChessField with the current Skin, calls GetURLFromChessPiece-method to get the URLs
+    //updates the ProgressBar
     private void updateBoard(Folder folder) {
         for (int row = 7; row >= 0; row--) {
             for (int column = 0; column < 8; column++) {
@@ -204,12 +238,10 @@ public class GUI extends JFrame {
         progressBar.updateScoreBar(board);
     }
 
-
-    public void setBoard(Board newBoard) {
-        board = newBoard;
-    }
-
-
+    //reacts to the Click on a ChessField:
+    //      if there isn't an ChessPiece, it just selects the Field
+    //      if there is an ChessPiece on that Field, it calls the highlights-method
+    //      if the Field is Highlighted, it calls the Move-method
     private class ButtonHandler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             Object source = e.getSource();
@@ -223,21 +255,18 @@ public class GUI extends JFrame {
                                     processMove(originalField, possibleMoves);
                                 }
                             }
-                            fields[row][column].setBorder(selected);
-                            processSelection(row, column);
-                            return;
-                        } else {
-                            fields[row][column].setBorder(selected);
-                            processSelection(row, column);
-                            return;
                         }
+                        fields[row][column].setBorder(selected);
+                        processSelection(row, column);
+                        return;
                     }
                 }
             }
         }
     }
 
-
+    //Manages that you can only move your own ChessPieces
+    //highlights the Field you clicked on in red, when there is a ChessPiece on it, offerFields-method is called
     private void processSelection(int row, int column) {
         clearAllBorders();
         fields[row][column].setBorder(selected);
@@ -265,7 +294,7 @@ public class GUI extends JFrame {
         }
     }
 
-
+    //offers the possible Moves of the ChessPiece you clicked on in green
     public void offerFields(ArrayList<Field> possibleMoves) {
         for (Field possibleField : possibleMoves) {
             fields[possibleField.row][possibleField.column].setBorder(offered);
@@ -273,14 +302,15 @@ public class GUI extends JFrame {
         currentPossibleMoves = possibleMoves;
     }
 
-
+    //saves the Move to maybe undo it, then moves the Figure in the Board and updates the GUI.
+    //checks after every Move whether it is Checkmate
     public void processMove(Field from, Field to) {
         lastMove[0] = from;
         lastMove[1] = to;
         beatenChessPiece = board.getChessPiece(to);
         board.move(from, to);
-        checkForTransfiguration();
         updateBoard();
+        checkForTransfiguration();
         if(ki != null) {
             ki.move();
             updateBoard();
@@ -301,6 +331,7 @@ public class GUI extends JFrame {
         }
     }
 
+    //uses the saved Move form the move-method to undo the last Move
     public void undoMove() {
         if (undoCounter == 1) {
             board.move(lastMove[1], lastMove[0]);
@@ -313,14 +344,12 @@ public class GUI extends JFrame {
         }
     }
 
+    //switches the current Player
     public void switchPlayer() {
-        if (playerStatus == ChessPiece.Color.WHITE) {
-            playerStatus = ChessPiece.Color.BLACK;
-        } else {
-            playerStatus = ChessPiece.Color.WHITE;
-        }
+        playerStatus = playerStatus.otherColor();
     }
 
+    //specifies the URL of the ChessPieces
     public String getURLFromChessPiece(ChessPiece chesspiece) {
         String URL = "";
 
@@ -364,7 +393,8 @@ public class GUI extends JFrame {
         return URL;
     }
 
-    public static void main(String[] args) {
-        new GUI(ChessPiece.Color.BLACK);
-    }
+    //for testing
+//    public static void main(String[] args) {
+//        new GUI(ChessPiece.Color.BLACK);
+//    }
 }

@@ -1,27 +1,31 @@
 package chess.gui;
-
+//import
 import chess.chesspiece.*;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class GUILegend extends JFrame {
 
+    //Constructor
     public GUILegend(int x, int y, int height, GUI gui) {
         super("Chess Legend");
         setBounds(x - 300, y, 300, height);
         setResizable(false);
         setVisible(false);
-        updateLegend(gui);
+        setupLegend(gui);
     }
 
-    public void updateLegend(GUI gui) {
+    //sets up the Legend
+    public void setupLegend(GUI gui) {
+
+        //Declaring and Initializing a new JPanel with a GridLayout
         JPanel legend = new JPanel();
         legend.setLayout(new GridLayout(6, 2));
         legend.setBackground(Color.WHITE);
-        String url = "";
+        String url;
 
 
+        //Creating a new ChessField-Button and loading the Image of an Pawn into it
         Chessfield pawn = new Chessfield(null);
         pawn.setSize(70, 70);
         url = gui.getURLFromChessPiece(new Pawn(ChessPiece.Color.BLACK));
@@ -30,11 +34,13 @@ public class GUILegend extends JFrame {
         pawn.setBorder(null);
         legend.add(pawn);
 
+        //Setting the Text next to the ChessField-Button to Pawn
         JLabel pawnText = new JLabel("Pawn");
         legend.add(pawnText);
 
 
 
+        //Creating a new ChessField-Button and loading the Image of an Rook into it
         Chessfield rook = new Chessfield(null);
         rook.setSize(70, 70);
         url = gui.getURLFromChessPiece(new Rook(ChessPiece.Color.BLACK));
@@ -43,11 +49,13 @@ public class GUILegend extends JFrame {
         rook.setBorder(null);
         legend.add(rook);
 
+        //Setting the Text next to the ChessField-Button to Rook
         JLabel rookText = new JLabel("Rook");
         legend.add(rookText);
 
 
 
+        //Creating a new ChessField-Button and loading the Image of an Knight into it
         Chessfield knight = new Chessfield(null);
         knight.setSize(70, 70);
         url = gui.getURLFromChessPiece(new Knight(ChessPiece.Color.BLACK));
@@ -56,11 +64,13 @@ public class GUILegend extends JFrame {
         knight.setBorder(null);
         legend.add(knight);
 
-
-
+        //Setting the Text next to the ChessField-Button to Knight
         JLabel knightText = new JLabel("Knight");
         legend.add(knightText);
 
+
+
+        //Creating a new ChessField-Button and loading the Image of an Bishop into it
         Chessfield bishop = new Chessfield(null);
         bishop.setSize(70, 70);
         url = gui.getURLFromChessPiece(new Bishop(ChessPiece.Color.BLACK));
@@ -69,11 +79,13 @@ public class GUILegend extends JFrame {
         bishop.setBorder(null);
         legend.add(bishop);
 
+        //Setting the Text next to the ChessField-Button to Bishop
         JLabel bishopText = new JLabel("Bishop");
         legend.add(bishopText);
 
 
 
+        //Creating a new ChessField-Button and loading the Image of an Queen into it
         Chessfield queen = new Chessfield(null);
         queen.setSize(70, 70);
         url = gui.getURLFromChessPiece(new Queen(ChessPiece.Color.BLACK));
@@ -82,11 +94,13 @@ public class GUILegend extends JFrame {
         queen.setBorder(null);
         legend.add(queen);
 
+        //Setting the Text next to the ChessField-Button to Queen
         JLabel queenText = new JLabel("Queen");
         legend.add(queenText);
 
 
 
+        //Creating a new ChessField-Button and loading the Image of an King into it
         Chessfield king = new Chessfield(null);
         king.setSize(70, 70);
         url = gui.getURLFromChessPiece(new King(ChessPiece.Color.BLACK));
@@ -95,15 +109,15 @@ public class GUILegend extends JFrame {
         king.setBorder(null);
         legend.add(king);
 
+        //Setting the Text next to the ChessField-Button to King
         JLabel kingText = new JLabel("King");
         legend.add(kingText);
-
-
 
         add(legend);
     }
 
-    public static void main(String[] args) {
-//        new GUILegend(300, 300, 700).setVisible(true);
-    }
+    //for Testing
+//    public static void main(String[] args) {
+//        new GUILegend(300, 300, 700, new GUI()).setVisible(true);
+//    }
 }
