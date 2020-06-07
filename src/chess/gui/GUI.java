@@ -58,7 +58,7 @@ public class GUI extends JFrame {
         setSize(700, 700);
         setLocationRelativeTo(null);
         setResizable(false);
-        progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
+        progressBar = new ProgressBar(getX(), getY(), 700, board);
         ki = null;
         setupField();
     }
@@ -71,7 +71,7 @@ public class GUI extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         this.ki = new IntelligentKI(board, colorOfKI);
-        progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
+        progressBar = new ProgressBar(getX(), getY(), 700, board);
         setupField(colorOfKI);
         playerStatus = colorOfKI.otherColor();
         updateBoard();
@@ -176,7 +176,7 @@ public class GUI extends JFrame {
                 }
             }
         }
-        progressBar.updateScore(board);
+        progressBar.updateScoreBar(board);
     }
 
 
@@ -186,7 +186,6 @@ public class GUI extends JFrame {
 
 
     private class ButtonHandler implements ActionListener {
-
         public void actionPerformed(ActionEvent e) {
             Object source = e.getSource();
             for (int row = 0; row < 8; row++) {

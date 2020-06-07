@@ -7,25 +7,34 @@ import java.awt.*;
 
 public class ProgressBar extends JFrame {
 
-    JLabel score = new JLabel("0");
+    JProgressBar progressBar;
+    int evaluate;
 
-    public ProgressBar(int x, int y, int width, int height, Board board) {
+    public ProgressBar(int x, int y, int width, Board board) {
         super("Progress Bar");
         setBounds(x, y - 100, width, 100);
         setResizable(true);
         setVisible(true);
-        updateScore(board);
+        setScore(board);
     }
 
-    public void updateScore(Board board) {
-        int evaluate = IntelligentKI.evaluate(board);
-        score.setText("" + evaluate + "");
-        score.setVisible(true);
-        score.setHorizontalAlignment(SwingConstants.CENTER);
-        add(score);
+    public void setScore(Board board) {
+        evaluate = IntelligentKI.evaluate(board);
+        progressBar = new JProgressBar(0, 2000);
+        progressBar.setVisible(true);
+        progressBar.setStringPainted(true);
+        progressBar.setForeground(Color.BLACK);
+        add(progressBar);
+        updateScoreBar(board);
+    }
+
+    public void updateScoreBar(Board board) {
+        evaluate = IntelligentKI.evaluate(board);
+        progressBar.setString(String.valueOf(evaluate));
+        progressBar.setValue(evaluate + 1000);
     }
 
     public static void main(String[] args) {
-        new ProgressBar(100, 200, 700, 400, new Board());
+        new ProgressBar(100, 200, 700, new Board());
     }
 }

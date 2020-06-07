@@ -11,8 +11,6 @@ import java.awt.event.ActionListener;
 
 public class SetupGame extends JFrame {
 
-    GUIControls guiControls;
-
     public SetupGame() {
         super("Chess Setup");
         setSize(600, 500);
@@ -111,7 +109,7 @@ public class SetupGame extends JFrame {
 //
 //                gameMode = kI.isSelected();
                 dispose();
-                guiControls = new GUIControls(false, ChessPiece.Color.WHITE);
+                new GUIControls(false, ChessPiece.Color.WHITE);
             }
         });
 

@@ -104,11 +104,7 @@ public class GUIControls extends JFrame {
         showLegend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!legends.isVisible()) {
-                    legends.setVisible(true);
-                } else if (legends.isVisible()) {
-                    legends.setVisible(false);
-                }
+                legends.setVisible(legends.isVisible());
             }
         });
         controlPanel.add(showLegend);
@@ -136,11 +132,7 @@ public class GUIControls extends JFrame {
         changeSkin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (changeChessPieceSkin.isVisible()) {
-                    changeChessPieceSkin.setVisible(false);
-                } else if (!changeChessPieceSkin.isVisible()) {
-                    changeChessPieceSkin.setVisible(true);
-                }
+                changeChessPieceSkin.setVisible(!changeChessPieceSkin.isVisible());
             }
         });
         controlPanel.add(changeSkin);
@@ -166,6 +158,6 @@ public class GUIControls extends JFrame {
     }
 
     public static void main(String[] args) {
-        new GUIControls(true, ChessPiece.Color.BLACK);
+        new GUIControls(true, ChessPiece.Color.WHITE);
     }
 }
