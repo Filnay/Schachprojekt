@@ -29,10 +29,7 @@ public class IntelligentKI {
         return color;
     }
 
-
     public void move() {
-        Field bestFrom = null;
-        Field bestTo = null;
         int bestEvaluate;
         if(color == ChessPiece.Color.WHITE){
             bestEvaluate = Integer.MAX_VALUE;
@@ -40,32 +37,11 @@ public class IntelligentKI {
             bestEvaluate = Integer.MIN_VALUE;
         }
 
+        FindBestMove findBestMove = new FindBestMove(color, bestEvaluate, board).invoke();
 
-        for (int row = 0; row < 8; row++) {
-            for (int column = 0; column < 8; column++) {
-                List<Field> possibleMoves = board.getMoves(row, column);
-                for (Field move : possibleMoves) {
-                    Board newBoard = new Board(board);
-                    if (!(newBoard.getChessPiece(move) instanceof King)) {
-                        newBoard.move(new Field(row, column), move);
-                        int evaluate = evaluate(newBoard);
-                        ChessPiece chessPiece = board.getChessPiece(new Field(row, column));
-                        if (color == ChessPiece.Color.BLACK && evaluate > bestEvaluate && chessPiece.getColor() == color ) {
-                            bestEvaluate = evaluate;
-                            bestFrom = new Field(row, column);
-                            bestTo = move;
-                        }
-                        if (color == ChessPiece.Color.WHITE && evaluate < bestEvaluate && chessPiece.getColor() == color) {
-                            bestEvaluate = evaluate;
-                            bestFrom = new Field(row, column);
-                            bestTo = move;
-                        }
-                    }
-                }
-            }
-        }
-        board.move(bestFrom, bestTo);
+        board.move(findBestMove.getBestFrom(), findBestMove.getBestTo());
     }
+
 
     public static int evaluate(Board board) {
         int points = 0;
@@ -118,7 +94,8 @@ public class IntelligentKI {
         }
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
-                ChessPiece current = board.getChessPiece(new Field(row, column));
+                Field currentField = new Field(row, column);
+                ChessPiece current = board.getChessPiece(currentField);
                 if (current != null) {
                     if (current.getColor() == ChessPiece.Color.BLACK) {
                         if (current instanceof Knight && knightCombineBlack) {
@@ -132,11 +109,19 @@ public class IntelligentKI {
                         } else if (current instanceof Queen) {
                             points = points + 900;
                         }
-
+                        List<Field> defender = board.whoDefends(currentField);
+                        for (int i = 0; i < defender.size(); i++) {
+                            points = points + defenderPoints(board.getChessPiece(defender.get(i)));
+                        }
+                        List<Field> attacker = board.whoAttacks(currentField);
+                        for (int i = 0; i < attacker.size(); i++) {
+                            points = points - defenderPoints(board.getChessPiece(attacker.get(i)));
+                        }
                         points = points + board.getMoves(row, column).size() * 2;
-                        points = points + (7 - row) * 2;
-                    }
-                    if (current.getColor() == ChessPiece.Color.WHITE) {
+                        if(board.isCheckmate(ChessPiece.Color.WHITE)) points = Integer.MAX_VALUE;
+
+
+                    } else if (current.getColor() == ChessPiece.Color.WHITE) {
                         if (current instanceof Knight && knightCombineWhite) {
                             points = points - 275;
                         } else if (current instanceof Bishop && bishopCombineWhite) {
@@ -150,9 +135,17 @@ public class IntelligentKI {
                         } else if (current instanceof Queen) {
                             points = points - 900;
                         }
+                        List<Field> defender = board.whoDefends(currentField);
+                        for (int i = 0; i < defender.size(); i++) {
+                            points = points - defenderPoints(board.getChessPiece(defender.get(i)));
+                        }
+                        List<Field> attacker = board.whoAttacks(currentField);
+                        for (int i = 0; i < attacker.size(); i++) {
+                            points = points + defenderPoints(board.getChessPiece(attacker.get(i)));
+                        }
+                        points = points - board.getMoves(row, column).size() * 2;
+                        if(board.isCheckmate(ChessPiece.Color.WHITE)) points = Integer.MAX_VALUE;
                     }
-                    points = points + board.getMoves(row, column).size() * 2;
-                    points = points - (row * 2);
                 }
             }
         }
@@ -200,7 +193,8 @@ public class IntelligentKI {
         }
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
-                ChessPiece current = board.getChessPiece(new Field(row, column));
+                Field currentField = new Field(row, column);
+                ChessPiece current = board.getChessPiece(currentField);
                 if (current != null) {
                     if (current.getColor() == ChessPiece.Color.BLACK) {
                         if (current instanceof Knight && knightCombineBlack) {
@@ -212,16 +206,25 @@ public class IntelligentKI {
                         } else if (current instanceof Pawn) {
                             points = points + 100;
                             if ((row == 3 || row == 4) && (column == 3 || column == 4)) {
-                                points = points + 60;
+                                points = points + 70;
                             }
                         } else if (current instanceof King) {
-                            if (board.castlingBlackLeft()) points = points + 30;
-                            if (board.castlingBlackRight()) points = points + 50;
+                            if (board.castlingBlackLeft()) points = points + 80;
+                            if (board.castlingBlackRight()) points = points + 90;
                             if (row == 7 && column == 6) points = points + 100;
                             if (row == 7 && column == 2) points = points + 60;
                         }
-                        points = points + board.getMoves(row, column).size() * 5;
-                        points = points + (7 - row) * 5;
+                        List<Field> defender = board.whoDefends(currentField);
+                        for (int i = 0; i < defender.size(); i++) {
+                            points = points + defenderPoints(board.getChessPiece(defender.get(i)));
+                        }
+                        List<Field> attacker = board.whoAttacks(currentField);
+                        for (int i = 0; i < attacker.size(); i++) {
+                            points = points - defenderPoints(board.getChessPiece(attacker.get(i)));
+                        }
+                        points = points + board.getMoves(row, column).size() * 1;
+                        if(board.isCheckmate(ChessPiece.Color.WHITE)) points = Integer.MAX_VALUE;
+
                     } else if (current.getColor() == ChessPiece.Color.WHITE) {
                         if (current instanceof Knight && knightCombineWhite) {
                             points = points - 275;
@@ -234,17 +237,25 @@ public class IntelligentKI {
                         } else if (current instanceof Pawn) {
                             points = points - 100;
                             if ((row == 3 || row == 4) && (column == 3 || column == 4)) {
-                                points = points - 60;
+                                points = points - 70;
                             }
                         } else if (current instanceof King) {
-                            if (board.castlingWhiteLeft()) points = points - 30;
-                            if (board.castlingWhiteRight()) points = points - 50;
+                            if (board.castlingWhiteLeft()) points = points - 80;
+                            if (board.castlingWhiteRight()) points = points - 90;
                             if (row == 0 && column == 6) points = points - 100;
                             if (row == 0 && column == 2) points = points - 60;
                         }
+                        List<Field> defender = board.whoDefends(currentField);
+                        for (int i = 0; i < defender.size(); i++) {
+                            points = points - defenderPoints(board.getChessPiece(defender.get(i)));
+                        }
+                        List<Field> attacker = board.whoAttacks(currentField);
+                        for (int i = 0; i < attacker.size(); i++) {
+                            points = points + defenderPoints(board.getChessPiece(attacker.get(i)));
+                        }
+                        points = points - board.getMoves(row, column).size() * 1;
+                        if(board.isCheckmate(ChessPiece.Color.BLACK)) points = Integer.MIN_VALUE;
 
-                        points = points - board.getMoves(row, column).size() * 5;
-                        points = points - (row * 5);
                     }
 
                 }
@@ -254,6 +265,16 @@ public class IntelligentKI {
         return points;
     }
 
+    public static int defenderPoints(ChessPiece chessPiece){
+        int defendPoint = 2;
+        if(chessPiece instanceof Pawn) return defendPoint * 9;
+        if(chessPiece instanceof Knight) return defendPoint * 6;
+        if(chessPiece instanceof Bishop) return defendPoint * 6;
+        if(chessPiece instanceof Queen) return defendPoint;
+        if(chessPiece instanceof King) return defendPoint;
+        if(chessPiece instanceof Rook) return defendPoint * 4;
+        return 0;
+    }
     public static void main(String[] args) {
         Board board = new Board();
         IntelligentKI test = new IntelligentKI(ChessPiece.Color.WHITE);
@@ -261,4 +282,5 @@ public class IntelligentKI {
         test.move();
         System.out.println(board.toString());
     }
+
 }
