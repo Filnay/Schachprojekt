@@ -61,7 +61,6 @@ public class GUI extends JFrame {
         progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
         ki = null;
         setupField();
-        updateBoard();
     }
 
     public GUI(ChessPiece.Color colorOfKI) {
@@ -73,25 +72,29 @@ public class GUI extends JFrame {
         setResizable(false);
         this.ki = new IntelligentKI(board, colorOfKI);
         progressBar = new ProgressBar(getX(), getY(), 700, 700, board);
-        setupField();
+        setupField(colorOfKI.otherColor());
         updateBoard();
     }
 
 
-    public IntelligentKI getKi() { return ki; }
+    public IntelligentKI getKi() {
+        return ki;
+    }
 
-    public void setKi(IntelligentKI ki) { this.ki = ki; }
+    public void setKi(IntelligentKI ki) {
+        this.ki = ki;
+    }
 
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
     }
 
-    public void setupField() {
-        setupField(Color.WHITE);
-    }
-
     public ProgressBar getProgressBar() {
         return progressBar;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public Folder getSkin() {
@@ -106,23 +109,31 @@ public class GUI extends JFrame {
         undoCounter = counter;
     }
 
+    public void setupField() {
+        setupField(ChessPiece.Color.WHITE);
+    }
 
-    public void setupField(Color color) {
+
+    public void setupField(ChessPiece.Color color) {
         Container contents = getContentPane();
         contents.setLayout(new GridLayout(8, 8));
 
         ButtonHandler buttonHandler = new ButtonHandler();
-        if (color.equals(Color.WHITE)) {
+        if (color.equals(ChessPiece.Color.WHITE)) {
             for (int row = 7; row >= 0; row--) {
                 setupF(row, contents, buttonHandler);
             }
-        } else if (color.equals(Color.BLACK)) {
+        } else if (color.equals(ChessPiece.Color.BLACK)) {
             for (int row = 0; row < 8; row++) {
                 setupF(row, contents, buttonHandler);
             }
         }
         clearAllBorders();
-        playerStatus = ChessPiece.Color.WHITE;
+        playerStatus = color;
+        if (playerStatus.equals(ChessPiece.Color.BLACK)) {
+            processMove(new Field(0, 0), new Field(0, 0));
+        }
+        updateBoard();
     }
 
     private void setupF(int row, Container contents, ActionListener buttonHandler) {
@@ -151,13 +162,13 @@ public class GUI extends JFrame {
         for (int column = 0; column < 7; column++) {
             ChessPiece current = board.getChessPiece(new Field(0, column));
             if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor().toString(), this);
+                new TransfigurePawn(current.getColor(), this, new Field(0, column));
             }
         }
         for (int column = 0; column < 7; column++) {
             ChessPiece current = board.getChessPiece(new Field(7, column));
             if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor().toString(), this);
+                new TransfigurePawn(current.getColor(), this, new Field(7, column));
             }
         }
     }
@@ -178,7 +189,6 @@ public class GUI extends JFrame {
                     fields[row][column].setIcon(null);
                 }
             }
-            checkForTransfiguration();
         }
         progressBar.updateScore(board);
     }
@@ -258,6 +268,7 @@ public class GUI extends JFrame {
         lastMove[1] = to;
         beatenChessPiece = board.getChessPiece(to);
         board.move(from, to);
+        checkForTransfiguration();
         updateBoard();
         if(ki != null) {
             ki.move();
@@ -269,13 +280,13 @@ public class GUI extends JFrame {
         undoCounter = 1;
         boolean whiteCheckmate = board.isCheckmate(ChessPiece.Color.WHITE);
         if (whiteCheckmate){
-            System.out.println("Black wins");
+            new GameEnd("Black Wins!");
         }
         if (board.isCheckmate(ChessPiece.Color.BLACK)){
-            System.out.println("White wins");
+            new GameEnd("White Wins!");
         }
         if (board.isStalemate(ChessPiece.Color.WHITE) || board.isStalemate(ChessPiece.Color.BLACK)){
-            System.out.println("Stalemate");
+            new GameEnd("Stalemate!");
         }
     }
 
