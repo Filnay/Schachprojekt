@@ -55,6 +55,7 @@ public class GUIControls extends JFrame {
         } else {
             chessGUI = new GUI();
         }
+        reset(chessGUI);
 
         //get the Position of the GUI Window to arrange the Controls to the right of the GUI
         int guiX = chessGUI.getX();
@@ -92,17 +93,7 @@ public class GUIControls extends JFrame {
         reset.setBackground(Color.lightGray);
         reset.setBorder(null);
         reset.addActionListener(e -> {
-            Board newBoard = new Board();
-            chessGUI.setBoard(newBoard);
-            chessGUI.setPlayerStatus(ChessPiece.Color.WHITE);
-            chessGUI.updateBoard();
-            chessGUI.setUndoCounter(0);
-            if (chessGUI.getKi() != null) {
-                if (chessGUI.getKi().getColor().equals(ChessPiece.Color.WHITE)) {
-                    chessGUI.getKi().move();
-                    chessGUI.setPlayerStatus(ChessPiece.Color.BLACK);
-                }
-            }
+            reset(chessGUI);
         });
         controlPanel.add(reset);
 
@@ -146,6 +137,21 @@ public class GUIControls extends JFrame {
         controlPanel.setVisible(true);
         add(controlPanel);
         setVisible(true);
+    }
+
+    private void reset(GUI chessGUI) {
+        Board newBoard = new Board();
+        chessGUI.setBoard(newBoard);
+        chessGUI.setPlayerStatus(ChessPiece.Color.WHITE);
+        chessGUI.updateBoard();
+        chessGUI.setUndoCounter(0);
+        if (chessGUI.getKi() != null) {
+            if (chessGUI.getKi().getColor().equals(ChessPiece.Color.WHITE)) {
+                chessGUI.getKi().move();
+                chessGUI.setPlayerStatus(ChessPiece.Color.BLACK);
+                chessGUI.updateBoard();
+            }
+        }
     }
 
     //current StartPosition, SetupGame doesn't work
