@@ -129,7 +129,10 @@ public class IntelligentKI {
                             points = points + 550;
                         } else if (current instanceof Pawn) {
                             points = points + 110;
+                        } else if (current instanceof Queen) {
+                            points = points + 900;
                         }
+
                         points = points + board.getMoves(row, column).size() * 2;
                         points = points + (7 - row) * 2;
                     }
@@ -144,6 +147,8 @@ public class IntelligentKI {
 
                         } else if (current instanceof Pawn) {
                             points = points - 110;
+                        } else if (current instanceof Queen) {
+                            points = points - 900;
                         }
                     }
                     points = points + board.getMoves(row, column).size() * 2;
