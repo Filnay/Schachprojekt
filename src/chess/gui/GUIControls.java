@@ -156,6 +156,8 @@ public class GUIControls extends JFrame {
 
     //current StartPosition, SetupGame doesn't work
     public static void main(String[] args) {
-        new GUIControls(true, ChessPiece.Color.WHITE);
+        ChessPiece.Color color = ChessPiece.Color.WHITE;
+        if (args.length > 0 && args[0].toLowerCase().startsWith("b")) color = ChessPiece.Color.BLACK;
+        new GUIControls(true, color);
     }
 }

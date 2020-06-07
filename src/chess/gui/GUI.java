@@ -153,11 +153,15 @@ public class GUI extends JFrame {
         ButtonHandler buttonHandler = new ButtonHandler();
         if (color.equals(ChessPiece.Color.BLACK)) {
             for (int row = 7; row >= 0; row--) {
-                setupF(row, contents, buttonHandler);
+                for (int column = 7; column >= 0; column--) {
+                    setupF(row, column, contents, buttonHandler);
+                }
             }
         } else if (color.equals(ChessPiece.Color.WHITE)) {
             for (int row = 0; row < 8; row++) {
-                setupF(row, contents, buttonHandler);
+                for (int column = 0; column < 8; column++) {
+                    setupF(row, column,  contents, buttonHandler);
+                }
             }
         }
         clearAllBorders();
@@ -168,17 +172,16 @@ public class GUI extends JFrame {
     }
 
     //setup-method, Builds the Field and adds the ActionListeners
-    private void setupF(int row, Container contents, ActionListener buttonHandler) {
-        for (int column = 0; column < 8; column++) {
-            fields[row][column] = new Chessfield(null);
-            if ((row + column + 1) % 2 != 0) {
-                fields[row][column].setBackground(Color.DARK_GRAY);
-            } else {
-                fields[row][column].setBackground(Color.WHITE);
-            }
-            contents.add(fields[row][column]);
-            fields[row][column].addActionListener(buttonHandler);
+    private void setupF(int row, int column, Container contents, ActionListener buttonHandler) {
+        column = 7 - column;
+        fields[row][column] = new Chessfield(null);
+        if ((row + column + 1) % 2 != 0) {
+            fields[row][ column].setBackground(Color.DARK_GRAY);
+        } else {
+            fields[row][column].setBackground(Color.WHITE);
         }
+        contents.add(fields[row][column]);
+        fields[row][column].addActionListener(buttonHandler);
     }
 
     //sets all Borders to null -> sets all Fields unselected
