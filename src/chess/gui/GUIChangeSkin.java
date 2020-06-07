@@ -39,7 +39,8 @@ public class GUIChangeSkin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 gui.setSkin(GUI.Folder.FOLDER1);
                 gui.updateBoard();
-                guiControls.setNewLegend(gui);
+                guiControls.setNewLegend(gui, true);
+                guiControls.setLegendCount(1);
             }
         });
 
@@ -60,7 +61,8 @@ public class GUIChangeSkin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 gui.setSkin(GUI.Folder.FOLDER2);
                 gui.updateBoard();
-                guiControls.setNewLegend(gui);
+                guiControls.setNewLegend(gui, true);
+                guiControls.setLegendCount(1);
             }
         });
         skinPanel2.add(skin2);
@@ -80,7 +82,8 @@ public class GUIChangeSkin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 gui.setSkin(GUI.Folder.FOLDER3);
                 gui.updateBoard();
-                guiControls.setNewLegend(gui);
+                guiControls.setNewLegend(gui, true);
+                guiControls.setLegendCount(1);
             }
         });
 

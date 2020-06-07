@@ -35,6 +35,6 @@ public class ProgressBar extends JFrame {
     }
 
     public static void main(String[] args) {
-        new ProgressBar(100, 200, 700, new Board());
+//        new ProgressBar(100, 200, 700, new Board());
     }
 }

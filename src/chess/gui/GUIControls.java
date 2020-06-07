@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUIControls extends JFrame {
-    GUI chessGUI = new GUI();
 
     JButton undo = new JButton("Undo");
     JButton reset = new JButton("Reset");
@@ -24,6 +23,7 @@ public class GUIControls extends JFrame {
     JPanel controlPanel = new JPanel();
 
     GUILegend legends;
+    private int legendCount;
 
 
     public GUIControls(boolean gameMode, ChessPiece.Color kIColor) {
@@ -34,11 +34,16 @@ public class GUIControls extends JFrame {
         setupControls(gameMode, kIColor);
     }
 
+    public void setLegendCount(int count) {
+        legendCount = count;
+    }
 
-    public void setNewLegend(GUI chessGUI) {
+
+
+    public void setNewLegend(GUI chessGUI, boolean state) {
         legends.dispose();
         legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
-        legends.setVisible(true);
+        legends.setVisible(state);
     }
 
 
@@ -47,8 +52,7 @@ public class GUIControls extends JFrame {
 
         if (gameMode) {
             chessGUI = new GUI(kIColor);
-        }
-        else{
+        } else {
             chessGUI = new GUI();
         }
 
@@ -59,7 +63,7 @@ public class GUIControls extends JFrame {
         setLocation(guiX + guiWidth, guiY);
         setSize(300, guiHeight);
 
-        GUILegend legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
+        legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
         GUIExitGame exit = new GUIExitGame();
         GUIChangeSkin changeChessPieceSkin = new GUIChangeSkin(chessGUI, legends, this);
 
@@ -89,9 +93,10 @@ public class GUIControls extends JFrame {
                 chessGUI.setPlayerStatus(ChessPiece.Color.WHITE);
                 chessGUI.updateBoard();
                 chessGUI.setUndoCounter(0);
-                if(chessGUI.getKi() != null ){
+                if (chessGUI.getKi() != null) {
+                    chessGUI.setKi(new IntelligentKI(newBoard, chessGUI.getKi().getColor()));
                     if (chessGUI.getKi().getColor().equals(ChessPiece.Color.WHITE)) {
-                        chessGUI.getKi().move();
+                        chessGUI.processMove(new Field(4, 1), new Field(4, 3));
                         chessGUI.setPlayerStatus(ChessPiece.Color.BLACK);
                     }
                 }
@@ -104,10 +109,18 @@ public class GUIControls extends JFrame {
         showLegend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                legends.setVisible(legends.isVisible());
+                if (legendCount == 0) {
+                    setNewLegend(chessGUI, true);
+                    legendCount = 1;
+                } else if (legendCount == 1) {
+                    setNewLegend(chessGUI, false);
+                    legendCount = 0;
+
+                }
             }
         });
         controlPanel.add(showLegend);
+
 
         toggleScore.setBackground(Color.lightGray);
         toggleScore.setBorder(null);
@@ -125,39 +138,45 @@ public class GUIControls extends JFrame {
         controlPanel.add(toggleScore);
 
 
-
         changeSkin.setBackground(Color.lightGray);
         changeSkin.setBorder(null);
 
-        changeSkin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeChessPieceSkin.setVisible(!changeChessPieceSkin.isVisible());
-            }
-        });
+        changeSkin.addActionListener(new
+
+                                             ActionListener() {
+                                                 @Override
+                                                 public void actionPerformed(ActionEvent e) {
+                                                     changeChessPieceSkin.setVisible(!changeChessPieceSkin.isVisible());
+                                                 }
+                                             });
         controlPanel.add(changeSkin);
 
         close.setBackground(Color.lightGray);
         close.setBorder(null);
-        close.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (exit.isVisible()) {
-                    exit.setVisible(false);
-                } else {
-                    exit.setVisible(true);
-                }
-            }
-        });
+        close.addActionListener(new
+
+                                        ActionListener() {
+                                            @Override
+                                            public void actionPerformed(ActionEvent e) {
+                                                if (exit.isVisible()) {
+                                                    exit.setVisible(false);
+                                                } else {
+                                                    exit.setVisible(true);
+                                                }
+                                            }
+                                        });
         controlPanel.add(close);
 
 
         controlPanel.setVisible(true);
+
         add(controlPanel);
+
         setVisible(true);
+
     }
 
     public static void main(String[] args) {
-        new GUIControls(true, ChessPiece.Color.WHITE);
+        new GUIControls(false, ChessPiece.Color.BLACK);
     }
 }

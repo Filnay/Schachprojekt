@@ -112,6 +112,6 @@ public class TransfigurePawn extends JFrame {
     }
 
     public static void main(String[] args) {
-        new TransfigurePawn(ChessPiece.Color.WHITE, new GUI(), new Field(6, 5));
+//        new TransfigurePawn(ChessPiece.Color.WHITE, new GUI(), new Field(6, 5));
     }
 }

@@ -14,12 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GUI extends JFrame {
-    private Board board;
+    private Board board = new Board();
 
     private final Chessfield[][] fields = new Chessfield[8][8];
 
     private final LineBorder selected = new LineBorder(Color.RED, 5);
     private final LineBorder offered = new LineBorder(Color.GREEN, 5);
+    private final LineBorder highlighted = new LineBorder(Color.YELLOW, 2);
     private final LineBorder unselected = new LineBorder(null);
 
     private List<Field> currentPossibleMoves;
@@ -72,9 +73,7 @@ public class GUI extends JFrame {
         setResizable(false);
         this.ki = new IntelligentKI(board, colorOfKI);
         progressBar = new ProgressBar(getX(), getY(), 700, board);
-        setBoard(new Board());
-        setupField(colorOfKI);
-        playerStatus = colorOfKI.otherColor();
+        setupField();
         updateBoard();
     }
 
@@ -89,13 +88,6 @@ public class GUI extends JFrame {
 
     public void setPlayerStatus(ChessPiece.Color playerStatus) {
         this.playerStatus = playerStatus;
-    }
-
-    public void setBoard(Board newBoard) {
-        board = newBoard;
-        if (ki != null) {
-            ki.setBoard(newBoard);
-        }
     }
 
     public ProgressBar getProgressBar() {
@@ -128,18 +120,18 @@ public class GUI extends JFrame {
         contents.setLayout(new GridLayout(8, 8));
 
         ButtonHandler buttonHandler = new ButtonHandler();
-        if (color.equals(ChessPiece.Color.BLACK)) {
+        if (color.equals(ChessPiece.Color.WHITE)) {
             for (int row = 7; row >= 0; row--) {
                 setupF(row, contents, buttonHandler);
             }
-        } else if (color.equals(ChessPiece.Color.WHITE)) {
+        } else if (color.equals(ChessPiece.Color.BLACK)) {
             for (int row = 0; row < 8; row++) {
                 setupF(row, contents, buttonHandler);
             }
         }
         clearAllBorders();
         playerStatus = color;
-        if (playerStatus.equals(ChessPiece.Color.WHITE)) {
+        if (playerStatus.equals(ChessPiece.Color.BLACK)) {
             processMove(new Field(0, 0), new Field(0, 0));
         }
         updateBoard();
@@ -167,10 +159,35 @@ public class GUI extends JFrame {
         }
     }
 
+    public void checkForTransfiguration() {
+        for (int row = 0; row < 7; row++) {
+            ChessPiece current = board.getChessPiece(new Field(row, 0));
+            if (current != null && current.getClass().getName().equals("Pawn")) {
+                new TransfigurePawn(current.getColor(), this, new Field(row, 0));
+            }
+        }
+        for (int row = 0; row < 7; row++) {
+            ChessPiece current = board.getChessPiece(new Field(7, row));
+            if (current != null && current.getClass().getName().equals("Pawn")) {
+                new TransfigurePawn(current.getColor(), this, new Field(row, 7));
+            }
+        }
+    }
+
     public void updateBoard() {
         updateBoard(skin);
     }
 
+//    public void highlightCurrentPlayer() {
+//        for (int row = 0; row < 8; row++) {
+//            for (int column = 0; column < 8; column++) {
+//                ChessPiece current = board.getChessPiece(new Field(row, column));
+//                if (current != null && current.getColor().equals(playerStatus)) {
+//                    fields[row][column].setBorder(highlighted);
+//                }
+//            }
+//        }
+//    }
 
     private void updateBoard(Folder folder) {
         for (int row = 7; row >= 0; row--) {
@@ -194,7 +211,6 @@ public class GUI extends JFrame {
 
 
     private class ButtonHandler implements ActionListener {
-
         public void actionPerformed(ActionEvent e) {
             Object source = e.getSource();
             for (int row = 0; row < 8; row++) {
@@ -220,6 +236,7 @@ public class GUI extends JFrame {
             }
         }
     }
+
 
     private void processSelection(int row, int column) {
         clearAllBorders();
@@ -272,29 +289,15 @@ public class GUI extends JFrame {
         }
         fieldsOffered = false;
         undoCounter = 1;
-        if (board.isCheckmate(ChessPiece.Color.WHITE)){
-            new GameEnd("Black Wins!", this);
+        boolean whiteCheckmate = board.isCheckmate(ChessPiece.Color.WHITE);
+        if (whiteCheckmate){
+            new GameEnd("Checkmate! Black Wins!");
         }
         if (board.isCheckmate(ChessPiece.Color.BLACK)){
-            new GameEnd("White Wins!", this);
+            new GameEnd("Chesckmate! White Wins!");
         }
         if (board.isStalemate(ChessPiece.Color.WHITE) || board.isStalemate(ChessPiece.Color.BLACK)){
-            new GameEnd("Stalemate!", this);
-        }
-    }
-
-    public void checkForTransfiguration() {
-        for (int row = 0; row < 7; row++) {
-            ChessPiece current = board.getChessPiece(new Field(row, 0));
-            if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor(), this, new Field(row, 0));
-            }
-        }
-        for (int row = 0; row < 7; row++) {
-            ChessPiece current = board.getChessPiece(new Field(7, row));
-            if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor(), this, new Field(row, 7));
-            }
+            new GameEnd("Stalemate!");
         }
     }
 
@@ -358,11 +361,10 @@ public class GUI extends JFrame {
                 URL = "Rook_Black.png";
             }
         }
-
         return URL;
     }
 
     public static void main(String[] args) {
-        new GUI(ChessPiece.Color.WHITE);
+        new GUI(ChessPiece.Color.BLACK);
     }
 }
