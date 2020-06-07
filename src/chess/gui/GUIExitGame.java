@@ -13,14 +13,18 @@ public class GUIExitGame extends JFrame {
         setVisible(false);
         setLocationRelativeTo(null);
 
+        //Declaring and Initializing a new Panel wit a GridBagLayout
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
+        //set Constraints for the GridbagLayout
         constraints.fill = GridBagConstraints.CENTER;
         constraints.insets = new Insets(10,20, 10, 20);
         constraints.weightx = GridBagConstraints.CENTER;
 
+
+        //Label, whether you want to exit the game
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 3;
@@ -29,6 +33,7 @@ public class GUIExitGame extends JFrame {
         verificationText.setVisible(true);
         panel.add(verificationText, constraints);
 
+        //Button with yes, exits the Program
         constraints.gridx = 1;
         constraints.gridy = 1;
         constraints.gridwidth = 1;
@@ -39,7 +44,7 @@ public class GUIExitGame extends JFrame {
         yes.setVisible(true);
         panel.add(yes, constraints);
 
-
+        //Button with no, sets the Window invisible
         constraints.gridx = 2;
         constraints.gridy = 1;
         constraints.fill = GridBagConstraints.CENTER;
