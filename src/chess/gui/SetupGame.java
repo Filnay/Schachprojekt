@@ -4,8 +4,6 @@ import chess.chesspiece.ChessPiece;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SetupGame extends JFrame {
 
@@ -61,7 +59,7 @@ public class SetupGame extends JFrame {
         switchColor.setVisible(true);
         panel.add(switchColor);
 
-        //BuutonGroup, so you can only choose one of them
+        //ButtonGroup, so you can only choose one of them
         ButtonGroup color = new ButtonGroup();
 
         //Button to choose White

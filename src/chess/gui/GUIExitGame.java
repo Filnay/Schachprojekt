@@ -18,7 +18,7 @@ public class GUIExitGame extends JFrame {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
-        //set Constraints for the GridbagLayout
+        //set Constraints for the GridBagLayout
         constraints.fill = GridBagConstraints.CENTER;
         constraints.insets = new Insets(10,20, 10, 20);
         constraints.weightx = GridBagConstraints.CENTER;

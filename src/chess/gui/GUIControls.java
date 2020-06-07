@@ -4,12 +4,9 @@ import chess.Board;
 import chess.Field;
 import chess.chesspiece.ChessPiece;
 import chess.kI.IntelligentKI;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GUIControls extends JFrame {
 
@@ -153,7 +150,7 @@ public class GUIControls extends JFrame {
         setVisible(true);
     }
 
-    //current StartPosition, SetupGame doesnt work
+    //current StartPosition, SetupGame doesn't work
     public static void main(String[] args) {
         new GUIControls(true, ChessPiece.Color.WHITE);
     }

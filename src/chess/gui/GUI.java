@@ -21,10 +21,10 @@ public class GUI extends JFrame {
     //new Object Bord to load the ChessPieces from
     private Board board = new Board();
 
-    //New 2Dimensional Chessfield
+    //New 2Dimensional ChessField
     private final Chessfield[][] fields = new Chessfield[8][8];
 
-    //Different types of Outlinings for selected/Offered Chess Pieces
+    //Different types of Outlining for selected/Offered Chess Pieces
     private final LineBorder selected = new LineBorder(Color.RED, 5);
     private final LineBorder offered = new LineBorder(Color.GREEN, 5);
     private final LineBorder unselected = new LineBorder(null);
@@ -32,7 +32,7 @@ public class GUI extends JFrame {
     //new List of possible Moves
     private List<Field> currentPossibleMoves;
 
-    //Attributes for the undo-methode
+    //Attributes for the undo-method
     private int undoCounter = 0;
     private final Field[] lastMove = new Field[2];
     private Field originalField;
@@ -41,7 +41,7 @@ public class GUI extends JFrame {
     //active Player
     private ChessPiece.Color playerStatus;
 
-    //Attribute for the move-methode
+    //Attribute for the move-method
     private boolean fieldsOffered = false;
 
     //Standard Folder to load the Pieces from
@@ -325,7 +325,7 @@ public class GUI extends JFrame {
             new GameEnd("Checkmate! Black Wins!");
         }
         if (board.isCheckmate(ChessPiece.Color.BLACK)){
-            new GameEnd("Chesckmate! White Wins!");
+            new GameEnd("Checkmate! White Wins!");
         }
         if (board.isStalemate(ChessPiece.Color.WHITE) || board.isStalemate(ChessPiece.Color.BLACK)){
             new GameEnd("Stalemate!");
