@@ -31,6 +31,9 @@ public class IntelligentKI {
     }
 
     public void move() {
+        try{
+            Thread.sleep(1000);
+        }catch(InterruptedException e){System.out.println(e);}
         int bestEvaluate;
         if(color == ChessPiece.Color.WHITE){
             bestEvaluate = Integer.MAX_VALUE;

@@ -1,11 +1,22 @@
 package chess.gui;
-//import
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GameEnd extends JFrame {
 
+    /*
+    is Called when one King is Checkmate, or when there is a stalemate.
+    Indicates the Winner and gives the possibility to play again or to exit the Program.
+    */
+    
+    /*
+    you cant play your second game against an KI, that throws a NullPointerException
+    */
+    
+    
     //Constructor
     public GameEnd(String status) {
         super("Game Over!");
@@ -14,10 +25,7 @@ public class GameEnd extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
-
-        /*Elements*/
-
-        //Declaring and Initializing of a Panel with a GridLayout
+        
         JPanel panel = new JPanel();
         panel.setBackground(Color.WHITE);
         panel.setLayout(new GridLayout(2, 3, 10, 10));
@@ -47,7 +55,13 @@ public class GameEnd extends JFrame {
         JButton restart = new JButton("Play Again");
         restart.setBackground(Color.lightGray);
         restart.setBorder(null);
-        restart.addActionListener(e -> new SetupGame());
+        restart.addActionListener(e -> {
+            Frame[] frames = Frame.getFrames();
+            for (Frame frame : frames) {
+                frame.dispose();
+            }
+            new SetupGame();
+        });
         restart.setVisible(true);
         panel.add(restart);
 
@@ -63,8 +77,8 @@ public class GameEnd extends JFrame {
         add(panel);
     }
 
-    //for Testing
-//    public static void main(String[] args) {
-//        new GameEnd("Black Wins!", new GUI());
-//    }
+    //for Testing, works fine when started from here, but not if the GUI has already been Initialized once.
+    public static void main(String[] args) {
+        new GameEnd("Black Wins!");
+    }
 }

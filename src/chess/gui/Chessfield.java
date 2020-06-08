@@ -10,14 +10,11 @@ import static icons.Icons.getImageIcon;
 //Class written By Finns Father
 
 
-public class Chessfield extends JButton {
+public class ChessField extends JButton {
 
     //Constructor
-    public Chessfield(ImageIcon img) {
+    public ChessField(ImageIcon img) {
         super(img);
-    }
-    public Chessfield() {
-
     }
 
     //Sets Icon in Button to Image, calls getScaledButtonImage-method
