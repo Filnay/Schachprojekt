@@ -319,12 +319,6 @@ public class GUI extends JFrame {
         board.move(from, to);
         checkForTransfiguration();
         updateBoard();
-        if(ki != null) {
-            ki.move();
-            updateBoard();
-        } else {
-            switchPlayer();
-        }
         fieldsOffered = false;
         undoCounter = 1;
         boolean whiteCheckmate = board.isCheckmate(ChessPiece.Color.WHITE);
@@ -336,6 +330,12 @@ public class GUI extends JFrame {
         }
         if ((board.isStalemate(ChessPiece.Color.WHITE) && playerStatus.equals(ChessPiece.Color.WHITE))|| (board.isStalemate(ChessPiece.Color.BLACK) && playerStatus.equals(ChessPiece.Color.BLACK))){
             new GameEnd("Stalemate!");
+        }
+        if(ki != null) {
+            ki.move();
+            updateBoard();
+        } else {
+            switchPlayer();
         }
     }
 

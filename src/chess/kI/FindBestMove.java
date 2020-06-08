@@ -34,22 +34,25 @@ class FindBestMove {
 
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
-                List<Field> possibleMoves = board.getMoves(row, column);
-                for (Field move : possibleMoves) {
-                    Board newBoard = new Board(board);
-                    ChessPiece chessPiece = board.getChessPiece(new Field(row, column));
-                    if (!(newBoard.getChessPiece(move) instanceof King && chessPiece.getColor() == color)) {
-                        newBoard.move(new Field(row, column), move);
-                        int evaluate = IntelligentKI.evaluate(newBoard);
-                        if (color == ChessPiece.Color.BLACK && evaluate > bestEvaluate && chessPiece.getColor() == color) {
-                            bestEvaluate = evaluate;
-                            bestFrom = new Field(row, column);
-                            bestTo = move;
-                        }
-                        if (color == ChessPiece.Color.WHITE && evaluate < bestEvaluate && chessPiece.getColor() == color) {
-                            bestEvaluate = evaluate;
-                            bestFrom = new Field(row, column);
-                            bestTo = move;
+                Field current = new Field(row, column);
+                ChessPiece chessPiece = board.getChessPiece(current);
+                if(chessPiece != null && board.getChessPiece(current).getColor() == color){
+                    List<Field> possibleMoves = board.getMoves(row, column);
+                    for (Field move : possibleMoves) {
+                        Board newBoard = new Board(board);
+                        if (!(newBoard.getChessPiece(move) instanceof King)) {
+                            newBoard.move(current, move);
+                            int evaluate = IntelligentKI.evaluate(newBoard);
+                            if (color == ChessPiece.Color.BLACK && evaluate > bestEvaluate && chessPiece.getColor() == color) {
+                                bestEvaluate = evaluate;
+                                bestFrom = current;
+                                bestTo = move;
+                            }
+                            if (color == ChessPiece.Color.WHITE && evaluate < bestEvaluate && chessPiece.getColor() == color) {
+                                bestEvaluate = evaluate;
+                                bestFrom = current;
+                                bestTo = move;
+                            }
                         }
                     }
                 }
