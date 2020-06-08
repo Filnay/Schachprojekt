@@ -37,7 +37,6 @@ public class GUIControls extends JFrame {
 
     //Setup for the ControlPanel
     public void setupControls(ChessPiece.Color kIColor) {
-
         //declaration of the chessGUI
         GUI chessGUI;
 
@@ -162,5 +161,6 @@ public class GUIControls extends JFrame {
         ChessPiece.Color color = ChessPiece.Color.WHITE;
         if (args.length > 0 && args[0].toLowerCase().startsWith("b")) color = ChessPiece.Color.BLACK;
         new GUIControls(color);
+
     }
 }

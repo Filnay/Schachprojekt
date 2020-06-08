@@ -16,6 +16,9 @@ public class Chessfield extends JButton {
     public Chessfield(ImageIcon img) {
         super(img);
     }
+    public Chessfield() {
+
+    }
 
     //Sets Icon in Button to Image, calls getScaledButtonImage-method
     public void setButtonIconTo(String fileName) {

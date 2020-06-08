@@ -54,7 +54,7 @@ public class GUI extends JFrame {
 
     //Enumeration of the different Folders to load the Skins from
     enum Folder {
-        FOLDER1("Schachfiguren 1"), FOLDER2("Schachfiguren 2"), FOLDER3("Schachfiguren 3");
+        FOLDER1("Schachfiguren1"), FOLDER2("Schachfiguren2"), FOLDER3("Schachfiguren3");
         public final String name;
 
         Folder(String name) {
