@@ -1,11 +1,8 @@
 package chess.gui;
-//imports
-
 import chess.Board;
 import chess.Field;
 import chess.chesspiece.*;
 import chess.kI.IntelligentKI;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -14,35 +11,31 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class GUI extends JFrame {
+	
+	
+	/*
+	Creates the real GUI. the GUI itself creates the ProgressBar. Interface to Finns Board and KI.
+ 	*/
+	
+	
 	/*Attributes*/
 	private Board board;
-	
-	private final ChessField[][] fields = new ChessField[8][8];
-	
 	private final LineBorder selected = new LineBorder(Color.RED, 5);
 	private final LineBorder offered = new LineBorder(Color.GREEN, 5);
 	private final LineBorder unselected = new LineBorder(null);
-	
-	private List<Field> currentPossibleMoves;
-	
-	private int undoCounter = 0;
-	private final Field[] lastMove = new Field[2];
-	private Field originalField;
-	ChessPiece beatenChessPiece = null;
-	
-	private ChessPiece.Color playerStatus;
-	
-	private boolean fieldsOffered = false;
-	
-	private Folder skin = Folder.FOLDER1;
-
+	private final ChessField[][] fields = new ChessField[8][8];
 	private final ProgressBar progressBar;
-
-	private IntelligentKI ki;
-	
-	TransfigurePawn transfigurePawn;
+	private final IntelligentKI ki;
+	private final Field[] lastMove = new Field[2];
+	private boolean fieldsOffered = false;
+	private int undoCounter = 0;
+	private ChessPiece beatenChessPiece = null;
+	private ChessPiece.Color playerStatus;
+	private List<Field> currentPossibleMoves;
+	private Field originalField;
+	private Folder skin = Folder.FOLDER1;
+	private TransfigurePawn transfigurePawn;
 	
 	enum Folder {
 		FOLDER1("Schachfiguren1"), FOLDER2("Schachfiguren2"), FOLDER3("Schachfiguren3");
@@ -84,61 +77,49 @@ public class GUI extends JFrame {
 	}
 	
 	/*Get and set- methods*/
-
-	public IntelligentKI getKi() {
-		return ki;
-	}
-	
-	public void setKi(IntelligentKI ki) {
-		this.ki = ki;
-	}
-
-	public Folder getSkin() {
-		return skin;
-	}
 	
 	public void setSkin(Folder skin) {
 		this.skin = skin;
 	}
-
 	public void setPlayerStatus(ChessPiece.Color playerStatus) {
 		this.playerStatus = playerStatus;
 	}
-	
 	public void setBoard(Board newBoard) {
 		board = newBoard;
 		if (ki != null) {
 			ki.setBoard(newBoard);
 		}
 	}
-
-	public ProgressBar getProgressBar() {
-		return progressBar;
-	}
-
-	public Board getBoard() {
-		return board;
-	}
-
 	public void setUndoCounter(int counter) {
 		undoCounter = counter;
 	}
+	public IntelligentKI getKi() {
+		return ki;
+	}
+	public Folder getSkin() {
+		return skin;
+	}
+	public Board getBoard() {
+		return board;
+	}
+	public ProgressBar getProgressBar() {
+		return progressBar;
+	}
 	
 	
-	
-	//setupField-method without KI: calls SetupField with the value White; White is always at the Bottom
+	//setupField-method without KI, white is always at the bottom
 	public void setupField() {
 		setupField(ChessPiece.Color.WHITE);
 	}
 	
-	//setUpField-method with KI: calls another SetupField method with attributes depending on the Color that is given.
-	//the Field must be constructed different whether the KI shall play as White or as Black, the KI always needs to be on Top.
+	//setUpField-method with KI: calls another SetupField method with attributes depending on the Color the Ki plays.
+	//the Field must be constructed different whether the KI shall play as White or as Black, because the KI always needs to be on Top.
 	public void setupField(ChessPiece.Color color) {
 		playerStatus = color.otherColor();
 		Container contents = getContentPane();
 		contents.setLayout(new GridLayout(8, 8));
-		
 		ButtonHandler buttonHandler = new ButtonHandler();
+		
 		if (color.equals(ChessPiece.Color.WHITE)) {
 			for (int row = 7; row >= 0; row--) {
 				for (int column = 7; column >= 0; column--) {
@@ -152,6 +133,7 @@ public class GUI extends JFrame {
 				}
 			}
 		}
+		
 		clearAllBorders();
 		if (color.equals(ChessPiece.Color.BLACK)) {
 			ki.move();
@@ -180,7 +162,7 @@ public class GUI extends JFrame {
 		}
 	}
 	
-	//Checks the Top and Bottom row for an Pawn, and opens a new Window when there is one
+	//Checks whether there is a Pawn to be Transfigured and opens a new Window to Transfigure the Pawn int another ChessPiece.
 	public void checkForTransfiguration() {
 		for (int column = 0; column < 7; column++) {
 			ChessPiece currentBlack = board.getChessPiece(new Field(0, column));
@@ -198,7 +180,7 @@ public class GUI extends JFrame {
 		updateBoard(skin);
 	}
 	
-	//Updates every Field of the ChessField with the current Skin, calls GetURLFromChessPiece-method to get the URLs
+	//Updates every Field of the ChessField with the current Skin
 	//updates the ProgressBar
 	private void updateBoard(Folder folder) {
 		for (int row = 7; row >= 0; row--) {
@@ -280,7 +262,8 @@ public class GUI extends JFrame {
 	}
 	
 	//saves the Move to maybe undo it, then moves the Figure in the Board and updates the GUI.
-	//checks after every Move whether it is Checkmate
+	//checks whether there is a Pawn to transfigured.
+	//checks after every Move whether it is Checkmate.
 	public void processMove(Field from, Field to) {
 		lastMove[0] = from;
 		lastMove[1] = to;
@@ -310,14 +293,17 @@ public class GUI extends JFrame {
 	}
 	
 	//uses the saved Move form the move-method to undo the last Move
-	//playing against a KI, the Function only undoes your move, not the one of the KI//TODO
+	//Playing against an KI, you cant undo your Move
+	//also undoes your Transfiguration
 	public void undoMove() {
 		if (undoCounter == 1) {
 			if (transfigurePawn != null && transfigurePawn.getTransfigured()) {
 				transfigurePawn.transfigureBackToPawn();
+				transfigurePawn.setTransfigured(false);
 			}
 			board.move(lastMove[1], lastMove[0]);
 			board.putChessPieceOn(lastMove[1].row, lastMove[1].column, beatenChessPiece);
+			checkForTransfiguration();
 			if (ki == null) {
 				switchPlayer();
 			}
@@ -375,7 +361,12 @@ public class GUI extends JFrame {
 	}
 	
 	//for testing
-	//    public static void main(String[] args) {
-	//        new GUI(ChessPiece.Color.BLACK);
-	//    }
+	    public static void main(String[] args) {
+		//Play Against yourself:
+//	        GUI gui = new GUI();
+//	        gui.switchPlayer();
+	    //Play against KI:
+			GUI gui = new GUI(ChessPiece.Color.WHITE);
+			gui.switchPlayer();
+	    }
 }

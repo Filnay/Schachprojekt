@@ -1,17 +1,23 @@
 package chess.gui;
-//imports
 
 import chess.Board;
-import chess.Field;
 import chess.chesspiece.ChessPiece;
-import chess.kI.IntelligentKI;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class GUIControls extends JFrame {
-	//Initialize all Buttons
+	
+	/*
+	Sets up the game. Creates a control panel the change settings mid game. Creates all other Elements.
+ 	*/
+	
+	
+	/*
+	Attributes
+	*/
+	
 	JButton undo = new JButton("Undo");
 	JButton reset = new JButton("Reset");
 	JButton toggleLegend = new JButton("Show Legend");
@@ -19,56 +25,56 @@ public class GUIControls extends JFrame {
 	JButton toggleScore = new JButton("Toggle Score");
 	JButton close = new JButton("Exit Game");
 	
-	//Initialize Panel
 	JPanel controlPanel = new JPanel();
 	
-	//Declares legend; only one that needs to be declared here because otherwise the Changing of the Skins wouldn't affect the legend/toggling wound't work
+	//Declares legend; only one that needs to be declared here because otherwise
+	//the changing of the Skins wouldn't affect the legend/toggling wound't work
 	GUILegend legends;
 	private int legendCount;
-	private boolean isKI;
-	
 	
 	//Constructor
-	public GUIControls(ChessPiece.Color kIColor) {
+	public GUIControls(ChessPiece.Color colorOfKI) {
 		super("Chess Controls");
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
-		setupControls(kIColor);
+		setupControls(colorOfKI);
 	}
 	
-	//Setup for the ControlPanel
-	public void setupControls(ChessPiece.Color kIColor) {
-		//declaration of the chessGUI
+	public void setLegendCount(int count) {
+		legendCount = count;
+	}
+	
+	public void setNewLegend(GUI chessGUI, boolean visibility) {
+		legends.dispose();
+		legends = new GUILegend(chessGUI);
+		legends.setVisible(visibility);
+	}
+	
+	public void setupControls(ChessPiece.Color colorOfKi) {
 		GUI chessGUI;
 		
-		//calling of the GUI-Constructor whether you want to play against a KI or an other Player
-		if (kIColor != null) {
+		//calls a different GUI-Constructor, depending on whether you want to play against a KI or an other Player
+		boolean isKI;
+		if (colorOfKi != null) {
 			isKI = true;
-			chessGUI = new GUI(kIColor);
+			chessGUI = new GUI(colorOfKi);
 		} else {
 			isKI = false;
 			chessGUI = new GUI();
 		}
 		reset(chessGUI);
 		
-		//get the Position of the GUI Window to arrange the Controls to the right of the GUI
-		int guiX = chessGUI.getX();
-		int guiWidth = chessGUI.getWidth();
-		int guiY = chessGUI.getY();
-		int guiHeight = chessGUI.getHeight();
-		setLocation(guiX + guiWidth, guiY);
-		setSize(300, guiHeight);
+		setLocation(chessGUI.getX() + chessGUI.getWidth(), chessGUI.getY());
+		setSize(300, chessGUI.getHeight());
+		
 		
 		/*Declarations and Initializations*/
-		//Legend-Window, arranged to the left to the GUI
-		legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
-		//ExitGame-Window
+		
+		legends = new GUILegend(chessGUI);
 		GUIExitGame exit = new GUIExitGame();
-		//ChangeSkin-Window
 		GUIChangeSkin changeChessPieceSkin = new GUIChangeSkin(chessGUI, this);
 		
-		//ControlPanel
 		controlPanel.setBorder(new LineBorder(Color.WHITE, 30));
 		GridLayout controlPanelLayout = new GridLayout(6, 1, 20, 20);
 		controlPanel.setLayout(controlPanelLayout);
@@ -78,7 +84,6 @@ public class GUIControls extends JFrame {
 		/*Settings for the Buttons*/
 		//All Buttons that open a new Window are Toggle Buttons, so they toggle the Windows
 		
-		//Undo-Button
 		undo.setBackground(Color.lightGray);
 		undo.setBorder(null);
 		if (isKI) {
@@ -89,15 +94,14 @@ public class GUIControls extends JFrame {
 		}
 		controlPanel.add(undo);
 		
-		//Reset-Button: only one more complex, needs to set an New KI with the color of the last one
+		
 		reset.setBackground(Color.lightGray);
 		reset.setBorder(null);
-		reset.addActionListener(e -> {
-			reset(chessGUI);
-		});
+		reset.addActionListener(e -> reset(chessGUI));
 		controlPanel.add(reset);
 		
-		//Legend-Button
+		
+		//Legend-Button, only one that replaces the old Legend with a new, and does not just simply make it visible/invisible.
 		toggleLegend.setBackground(Color.lightGray);
 		toggleLegend.setBorder(null);
 		toggleLegend.addActionListener(e -> {
@@ -112,7 +116,7 @@ public class GUIControls extends JFrame {
 		});
 		controlPanel.add(toggleLegend);
 		
-		//Score-Button
+		
 		toggleScore.setBackground(Color.lightGray);
 		toggleScore.setBorder(null);
 		chessGUI.getProgressBar().setVisible(true);
@@ -122,32 +126,23 @@ public class GUIControls extends JFrame {
 		});
 		controlPanel.add(toggleScore);
 		
-		//ChangeSkin-Button
+		
 		changeSkin.setBackground(Color.lightGray);
 		changeSkin.setBorder(null);
 		
 		changeSkin.addActionListener(e -> changeChessPieceSkin.setVisible(!changeChessPieceSkin.isVisible()));
 		controlPanel.add(changeSkin);
 		
-		//Close-Button
+		
 		close.setBackground(Color.lightGray);
 		close.setBorder(null);
 		close.addActionListener(e -> exit.setVisible(!exit.isVisible()));
 		controlPanel.add(close);
 		
+		
 		controlPanel.setVisible(true);
 		add(controlPanel);
 		setVisible(true);
-	}
-	
-	public void setLegendCount(int count) {
-		legendCount = count;
-	}
-	
-	public void setNewLegend(GUI chessGUI, boolean state) {
-		legends.dispose();
-		legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
-		legends.setVisible(state);
 	}
 	
 	private void reset(GUI chessGUI) {
@@ -165,11 +160,9 @@ public class GUIControls extends JFrame {
 		}
 	}
 	
-	//current StartPosition, SetupGame doesn't work
 	public static void main(String[] args) {
 		ChessPiece.Color color = ChessPiece.Color.WHITE;
 		if (args.length > 0 && args[0].toLowerCase().startsWith("b")) color = ChessPiece.Color.BLACK;
 		new GUIControls(color);
-		
 	}
 }

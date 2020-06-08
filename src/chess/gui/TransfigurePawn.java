@@ -1,5 +1,4 @@
 package chess.gui;
-//imports
 import chess.Field;
 import chess.chesspiece.*;
 import javax.swing.*;
@@ -7,6 +6,15 @@ import java.awt.*;
 
 public class TransfigurePawn extends JFrame {
     
+    /*
+    Called, when there is a Pawn to be transfigured. Offers 4 Chess Pieces to transfigure
+    your Pawn into and places them on the Position of the Pawn.
+     */
+    
+    
+    /*
+    Attributes
+     */
     private boolean transfigured = false;
     
     GUI gui;
@@ -39,16 +47,14 @@ public class TransfigurePawn extends JFrame {
     
     //offer possible Figures: Rook, Queen, Knight and Bishop
     public void offerFigures() {
-
-        //setting up the Panel with a GidLayout
+        
         JPanel offeredFigures = new JPanel();
         offeredFigures.setLayout(new GridLayout(0, 5));
         offeredFigures.setBackground(Color.WHITE);
         final String[] url = {""};
         final ChessPiece[] chosenChessPiece = new ChessPiece[1];
-
-
-        //load the Image of the Rook into the first ChessField-Button
+        
+        
         ChessField rook = new ChessField(null);
         rook.setSize(70, 70);
         url[0] = gui.getURLFromChessPiece(new Rook(color));
@@ -59,8 +65,6 @@ public class TransfigurePawn extends JFrame {
         offeredFigures.add(rook);
 
 
-
-        //load the Image of the Knight into the second ChessField-Button
         ChessField knight = new ChessField(null);
         knight.setSize(70, 70);
         url[0] = gui.getURLFromChessPiece(new Knight(color));
@@ -70,9 +74,7 @@ public class TransfigurePawn extends JFrame {
         knight.addActionListener(e -> chosenChessPiece[0] = new Knight(color));
         offeredFigures.add(knight);
 
-
-
-        //load the Image of the Bishop into the third ChessField-Button
+        
         ChessField bishop = new ChessField(null);
         bishop.setSize(70, 70);
         url[0] = gui.getURLFromChessPiece(new Bishop(color));
@@ -82,8 +84,7 @@ public class TransfigurePawn extends JFrame {
         bishop.addActionListener(e -> chosenChessPiece[0] = new Bishop(color));
         offeredFigures.add(bishop);
 
-
-        //load the Image of the Queen into the forth ChessField-Button
+        
         ChessField queen = new ChessField(null);
         queen.setSize(70, 70);
         url[0] = gui.getURLFromChessPiece(new Queen(color));
@@ -111,8 +112,8 @@ public class TransfigurePawn extends JFrame {
         add(offeredFigures);
     }
 
-    //for Testing
-//    public static void main(String[] args) {
-//        new TransfigurePawn(ChessPiece.Color.WHITE, new GUI(), new Field(6, 5));
-//    }
+    //for Testing, should place the selected Figure on the Position of the enemy Queen
+    public static void main(String[] args) {
+        new TransfigurePawn(ChessPiece.Color.WHITE, new GUI(), new Field(7, 3));
+    }
 }

@@ -1,17 +1,18 @@
 package chess.gui;
-//imports
 import chess.chesspiece.ChessPiece;
-import chess.gui.GUIControls;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.TreeMap;
 
 public class SetupGame extends JFrame {
-
-    public GUIControls guiControls;
+    
+    /*
+    Creating a new JFrame to choose whether you want to play against an KI or another player, and what color you want to play,
+    the KI plays the other color. Starts the game.
+    */
+    
     private ChessPiece.Color colorOfKi;
-
+    
     //Constructor
     public SetupGame() {
         super("Chess Setup");
@@ -20,11 +21,9 @@ public class SetupGame extends JFrame {
         setVisible(true);
         setupGUI();
     }
-
-    //Creating a new JFrame to choose whether you want to play against an KI or another player, and what color you want to play
+    
+    
     public void setupGUI() {
-
-        //Declaration and Initialization of a Panel with a GridLayout
         JPanel panel = new JPanel();
         JLabel chooseMode = new JLabel("<html>Do you want to play against KI or other Player?</html>");
         JRadioButton otherPlayer = new JRadioButton("Other Player");
@@ -59,7 +58,6 @@ public class SetupGame extends JFrame {
         mode.add(kI);
         panel.add(kI);
 
-        //Button to choose other Player
         otherPlayer.setBackground(Color.WHITE);
         otherPlayer.setVisible(true);
         otherPlayer.addActionListener(e -> {
@@ -87,8 +85,6 @@ public class SetupGame extends JFrame {
         white.setVisible(false);
         white.addActionListener(e -> {
             labelColor.setVisible(true);
-//            labelColor.setBackground(Color.BLACK);
-//            labelColor.setForeground(Color.WHITE);
             labelColor.setText("Black");
         });
         color.add(white);
@@ -98,8 +94,6 @@ public class SetupGame extends JFrame {
         black.setVisible(false);
         black.addActionListener(e -> {
             labelColor.setVisible(true);
-//            labelColor.setBackground(Color.WHITE);
-//            labelColor.setForeground(Color.BLACK);
             labelColor.setText("White");
         });
         color.add(black);
@@ -119,24 +113,12 @@ public class SetupGame extends JFrame {
         labelColor.setVisible(false);
         panel.add(labelColor);
 
-////        labelBlack.setBackground(Color.BLACK);
-////        labelBlack.setForeground(Color.WHITE);
-//        labelBlack.setVisible(false);
-//        panel.add(labelBlack);
-//
-////        labelWhite.setBackground(Color.WHITE);
-////        labelWhite.setForeground(Color.BLACK);
-//        labelWhite.setVisible(false);
-//        panel.add(labelWhite);
-
-
         JPanel spacer2 = new JPanel();
         spacer2.setBackground(Color.WHITE);
         panel.add(spacer2);
 
 
         //Button to start the game
-        //Doesnt Work //TODO
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.WHITE);
 
@@ -144,8 +126,10 @@ public class SetupGame extends JFrame {
             if (kI.isSelected()) {
                 if(white.isSelected()) colorOfKi = ChessPiece.Color.BLACK;
                 if(black.isSelected()) colorOfKi = ChessPiece.Color.WHITE;
+                dispose();
                 new GUIControls(colorOfKi);
             } else {
+                dispose();
                 new GUIControls(null);
             }
         };
@@ -163,10 +147,14 @@ public class SetupGame extends JFrame {
         panel.setVisible(true);
         add(panel);
     }
-    private void createGUI(ChessPiece.Color kiColor){
-        guiControls = new GUIControls(kiColor);
-    }
+    
     //for testing
+    
+    /*
+    Start Point of the Game.
+    */
+    
     public static void main(String[] args) {
-        new SetupGame(); }
+        new SetupGame();
+    }
 }
