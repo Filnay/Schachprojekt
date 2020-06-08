@@ -1,6 +1,7 @@
 package chess.kI;
 
 import chess.Board;
+import chess.ChessPiecesOnBoard;
 import chess.Field;
 import chess.chesspiece.*;
 
@@ -62,27 +63,30 @@ public class IntelligentKI {
         boolean bishopCombineBlack = true;
         boolean rookCombineBlack = true;
 
-        List<Field> whiteKnights = board.findChessPiece(new Knight(ChessPiece.Color.WHITE));
+        ChessPiecesOnBoard positions = new ChessPiecesOnBoard();
+        positions.findChessPiece(board);
+
+        List<Field> whiteKnights = positions.getWhiteKnights();
         if (whiteKnights.size() >= 2) {
             points = points - (whiteKnights.size() * 300);
             knightCombineWhite = false;
         }
-        List<Field> blackKnights = board.findChessPiece(new Knight(ChessPiece.Color.BLACK));
+        List<Field> blackKnights = positions.getBlackKnights();
         if (blackKnights.size() >= 2) {
             points = points + (blackKnights.size() * 300);
             knightCombineBlack = false;
         }
-        List<Field> whiteBishop = board.findChessPiece(new Bishop(ChessPiece.Color.WHITE));
+        List<Field> whiteBishop = positions.getWhiteBishops();
         if (whiteBishop.size() >= 2) {
             points = points - (whiteBishop.size() * 400);
             bishopCombineWhite = false;
         }
-        List<Field> blackBishop = board.findChessPiece(new Bishop(ChessPiece.Color.BLACK));
+        List<Field> blackBishop = positions.getBlackBishops();
         if (blackBishop.size() >= 2) {
             points = points + (blackBishop.size() * 400);
             bishopCombineBlack = false;
         }
-        List<Field> blackRook = board.findChessPiece(new Rook(ChessPiece.Color.BLACK));
+        List<Field> blackRook = positions.getBlackRooks();
         if (blackRook.size() >= 2) {
             points = points - (blackRook.size() * 600);
             rookCombineWhite = false;
@@ -161,32 +165,35 @@ public class IntelligentKI {
         boolean bishopCombineBlack = true;
         boolean rookCombineBlack = true;
 
-        List<Field> whiteKnights = board.findChessPiece(new Knight(ChessPiece.Color.WHITE));
+        ChessPiecesOnBoard positions = new ChessPiecesOnBoard();
+        positions.findChessPiece(board);
+
+        List<Field> whiteKnights = positions.getWhiteKnights();
         if (whiteKnights.size() >= 2) {
             points = points - (whiteKnights.size() * 300);
             knightCombineWhite = false;
         }
-        List<Field> blackKnights = board.findChessPiece(new Knight(ChessPiece.Color.BLACK));
+        List<Field> blackKnights = positions.getBlackKnights();
         if (blackKnights.size() >= 2) {
             points = points + (blackKnights.size() * 300);
             knightCombineBlack = false;
         }
-        List<Field> whiteBishop = board.findChessPiece(new Bishop(ChessPiece.Color.WHITE));
+        List<Field> whiteBishop = positions.getWhiteBishops();
         if (whiteBishop.size() >= 2) {
             points = points - (whiteBishop.size() * 350);
             bishopCombineWhite = false;
         }
-        List<Field> blackBishop = board.findChessPiece(new Bishop(ChessPiece.Color.BLACK));
+        List<Field> blackBishop = positions.getBlackBishops();
         if (blackBishop.size() >= 2) {
             points = points + (blackBishop.size() * 350);
             bishopCombineBlack = false;
         }
-        List<Field> blackRook = board.findChessPiece(new Rook(ChessPiece.Color.BLACK));
+        List<Field> blackRook = positions.getBlackRooks();
         if (blackRook.size() >= 2) {
             points = points - (blackRook.size() * 500);
             rookCombineWhite = false;
         }
-        List<Field> whiteRook = board.findChessPiece(new Rook(ChessPiece.Color.WHITE));
+        List<Field> whiteRook = positions.getWhiteRooks();
         if (whiteRook.size() >= 2) {
             points = points + (whiteRook.size() * 500);
             rookCombineBlack = false;

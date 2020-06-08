@@ -37,12 +37,11 @@ class FindBestMove {
                 List<Field> possibleMoves = board.getMoves(row, column);
                 for (Field move : possibleMoves) {
                     Board newBoard = new Board(board);
-                    if (!(newBoard.getChessPiece(move) instanceof King)) {
+                    ChessPiece chessPiece = board.getChessPiece(new Field(row, column));
+                    if (!(newBoard.getChessPiece(move) instanceof King && chessPiece.getColor() == color)) {
                         newBoard.move(new Field(row, column), move);
                         int evaluate = IntelligentKI.evaluate(newBoard);
-                        ChessPiece chessPiece = board.getChessPiece(new Field(row, column));
                         if (color == ChessPiece.Color.BLACK && evaluate > bestEvaluate && chessPiece.getColor() == color) {
-
                             bestEvaluate = evaluate;
                             bestFrom = new Field(row, column);
                             bestTo = move;
