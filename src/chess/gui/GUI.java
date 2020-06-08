@@ -4,6 +4,7 @@ import chess.Board;
 import chess.Field;
 import chess.chesspiece.*;
 import chess.kI.IntelligentKI;
+import com.sun.source.tree.WhileLoopTree;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -196,16 +197,14 @@ public class GUI extends JFrame {
     //Checks the Top and Bottom row for an Pawn, and opens a new Window when there is one
     //Doesnt work properly //TODO
     public void checkForTransfiguration() {
-        for (int row = 0; row < 7; row++) {
-            ChessPiece current = board.getChessPiece(new Field(row, 0));
-            if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor(), this, new Field(row, 0));
+        for (int column = 0; column < 7; column++) {
+            ChessPiece currentBlack = board.getChessPiece(new Field(0, column));
+            if (currentBlack instanceof Pawn) {
+                new TransfigurePawn(currentBlack.getColor(), this, new Field(0, column));
             }
-        }
-        for (int row = 0; row < 7; row++) {
-            ChessPiece current = board.getChessPiece(new Field(7, row));
-            if (current != null && current.getClass().getName().equals("Pawn")) {
-                new TransfigurePawn(current.getColor(), this, new Field(row, 7));
+            ChessPiece currentWhite = board.getChessPiece(new Field(7, column));
+            if (currentWhite instanceof Pawn) {
+                new TransfigurePawn(currentWhite.getColor(), this, new Field(7, column));
             }
         }
     }
@@ -318,8 +317,8 @@ public class GUI extends JFrame {
         lastMove[1] = to;
         beatenChessPiece = board.getChessPiece(to);
         board.move(from, to);
-        updateBoard();
         checkForTransfiguration();
+        updateBoard();
         if(ki != null) {
             ki.move();
             updateBoard();
@@ -335,7 +334,7 @@ public class GUI extends JFrame {
         if (board.isCheckmate(ChessPiece.Color.BLACK)){
             new GameEnd("Checkmate! White Wins!");
         }
-        if (board.isStalemate(ChessPiece.Color.WHITE) || board.isStalemate(ChessPiece.Color.BLACK)){
+        if ((board.isStalemate(ChessPiece.Color.WHITE) && playerStatus.equals(ChessPiece.Color.WHITE))|| (board.isStalemate(ChessPiece.Color.BLACK) && playerStatus.equals(ChessPiece.Color.BLACK))){
             new GameEnd("Stalemate!");
         }
     }
