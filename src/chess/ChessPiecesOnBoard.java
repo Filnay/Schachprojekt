@@ -6,6 +6,7 @@ import chess.chesspiece.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//Informationsklasse über den Aufbau des Brettes, damit man nicht immer eine findChessPiee Methode benötigt
 public class ChessPiecesOnBoard {
     List<Field> blackPawns = new ArrayList<>();
     List<Field> blackKnights = new ArrayList<>();

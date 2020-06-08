@@ -18,6 +18,7 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
+    //Der Pawn muss wissen wo er steht, da er anders als alle Methoden 1. nicht zurück kann, 2. anders schlägt als läuft
     public List<ArrayList<Field>> getMoves(int row, int column) {
         throw new UnsupportedOperationException("This is a Pawn");
     }

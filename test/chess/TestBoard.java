@@ -10,10 +10,12 @@ import static chess.chesspiece.ChessPiece.Color.BLACK;
 import static chess.chesspiece.ChessPiece.Color.WHITE;
 import static org.junit.jupiter.api.Assertions.*;
 
+    //Das TestBoard testet ob alle Methoden des boards funktioniert, indem sie verschiedene Fälle mit bekannten Lösungen testet
 class TestBoard {
 
     private Board board;
 
+    //Vor jeder Methode wird ein neues Board erstellt
     @BeforeEach
     void before(){
         board = new Board();
@@ -309,8 +311,8 @@ class TestBoard {
         board.move(new Field(0,4), new Field(0,2));
         board.move(new Field(7,4), new Field(7,2));
 
-        assertTrue(board.getChessPiece(new Field(0, 3)).equals(new Rook(WHITE)));
-        assertTrue(board.getChessPiece(new Field(7, 3)).equals(new Rook(BLACK)));
+        assertEquals(board.getChessPiece(new Field(0, 3)), new Rook(WHITE));
+        assertEquals(board.getChessPiece(new Field(7, 3)), new Rook(BLACK));
     }
 
     @Test

@@ -2,6 +2,7 @@ package chess;
 
 import java.util.Objects;
 
+//Reine Wissensklasse, die Reihe und Spalte vereint
 public class Field {
     public final int row;
     public final int column;

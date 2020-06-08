@@ -43,7 +43,8 @@ public class IntelligentKI {
         board.move(findBestMove.getBestFrom(), findBestMove.getBestTo());
     }
 
-
+    //Midgame endet durch den verlust der Dame auf einer Seite
+    //Wenn Schwarz besser steht gibt es Plus Punkte wenn Weiß besser steht minus
     public static int evaluate(Board board) {
         int points = 0;
         if (board.findChessPiece(new Queen(ChessPiece.Color.WHITE)).size() > 0 && board.findChessPiece(new Queen(ChessPiece.Color.BLACK)).size() > 0) {
@@ -54,6 +55,10 @@ public class IntelligentKI {
         return points;
     }
 
+    //Erst werden mögliche Kombinationen bewertet und dann alle Figuren, die nicht in einer Kombination sind.
+    //Außerdem bekommt man für jeden möglichen Move Punkte und für das Verteidigen oder Angreifen von Figuren.
+    //Midgame und Endgame unterscheiden sich njr durch die Punkte. Und ja man hätte auch eine Methode mit Parametern
+    // für jede Möglichkeit Punkte zu bekommen machen können, aber dazu hatte ich keine Zeit.
     public static int evaluateEndgame(Board board) {
         int points = 0;
         boolean knightCombineWhite = true;

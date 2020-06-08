@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public abstract class ChessPiece {
 
-
+//Die zwei möglihen Farben, welche einen Namen für die toString Methode des Boards haben
     public enum Color{
         BLACK("B"), WHITE("W");
         public final String name;
@@ -38,6 +38,7 @@ public abstract class ChessPiece {
 
     public abstract List<ArrayList<Field>> getMoves(int row, int column);
 
+    //Liste von Richtungen mit Feldern, damit man nicht durch Figuren hindurch ziehen kann
     protected void addMove(List<ArrayList<Field>> move, Field... f) {
         move.add(new ArrayList(Arrays.asList(f)));
     }

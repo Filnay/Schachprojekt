@@ -10,6 +10,7 @@ import static chess.chesspiece.ChessPiece.Color.BLACK;
 import static chess.chesspiece.ChessPiece.Color.WHITE;
 
 public class Board {
+
     private final ChessPiece[] a = new ChessPiece[8];
     private final ChessPiece[] b = new ChessPiece[8];
     private final ChessPiece[] c = new ChessPiece[8];
@@ -33,6 +34,7 @@ public class Board {
         castlingWhiteRight = true;
     }
 
+    // Standard Board
     private void setUpBoard(){
         putChessPieceOn(0, 0, new Rook(WHITE));
         putChessPieceOn(0, 1, new Knight(WHITE));
@@ -68,6 +70,7 @@ public class Board {
         putChessPieceOn(6, 7, new Pawn(BLACK));
     }
 
+    //copy board
     public Board (Board board){
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
@@ -124,6 +127,12 @@ public class Board {
         board[row][column] = chessPiece;
     }
 
+
+    //checkKingIsAttacked un CanMoveOnOwnChessPieces brauchen nur wenige Methoden. Deswegen die anderen Move Methoden.
+    //Da nur die Oberste public iist war bei der die Rochade relevant
+    //Die getMoves Methode der einzelnen Figuren geben die möglichen Felder wieder, die sie auf einen lehren Feld haben
+    //Hierbei gibt es nichtmal eine richtige Boarder. Alle Felder werden dann von der getMoves Methode dann aktzeptiert,
+    //wenn sie regelkonform sind.
     public  List<Field> getMoves(int row, int column){
         if(row < 0  || row > 7 || column < 0 || column > 7){
             throw new IllegalArgumentException("column or row out of bounds");
@@ -171,14 +180,16 @@ public class Board {
         return moves;
     }
 
+    //
     private void removeOutOfBounds(List<Field> possibleMoves) {
             possibleMoves.removeIf(move -> move.row > 7 || move.row < 0 || move.column > 7 || move.column < 0);
     }
 
+    //Bevor der Move hinzugefügt werden kann muss geguckt werden ob der König nach dem zug angegriffen ist (Fesselung)
+    //Der König muss aber auch wegziehen können
     private void addMove(boolean checkKingIsAttacked, ChessPiece chessPiece, ArrayList<Field> moves, Field to, Field from) {
         if (checkKingIsAttacked) {
-            List<Field> ownKings = findChessPiece(new King(chessPiece.getColor()));
-            Field ownKing = ownKings.get(0);
+            Field ownKing = findKing(chessPiece.getColor());
             if (ownKing.equals(from)){
                 if (isChessPieceNotAttackedAfterMove(to, from, to)) {
                     moves.add(to);
@@ -192,6 +203,8 @@ public class Board {
         }
     }
 
+    //Auf einer Kopie vom Board wird der Zug gezogen und gegucckt ob der König angegriffen wird.
+    //Auf einer Kopie, damit die Rochade nicht verfälscht wird.
     public boolean isChessPieceNotAttackedAfterMove(Field attackedField, Field from, Field to){
         Board current = new Board(this);
         current.move(from, to);
@@ -202,6 +215,7 @@ public class Board {
         return isNotAttacked;
     }
 
+    //Es wird geguckt welche Figur das eine Feld angreifen kann. Hierbei kann die Farbe der Figuren angegeben werden)
     public List<Field> whoAttacks(Field attackedField, Color from) {
         return whoAttacks(attackedField, from, true);
     }
@@ -209,6 +223,7 @@ public class Board {
     public List<Field> whoAttacks(Field attackedField) {
         return whoAttacks(attackedField, null);
     }
+
     private List<Field> whoAttacks(Field attackedField, Color from, boolean checkKingIsAttacked) {
         return whoAttacks(attackedField, from, checkKingIsAttacked, false);
     }
@@ -227,10 +242,10 @@ public class Board {
         return whoAttacks;
     }
 
+    //boolean von whoAttacks
     public boolean isAttacked(Field attackedField){
         return isAttacked(attackedField, null);
     }
-
     public boolean isAttacked(Field attackedField, Color from){
         return isAttacked(attackedField, from, true);
     }
@@ -239,6 +254,7 @@ public class Board {
         return (attackers.size() != 0);
     }
 
+    //Verteidigung ist nichts anderes als, dass das Feld von der eigenen Farbe angegriffen wird.
     public List<Field> whoDefends(Field field){
         Color defendedColor = getChessPiece(field).getColor();
         return whoAttacks(field, defendedColor.otherColor(), false, true);
@@ -248,6 +264,8 @@ public class Board {
         return whoDefends(field).size() > 0;
     }
 
+    //Gibt alle möglichen Rochaden wieder. Da der König nur zwei Felder weit ziehen kan wenn er rochiert,
+    // wird die Rochade dem König angezeigt
     public List<Field> castling(Color color) {
         List<Field> moves = new ArrayList<>();
         if(color == BLACK) {
@@ -269,6 +287,7 @@ public class Board {
         return moves;
     }
 
+    //alle Punkte die berücksichtigt werden müssen, damit die Rochade möglich ist
     public boolean castlingWhiteLeft() {
         return(castlingWhiteLeft && board[0][1] == null && board[0][2] == null && board[0][3] == null
                 && !isAttacked(new Field(0, 1), WHITE) && !isAttacked(new Field(0, 2), WHITE)
@@ -293,8 +312,7 @@ public class Board {
                 && !isAttacked(new Field(7, 6), BLACK));
     }
 
-
-
+    //guckt alle Felder nach der Figur ab
     public List<Field> findChessPiece(ChessPiece chessPiece) {
         ArrayList<Field> chessPieces = new ArrayList<>();
         for (int row = 0; row < 8; row++) {
@@ -308,7 +326,8 @@ public class Board {
     }
 
 
-
+    //move Methode ist sehr klein für alle Figuren bis auf König und Turm, da die beiden and der Rochade beteiligt sind
+    //und die Rochade nicht mehr Möglich ist, wenn eine der Beiden Figuren sich bewegt hat
     public void move(Field from, Field to){
         ChessPiece currentChessPiece = board[from.row][from.column];
         board[from.row][from.column] = null;
@@ -350,25 +369,28 @@ public class Board {
         }
     }
 
+    //ist der König angegriffen?
     public boolean isCheck(Color person){
         Field fieldOfKing = findKing(person);
         boolean attacked = isAttacked(fieldOfKing, person, false);
         return attacked;
     }
 
+    //Schneller, da findChessPiece eine Liste wiedergibt, da alle anderen Figuren öfter als einmal verwendet werden
     public Field findKing(Color color){
         List<Field> fieldOfKing = findChessPiece(new King(color));
         return fieldOfKing.get(0);
     }
 
+
     public boolean isCheckmate(Color person){
-        List<Field> fieldOfKings = findChessPiece(new King(person));
-        Field fieldOfKing = fieldOfKings.get(0);
+        Field fieldOfKing = findKing(person);
         List<Field> movesOfKing = getMoves(fieldOfKing.row, fieldOfKing.column);
 
         return (movesOfKing.size() == 0 && isCheck(person) && !canMoveBetweenOrAttack(fieldOfKing, person));
     }
 
+    //Nur die Person die dran ist kann Patt sein
     public boolean isStalemate(Color person){
         boolean stalemate = true;
         for (int row = 0; row < 8; row++) {
@@ -383,6 +405,8 @@ public class Board {
         return stalemate;
     }
 
+    //Kann eine deiner Figuren dazwischenziehen (Feld angreifen) oder die generische Figur schlagen, ohne das dein König schach Wird?
+    //Mehr als einen angreifer kann man nicht schlagen und auch nicht dazwischenziehen (in einer Runde)
     public boolean canMoveBetweenOrAttack(Field attackedField, Color by) {
         List<Field> attackers = whoAttacks(attackedField, by);
         if (attackers.size() > 1) return false;
@@ -433,7 +457,7 @@ public class Board {
     }
 
 
-
+    //Zum debuggen und solange die GUI noch nicht funktionierte
     @Override
     public String toString(){
         StringBuilder builder = new StringBuilder();
