@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class SetupGame extends JFrame {
 
+    public GUIControls guiControls;
     //Constructor
     public SetupGame() {
         super("Chess Setup");
@@ -33,6 +34,7 @@ public class SetupGame extends JFrame {
 
         //ButtonGroup, so you can only choose one of them
         ButtonGroup mode = new ButtonGroup();
+
 
         //Button to choose KI
         JRadioButton kI = new JRadioButton("KI");
@@ -113,8 +115,8 @@ public class SetupGame extends JFrame {
 //                }
 //
 //                gameMode = kI.isSelected();
-            dispose();
-            new GUIControls(false, ChessPiece.Color.WHITE);
+            //dispose();
+            new GUIControls(ChessPiece.Color.BLACK);
         });
 
         startGame.setVisible(true);
@@ -127,7 +129,6 @@ public class SetupGame extends JFrame {
     }
 
     //for testing
-//    public static void main(String[] args) {
-//        new SetupGame();
-//    }
+    public static void main(String[] args) {
+        new SetupGame(); }
 }

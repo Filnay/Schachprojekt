@@ -13,7 +13,7 @@ public class IntelligentKI {
     }
 
     private Board board;
-    private ChessPiece.Color color;
+    private final ChessPiece.Color color;
 
     public IntelligentKI(ChessPiece.Color color) {
         this.board = new Board();
@@ -110,12 +110,12 @@ public class IntelligentKI {
                             points = points + 900;
                         }
                         List<Field> defender = board.whoDefends(currentField);
-                        for (int i = 0; i < defender.size(); i++) {
-                            points = points + defenderPoints(board.getChessPiece(defender.get(i)));
+                        for (Field field : defender) {
+                            points = points + defenderPoints(board.getChessPiece(field));
                         }
                         List<Field> attacker = board.whoAttacks(currentField);
-                        for (int i = 0; i < attacker.size(); i++) {
-                            points = points - defenderPoints(board.getChessPiece(attacker.get(i)));
+                        for (Field field : attacker) {
+                            points = points - defenderPoints(board.getChessPiece(field));
                         }
                         points = points + board.getMoves(row, column).size() * 2;
                         if(board.isCheckmate(ChessPiece.Color.WHITE)) points = Integer.MAX_VALUE;
@@ -136,12 +136,12 @@ public class IntelligentKI {
                             points = points - 900;
                         }
                         List<Field> defender = board.whoDefends(currentField);
-                        for (int i = 0; i < defender.size(); i++) {
-                            points = points - defenderPoints(board.getChessPiece(defender.get(i)));
+                        for (Field field : defender) {
+                            points = points - defenderPoints(board.getChessPiece(field));
                         }
                         List<Field> attacker = board.whoAttacks(currentField);
-                        for (int i = 0; i < attacker.size(); i++) {
-                            points = points + defenderPoints(board.getChessPiece(attacker.get(i)));
+                        for (Field field : attacker) {
+                            points = points + defenderPoints(board.getChessPiece(field));
                         }
                         points = points - board.getMoves(row, column).size() * 2;
                         if(board.isCheckmate(ChessPiece.Color.WHITE)) points = Integer.MAX_VALUE;
@@ -215,12 +215,12 @@ public class IntelligentKI {
                             if (row == 7 && column == 2) points = points + 60;
                         }
                         List<Field> defender = board.whoDefends(currentField);
-                        for (int i = 0; i < defender.size(); i++) {
-                            points = points + defenderPoints(board.getChessPiece(defender.get(i)));
+                        for (Field value : defender) {
+                            points = points + defenderPoints(board.getChessPiece(value));
                         }
                         List<Field> attacker = board.whoAttacks(currentField);
-                        for (int i = 0; i < attacker.size(); i++) {
-                            points = points - defenderPoints(board.getChessPiece(attacker.get(i)));
+                        for (Field field : attacker) {
+                            points = points - defenderPoints(board.getChessPiece(field));
                         }
                         points = points + board.getMoves(row, column).size() * 1;
                         if(board.isCheckmate(ChessPiece.Color.WHITE)) points = Integer.MAX_VALUE;
@@ -246,12 +246,12 @@ public class IntelligentKI {
                             if (row == 0 && column == 2) points = points - 60;
                         }
                         List<Field> defender = board.whoDefends(currentField);
-                        for (int i = 0; i < defender.size(); i++) {
-                            points = points - defenderPoints(board.getChessPiece(defender.get(i)));
+                        for (Field field : defender) {
+                            points = points - defenderPoints(board.getChessPiece(field));
                         }
                         List<Field> attacker = board.whoAttacks(currentField);
-                        for (int i = 0; i < attacker.size(); i++) {
-                            points = points + defenderPoints(board.getChessPiece(attacker.get(i)));
+                        for (Field field : attacker) {
+                            points = points + defenderPoints(board.getChessPiece(field));
                         }
                         points = points - board.getMoves(row, column).size() * 1;
                         if(board.isCheckmate(ChessPiece.Color.BLACK)) points = Integer.MIN_VALUE;

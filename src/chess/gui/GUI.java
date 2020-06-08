@@ -165,8 +165,8 @@ public class GUI extends JFrame {
             }
         }
         clearAllBorders();
-        if (color.equals(ChessPiece.Color.WHITE)) {
-            processMove(new Field(0, 0), new Field(0, 0));
+        if (color.equals(ChessPiece.Color.BLACK)) {
+           ki.move();
         }
         updateBoard();
     }

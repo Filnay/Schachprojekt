@@ -25,32 +25,24 @@ public class GUIControls extends JFrame {
     private int legendCount;
 
     //Constructor
-    public GUIControls(boolean gameMode, ChessPiece.Color kIColor) {
+    public GUIControls(ChessPiece.Color kIColor) {
         super("Chess Controls");
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setupControls(gameMode, kIColor);
+        setupControls(kIColor);
     }
 
     //get and Set-Methods, only needed for Legend
-    public void setLegendCount(int count) {
-        legendCount = count;
-    }
-    public void setNewLegend(GUI chessGUI, boolean state) {
-        legends.dispose();
-        legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
-        legends.setVisible(state);
-    }
 
     //Setup for the ControlPanel
-    public void setupControls(boolean gameMode, ChessPiece.Color kIColor) {
+    public void setupControls(ChessPiece.Color kIColor) {
 
         //declaration of the chessGUI
         GUI chessGUI;
 
         //calling of the GUI-Constructor whether you want to play against a KI or an other Player
-        if (gameMode) {
+        if (kIColor != null) {
             chessGUI = new GUI(kIColor);
         } else {
             chessGUI = new GUI();
@@ -140,6 +132,16 @@ public class GUIControls extends JFrame {
         setVisible(true);
     }
 
+    public void setLegendCount(int count) {
+        legendCount = count;
+    }
+
+    public void setNewLegend(GUI chessGUI, boolean state) {
+        legends.dispose();
+        legends = new GUILegend(chessGUI.getX(), chessGUI.getY(), chessGUI.getHeight(), chessGUI);
+        legends.setVisible(state);
+    }
+
     private void reset(GUI chessGUI) {
         Board newBoard = new Board();
         chessGUI.setBoard(newBoard);
@@ -159,6 +161,6 @@ public class GUIControls extends JFrame {
     public static void main(String[] args) {
         ChessPiece.Color color = ChessPiece.Color.WHITE;
         if (args.length > 0 && args[0].toLowerCase().startsWith("b")) color = ChessPiece.Color.BLACK;
-        new GUIControls(true, color);
+        new GUIControls(color);
     }
 }
