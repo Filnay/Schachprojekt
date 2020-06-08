@@ -94,7 +94,6 @@ public class TransfigurePawn extends JFrame {
         queen.addActionListener(e -> chosenChessPiece[0] = new Queen(color));
         offeredFigures.add(queen);
 
-        //Setup the Submit-Button
         JButton submit = new JButton("Choose");
         submit.setVisible(true);
         submit.setSize(70, 70);

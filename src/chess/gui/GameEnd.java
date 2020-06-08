@@ -2,8 +2,6 @@ package chess.gui;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GameEnd extends JFrame {
 
@@ -13,7 +11,7 @@ public class GameEnd extends JFrame {
     */
     
     /*
-    you cant play your second game against an KI, that throws a NullPointerException
+    you cant play your second game against an KI, that throws a Error
     */
     
     
