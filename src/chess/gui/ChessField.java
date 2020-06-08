@@ -7,8 +7,6 @@ import java.awt.image.BufferedImage;
 import static icons.Icons.getImageIcon;
 
 
-//Class written By Finns Father
-
 
 public class ChessField extends JButton {
 
