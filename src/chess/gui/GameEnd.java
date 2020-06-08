@@ -3,6 +3,8 @@ package chess.gui;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GameEnd extends JFrame {
 
@@ -47,7 +49,16 @@ public class GameEnd extends JFrame {
         JButton restart = new JButton("Play Again");
         restart.setBackground(Color.lightGray);
         restart.setBorder(null);
-        restart.addActionListener(e -> new SetupGame());
+        restart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Frame[] frames = Frame.getFrames();
+                for (int i = 0; i < frames.length; i++) {
+                    frames[i].dispose();
+                }
+                new SetupGame();
+            }
+        });
         restart.setVisible(true);
         panel.add(restart);
 

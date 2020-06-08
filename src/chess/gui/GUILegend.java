@@ -26,7 +26,7 @@ public class GUILegend extends JFrame {
 
 
         //Creating a new ChessField-Button and loading the Image of an Pawn into it
-        Chessfield pawn = new Chessfield(null);
+        ChessField pawn = new ChessField(null);
         pawn.setSize(70, 70);
         url = gui.getURLFromChessPiece(new Pawn(ChessPiece.Color.BLACK));
         pawn.setButtonIconTo(gui.getSkin().name + "/" + url);
@@ -41,7 +41,7 @@ public class GUILegend extends JFrame {
 
 
         //Creating a new ChessField-Button and loading the Image of an Rook into it
-        Chessfield rook = new Chessfield(null);
+        ChessField rook = new ChessField(null);
         rook.setSize(70, 70);
         url = gui.getURLFromChessPiece(new Rook(ChessPiece.Color.BLACK));
         rook.setButtonIconTo(gui.getSkin().name + "/" + url);
@@ -56,7 +56,7 @@ public class GUILegend extends JFrame {
 
 
         //Creating a new ChessField-Button and loading the Image of an Knight into it
-        Chessfield knight = new Chessfield(null);
+        ChessField knight = new ChessField(null);
         knight.setSize(70, 70);
         url = gui.getURLFromChessPiece(new Knight(ChessPiece.Color.BLACK));
         knight.setButtonIconTo(gui.getSkin().name + "/" + url);
@@ -71,7 +71,7 @@ public class GUILegend extends JFrame {
 
 
         //Creating a new ChessField-Button and loading the Image of an Bishop into it
-        Chessfield bishop = new Chessfield(null);
+        ChessField bishop = new ChessField(null);
         bishop.setSize(70, 70);
         url = gui.getURLFromChessPiece(new Bishop(ChessPiece.Color.BLACK));
         bishop.setButtonIconTo(gui.getSkin().name + "/" + url);
@@ -86,7 +86,7 @@ public class GUILegend extends JFrame {
 
 
         //Creating a new ChessField-Button and loading the Image of an Queen into it
-        Chessfield queen = new Chessfield(null);
+        ChessField queen = new ChessField(null);
         queen.setSize(70, 70);
         url = gui.getURLFromChessPiece(new Queen(ChessPiece.Color.BLACK));
         queen.setButtonIconTo(gui.getSkin().name + "/" + url);
@@ -101,7 +101,7 @@ public class GUILegend extends JFrame {
 
 
         //Creating a new ChessField-Button and loading the Image of an King into it
-        Chessfield king = new Chessfield(null);
+        ChessField king = new ChessField(null);
         king.setSize(70, 70);
         url = gui.getURLFromChessPiece(new King(ChessPiece.Color.BLACK));
         king.setButtonIconTo(gui.getSkin().name + "/" + url);

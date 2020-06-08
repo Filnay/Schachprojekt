@@ -26,7 +26,7 @@ public class GUIChangeSkin extends JFrame {
         skinPanelFrame.setBackground(Color.WHITE);
 
         //setting Up a new ChessField-Button, and load the king-Image of the FIRST Skin
-        Chessfield skin1 = new Chessfield(null);
+        ChessField skin1 = new ChessField(null);
         skin1.setSize(100, 100);
         skin1.setButtonIconTo(GUI.Folder.FOLDER1.name + "/King_Black.png");
         skin1.setBackground(Color.lightGray);
@@ -43,7 +43,7 @@ public class GUIChangeSkin extends JFrame {
         skinPanelFrame.add(skin1);
 
         //setting up a new ChessField-Button, and load the king-Image of the SECOND skin
-        Chessfield skin2 = new Chessfield(null);
+        ChessField skin2 = new ChessField(null);
         skin2.setSize(100, 100);
         skin2.setButtonIconTo(GUI.Folder.FOLDER2.name + "/King_Black.png");
         skin2.setBackground(Color.lightGray);
@@ -60,7 +60,7 @@ public class GUIChangeSkin extends JFrame {
         skinPanelFrame.add(skin2);
 
         //setting up a new ChessField-Button, and load the king-Image of the THIRD skin
-        Chessfield skin3 = new Chessfield(null);
+        ChessField skin3 = new ChessField(null);
         skin3.setSize(100, 100);
         skin3.setButtonIconTo(GUI.Folder.FOLDER3.name + "/King_Black.png");
         skin3.setBackground(Color.lightGray);
